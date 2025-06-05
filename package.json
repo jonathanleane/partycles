@@ -1,7 +1,15 @@
 {
-  "name": "react-surprise",
+  "name": "partycles",
   "version": "0.1.0",
-  "description": "Delightful animation effects for React",
+  "description": "🎉 Delightful particle animations for React",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jonathanleane/partycles.git"
+  },
+  "homepage": "https://github.com/jonathanleane/partycles#readme",
+  "bugs": {
+    "url": "https://github.com/jonathanleane/partycles/issues"
+  },
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",

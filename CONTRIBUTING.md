@@ -1,6 +1,6 @@
-# Contributing to React Surprise
+# Contributing to Partycles
 
-First off, thank you for considering contributing to React Surprise! It's people like you that make React Surprise such a great tool.
+First off, thank you for considering contributing to Partycles! It's people like you that make Partycles such a great tool.
 
 ## Code of Conduct
 
@@ -48,8 +48,8 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 
 1. Fork and clone the repository
 ```bash
-git clone https://github.com/your-username/react-surprise.git
-cd react-surprise
+git clone https://github.com/your-username/partycles.git
+cd partycles
 ```
 
 2. Install dependencies

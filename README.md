@@ -1,9 +1,9 @@
-# React Surprise 🎉
+# Partycles 🎉
 
 A lightweight, performant React library for adding delightful animation effects to your applications. Perfect for celebrating user achievements, form submissions, or any moment worth highlighting.
 
-[![npm version](https://img.shields.io/npm/v/react-surprise.svg)](https://www.npmjs.com/package/react-surprise)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/react-surprise)](https://bundlephobia.com/package/react-surprise)
+[![npm version](https://img.shields.io/npm/v/partycles.svg)](https://www.npmjs.com/package/partycles)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/partycles)](https://bundlephobia.com/package/partycles)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,17 +21,17 @@ A lightweight, performant React library for adding delightful animation effects 
 ## 📦 Installation
 
 ```bash
-npm install react-surprise
+npm install partycles
 # or
-yarn add react-surprise
+yarn add partycles
 # or
-pnpm add react-surprise
+pnpm add partycles
 ```
 
 ## 🚀 Quick Start
 
 ```tsx
-import { useReward } from 'react-surprise';
+import { useReward } from 'partycles';
 
 function App() {
   const { reward, isAnimating } = useReward('rewardId', 'confetti');
