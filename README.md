@@ -2,7 +2,7 @@
 
 A lightweight, performant React library for adding delightful animation effects to your applications. Perfect for celebrating user achievements, form submissions, or any moment worth highlighting.
 
-[**→ Try the Live Demo**](https://partycles-demo.vercel.app)
+[**→ Try the Live Demo**](https://jonathanleane.github.io/partycles)
 
 [![npm version](https://img.shields.io/npm/v/partycles.svg)](https://www.npmjs.com/package/partycles)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/partycles)](https://bundlephobia.com/package/partycles)
