@@ -113,7 +113,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>React Surprise Playground</h1>
+        <h1>Partycles Playground</h1>
         <p>Customize your animations in real-time!</p>
 
         <div className="playground-container">

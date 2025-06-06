@@ -47,7 +47,7 @@
     "confetti",
     "sparkles"
   ],
-  "author": "",
+  "author": "Jonathan Leane",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=16.8.0",

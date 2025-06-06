@@ -1,5 +1,5 @@
 import React from 'react';
-import { useReward } from 'react-surprise';
+import { useReward } from 'partycles';
 import './App.css';
 
 const animations = [
@@ -35,7 +35,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>React Surprise Demo</h1>
+        <h1>Partycles Demo</h1>
         <p>Click the buttons below to see different animation effects!</p>
         
         <div className="button-grid">
