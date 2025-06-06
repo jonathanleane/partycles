@@ -46,7 +46,9 @@ const animationBundles = [
   'hearts',
   'fireworks',
   'bubbles',
-  'stars'
+  'stars',
+  'snow',
+  'emoji'
 ].map(name => ({
   ...baseConfig,
   input: `src/animations/${name}.tsx`,

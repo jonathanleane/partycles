@@ -10,7 +10,7 @@ export const createFireworkParticles = (
 ): Particle[] => {
   const {
     particleCount = 60,
-    startVelocity = 50,
+    startVelocity = 25,
     colors = fireworkColors,
     elementSize = 8
   } = config;

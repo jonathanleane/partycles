@@ -2,6 +2,8 @@
 
 A lightweight, performant React library for adding delightful animation effects to your applications. Perfect for celebrating user achievements, form submissions, or any moment worth highlighting.
 
+[**→ Try the Live Demo**](https://partycles-demo.vercel.app)
+
 [![npm version](https://img.shields.io/npm/v/partycles.svg)](https://www.npmjs.com/package/partycles)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/partycles)](https://bundlephobia.com/package/partycles)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
@@ -10,8 +12,8 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **6 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, and bubbles
-- 📦 **Tiny Bundle** - Less than 5KB gzipped with tree-shaking support
+- 🎨 **11 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, lightning, and petals
+- 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
 - 📱 **Responsive** - Works seamlessly on all devices
@@ -44,6 +46,17 @@ function App() {
 }
 ```
 
+That's it! No configuration needed - it just works. 🎊
+
+## 🤔 Why Partycles?
+
+- **Zero Dependencies** - No bloat, just pure React code
+- **One Hook** - Simple `useReward` hook handles everything  
+- **11 Animations** - From confetti to lightning, we've got you covered
+- **Fully Typed** - Great TypeScript support out of the box
+- **Customizable** - Tweak colors, physics, particle count, and more
+- **Performant** - Optimized animations that won't slow down your app
+
 ## 📖 API Reference
 
 ### `useReward(elementId, animationType, config?)`
@@ -53,7 +66,7 @@ The main hook for creating reward animations.
 #### Parameters
 
 - `elementId` (string): The ID of the element to animate from
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'lightning'`, `'petals'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -70,7 +83,7 @@ interface AnimationConfig {
   startVelocity?: number;      // Initial velocity (default: 45)
   decay?: number;              // Velocity decay rate (default: 0.9)
   lifetime?: number;           // Particle lifetime (default: 100)
-  colors?: string[];           // Array of colors
+  colors?: string[];           // Array of colors (or emojis for 'emoji' type)
   elementSize?: number;        // Size of particles in pixels
   duration?: number;           // Total animation duration
   physics?: {
@@ -141,6 +154,71 @@ Gentle floating bubbles for calm, playful effects.
 const { reward } = useReward('buttonId', 'bubbles', {
   particleCount: 20,
   physics: { gravity: -0.1 }
+});
+```
+
+### Snow ❄️
+Peaceful falling snowflakes for winter themes.
+
+```tsx
+const { reward } = useReward('buttonId', 'snow', {
+  particleCount: 50,
+  physics: { gravity: 0.05, wind: 0.1 }
+});
+```
+
+### Emoji 🎉
+Customizable emoji explosions for any mood.
+
+```tsx
+import { useReward, emojiPresets } from 'partycles';
+
+// Use built-in presets
+const { reward } = useReward('buttonId', 'emoji', {
+  colors: emojiPresets.celebration  // 🎉🎊🥳🎈🎁🍾🥂🎆
+});
+
+// Or custom emojis
+const { reward } = useReward('buttonId', 'emoji', {
+  particleCount: 30,
+  colors: ['🎉', '🎊', '🎈', '🎁', '✨']
+});
+```
+
+**Available emoji presets:**
+- `emojiPresets.celebration` - Party emojis
+- `emojiPresets.love` - Heart emojis
+- `emojiPresets.happy` - Happy face emojis
+- `emojiPresets.nature` - Nature emojis
+- `emojiPresets.food` - Food emojis
+
+### Coins 💰
+Falling coins for rewards and achievements.
+
+```tsx
+const { reward } = useReward('buttonId', 'coins', {
+  particleCount: 25,
+  physics: { gravity: 0.5 }
+});
+```
+
+### Lightning ⚡
+Electric energy bursts for powerful actions.
+
+```tsx
+const { reward } = useReward('buttonId', 'lightning', {
+  particleCount: 20,
+  spread: 360
+});
+```
+
+### Petals 🌸
+Delicate flower petals floating in the wind.
+
+```tsx
+const { reward } = useReward('buttonId', 'petals', {
+  particleCount: 40,
+  physics: { gravity: 0.08, wind: 0.15 }
 });
 ```
 
@@ -286,7 +364,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📄 License
 
-MIT © [Your Name]
+MIT © Jonathan Leane
 
 ---
 

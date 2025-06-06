@@ -34,7 +34,12 @@ export type AnimationType =
   | 'fireworks'
   | 'hearts'
   | 'stars'
-  | 'bubbles';
+  | 'bubbles'
+  | 'snow'
+  | 'emoji'
+  | 'coins'
+  | 'lightning'
+  | 'petals';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;

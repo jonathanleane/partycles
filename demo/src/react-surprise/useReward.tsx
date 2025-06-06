@@ -57,7 +57,9 @@ export const useReward = (
     rootRef.current = root;
 
     const containerRect = container.getBoundingClientRect();
-    const gravity = config?.physics?.gravity ?? 0.35;
+    // Default gravity varies by animation type
+    const defaultGravity = animationType === 'bubbles' ? -0.1 : animationType === 'snow' ? 0.05 : 0.35;
+    const gravity = config?.physics?.gravity ?? defaultGravity;
     const friction = config?.physics?.friction ?? 0.98;
     const wind = config?.physics?.wind ?? 0;
 

@@ -10,7 +10,7 @@ export const createStarParticles = (
 ): Particle[] => {
   const {
     particleCount = 40,
-    startVelocity = 35,
+    startVelocity = 18,
     colors = starColors,
     elementSize = 30
   } = config;

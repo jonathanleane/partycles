@@ -5,6 +5,11 @@ import { createHeartParticles, renderHeartParticle } from './hearts';
 import { createFireworkParticles, renderFireworkParticle } from './fireworks';
 import { createBubbleParticles, renderBubbleParticle } from './bubbles';
 import { createStarParticles, renderStarParticle } from './stars';
+import { createSnowParticles, renderSnowParticle } from './snow';
+import { createEmojiParticles, renderEmojiParticle } from './emoji';
+import { createCoinParticles, renderCoinParticle } from './coins';
+import { createLightningParticles, renderLightningParticle } from './lightning';
+import { createPetalParticles, renderPetalParticle } from './petals';
 
 export type ParticleCreator = (origin: { x: number; y: number }, config: AnimationConfig) => Particle[];
 export type ParticleRenderer = (particle: Particle) => React.ReactNode;
@@ -38,5 +43,25 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   stars: {
     createParticles: createStarParticles,
     renderParticle: renderStarParticle,
+  },
+  snow: {
+    createParticles: createSnowParticles,
+    renderParticle: renderSnowParticle,
+  },
+  emoji: {
+    createParticles: createEmojiParticles,
+    renderParticle: renderEmojiParticle,
+  },
+  coins: {
+    createParticles: createCoinParticles,
+    renderParticle: renderCoinParticle,
+  },
+  lightning: {
+    createParticles: createLightningParticles,
+    renderParticle: renderLightningParticle,
+  },
+  petals: {
+    createParticles: createPetalParticles,
+    renderParticle: renderPetalParticle,
   },
 };

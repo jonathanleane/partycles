@@ -11,7 +11,7 @@ export const createBubbleParticles = (
   const {
     particleCount = 30,
     spread = 80,
-    startVelocity = 30,
+    startVelocity = 8,
     colors = bubbleColors,
     elementSize = 40
   } = config;

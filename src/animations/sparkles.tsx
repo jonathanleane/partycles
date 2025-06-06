@@ -9,7 +9,7 @@ export const createSparkleParticles = (
   const {
     particleCount = 35,
     spread = 120,
-    startVelocity = 45,
+    startVelocity = 15,
     elementSize = 25,
     colors = ['#FFD700', '#FFFFFF']
   } = config;

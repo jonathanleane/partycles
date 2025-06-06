@@ -10,7 +10,7 @@ export const createConfettiParticles = (
 ): Particle[] => {
   const {
     particleCount = 50,
-    startVelocity = 55,
+    startVelocity = 20,
     colors = defaultColors,
     elementSize = 20
   } = config;

@@ -10,7 +10,7 @@ export const createHeartParticles = (
 ): Particle[] => {
   const {
     particleCount = 25,
-    startVelocity = 30,
+    startVelocity = 12,
     colors = heartColors,
     elementSize = 30
   } = config;
