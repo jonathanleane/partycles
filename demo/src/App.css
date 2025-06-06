@@ -994,6 +994,38 @@ section {
   margin-right: auto;
 }
 
+.hero-animation-indicator {
+  margin: 1rem 0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease forwards;
+  animation-delay: 1s;
+}
+
+.animation-type-badge {
+  display: inline-block;
+  padding: 0.25rem 1rem;
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  color: rgba(199, 210, 254, 0.9);
+  text-transform: lowercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-buttons {
   display: flex;
   gap: 1rem;

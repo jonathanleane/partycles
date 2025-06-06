@@ -171,24 +171,39 @@ function App() {
     colors: colors.length > 0 ? colors : undefined,
   });
 
-  // Hero title animation
-  const { reward: rewardHero } = useReward('hero-title', 'emoji', {
-    particleCount: 30,
-    spread: 120,
-    startVelocity: 25,
-    elementSize: 35,
-    lifetime: 200,
-    colors: emojiPresets.celebration,
-    physics: { gravity: 0.3, wind: 0, friction: 0.98 }
-  });
+  // Hero title animation - cycle through all animation types
+  const animationTypes = Object.keys(defaultConfigs) as Array<keyof typeof defaultConfigs>;
+  const [heroAnimationIndex, setHeroAnimationIndex] = useState(0);
+  const currentHeroAnimation = animationTypes[heroAnimationIndex];
+  
+  const heroConfig = {
+    ...defaultConfigs[currentHeroAnimation],
+    particleCount: Math.min(defaultConfigs[currentHeroAnimation].particleCount || 30, 40), // Limit particles for hero
+    colors: currentHeroAnimation === 'emoji' ? emojiPresets.celebration : defaultColors[currentHeroAnimation]
+  };
 
-  // Trigger hero animation on page load
+  const { reward: rewardHero } = useReward('hero-title', currentHeroAnimation, heroConfig);
+
+  // Cycle through animations on the hero title
   React.useEffect(() => {
-    const timer = setTimeout(() => {
+    // Initial animation after page load
+    const initialTimer = setTimeout(() => {
       rewardHero();
-    }, 500); // Small delay for better effect
-    return () => clearTimeout(timer);
-  }, [rewardHero]);
+    }, 500);
+
+    // Set up cycling through animations
+    const cycleTimer = setInterval(() => {
+      setHeroAnimationIndex((prev) => (prev + 1) % animationTypes.length);
+      setTimeout(() => {
+        rewardHero();
+      }, 100); // Small delay to ensure animation type has updated
+    }, 3500); // Change animation every 3.5 seconds
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(cycleTimer);
+    };
+  }, [rewardHero, animationTypes.length]);
 
   const handleAnimationChange = (animation: keyof typeof defaultConfigs) => {
     setSelectedAnimation(animation);
@@ -259,6 +274,9 @@ function App() {
           </h1>
           <p className="hero-subtitle">
             Beautiful particle animations for React
+          </p>
+          <p className="hero-animation-indicator">
+            <span className="animation-type-badge">{currentHeroAnimation}</span>
           </p>
           <p className="hero-description">
             Add delightful animations to your React app with just one hook. 
