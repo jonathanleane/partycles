@@ -12,7 +12,7 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **11 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, lightning, and petals
+- 🎨 **17 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, lightning, petals, aurora, fireflies, paint, music, balloons, and galaxy
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
@@ -219,6 +219,66 @@ Delicate flower petals floating in the wind.
 const { reward } = useReward('buttonId', 'petals', {
   particleCount: 40,
   physics: { gravity: 0.08, wind: 0.15 }
+});
+```
+
+### Aurora 🌌
+Northern lights effect with flowing ribbons.
+
+```tsx
+const { reward } = useReward('buttonId', 'aurora', {
+  particleCount: 15,
+  elementSize: 100
+});
+```
+
+### Fireflies ✨
+Glowing fireflies with organic movement.
+
+```tsx
+const { reward } = useReward('buttonId', 'fireflies', {
+  particleCount: 20,
+  lifetime: 300
+});
+```
+
+### Paint 🎨
+Paint splatter effect for creative actions.
+
+```tsx
+const { reward } = useReward('buttonId', 'paint', {
+  particleCount: 25,
+  startVelocity: 35
+});
+```
+
+### Music 🎵
+Musical notes floating upward.
+
+```tsx
+const { reward } = useReward('buttonId', 'music', {
+  particleCount: 20,
+  physics: { gravity: -0.08 }
+});
+```
+
+### Balloons 🎈
+Floating balloons with realistic physics.
+
+```tsx
+const { reward } = useReward('buttonId', 'balloons', {
+  particleCount: 15,
+  lifetime: 400
+});
+```
+
+### Galaxy 🌟
+Spiral star formation with twinkling effects.
+
+```tsx
+const { reward } = useReward('buttonId', 'galaxy', {
+  particleCount: 60,
+  spread: 200
 });
 ```
 
