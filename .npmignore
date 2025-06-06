@@ -1,0 +1,45 @@
+# Source files
+src/
+demo/
+
+# Config files
+.github/
+.eslintrc.json
+.prettierrc.json
+.prettierignore
+rollup.config.mjs
+tsconfig.json
+
+# Development files
+*.log
+.DS_Store
+node_modules/
+coverage/
+.nyc_output/
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git files
+.git/
+.gitignore
+
+# CI files
+.travis.yml
+.circleci/
+
+# Test files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Keep only dist folder and necessary files
+!dist/
+!README.md
+!LICENSE
+!package.json
