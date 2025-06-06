@@ -14,6 +14,12 @@ const defaultColors = {
   coins: ['#FFD700', '#FFA500', '#FFB300', '#FFC700'],
   lightning: ['#FFFF00', '#FFFFFF', '#00FFFF', '#FF00FF'],
   petals: ['#FFB6C1', '#FFC0CB', '#FF69B4', '#FF1493', '#FFF0F5'],
+  aurora: ['#00ff88', '#00ffaa', '#00ddff', '#0099ff', '#0066ff', '#9933ff', '#ff00ff'],
+  fireflies: ['#FFFF99', '#FFFFCC', '#FFFF66', '#FFFFAA'],
+  paint: ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF', '#06FFB4'],
+  music: ['#FF006E', '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B'],
+  balloons: ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF', '#06FFB4', '#FF4081'],
+  galaxy: ['#FFFFFF', '#FFF9C4', '#BBDEFB', '#C5CAE9', '#D1C4E9', '#FFE082', '#FFCCBC'],
 };
 
 const defaultConfigs = {
@@ -52,10 +58,10 @@ const defaultConfigs = {
   bubbles: {
     particleCount: 30,
     spread: 80,
-    startVelocity: 8,
+    startVelocity: 3,
     elementSize: 40,
-    lifetime: 160,
-    physics: { gravity: -0.1, wind: 0, friction: 0.99 }
+    lifetime: 300,
+    physics: { gravity: -0.05, wind: 0.02, friction: 0.995 }
   },
   stars: {
     particleCount: 40,
@@ -104,6 +110,54 @@ const defaultConfigs = {
     elementSize: 20,
     lifetime: 200,
     physics: { gravity: 0.08, wind: 0.15, friction: 0.99 }
+  },
+  aurora: {
+    particleCount: 15,
+    spread: 200,
+    startVelocity: 3,
+    elementSize: 100,
+    lifetime: 250,
+    physics: { gravity: -0.2, wind: 0, friction: 0.99 }
+  },
+  fireflies: {
+    particleCount: 20,
+    spread: 150,
+    startVelocity: 2,
+    elementSize: 8,
+    lifetime: 300,
+    physics: { gravity: 0, wind: 0, friction: 0.99 }
+  },
+  paint: {
+    particleCount: 25,
+    spread: 120,
+    startVelocity: 35,
+    elementSize: 30,
+    lifetime: 150,
+    physics: { gravity: 0.6, wind: 0, friction: 0.96 }
+  },
+  music: {
+    particleCount: 20,
+    spread: 100,
+    startVelocity: 3,
+    elementSize: 30,
+    lifetime: 300,
+    physics: { gravity: -0.08, wind: 0.01, friction: 0.995 }
+  },
+  balloons: {
+    particleCount: 15,
+    spread: 80,
+    startVelocity: 3,
+    elementSize: 35,
+    lifetime: 400,
+    physics: { gravity: -0.05, wind: 0.02, friction: 0.998 }
+  },
+  galaxy: {
+    particleCount: 60,
+    spread: 200,
+    startVelocity: 15,
+    elementSize: 8,
+    lifetime: 250,
+    physics: { gravity: 0, wind: 0, friction: 0.995 }
   }
 };
 
@@ -182,13 +236,19 @@ function App() {
     sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: 35, colors: defaultColors.sparkles }),
     hearts: useReward('hero-title', 'hearts', { ...defaultConfigs.hearts, particleCount: 25, colors: defaultColors.hearts }),
     fireworks: useReward('hero-title', 'fireworks', { ...defaultConfigs.fireworks, particleCount: 50, colors: defaultColors.fireworks }),
-    bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: 30, colors: defaultColors.bubbles }),
+    bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: 25, colors: defaultColors.bubbles }),
     stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: 35, colors: defaultColors.stars }),
     snow: useReward('hero-title', 'snow', { ...defaultConfigs.snow, particleCount: 40, colors: defaultColors.snow }),
     emoji: useReward('hero-title', 'emoji', { ...defaultConfigs.emoji, particleCount: 25, colors: emojiPresets.celebration }),
     coins: useReward('hero-title', 'coins', { ...defaultConfigs.coins, particleCount: 25, colors: defaultColors.coins }),
     lightning: useReward('hero-title', 'lightning', { ...defaultConfigs.lightning, particleCount: 15, colors: defaultColors.lightning }),
     petals: useReward('hero-title', 'petals', { ...defaultConfigs.petals, particleCount: 35, colors: defaultColors.petals }),
+    aurora: useReward('hero-title', 'aurora', { ...defaultConfigs.aurora, particleCount: 12, colors: defaultColors.aurora }),
+    fireflies: useReward('hero-title', 'fireflies', { ...defaultConfigs.fireflies, particleCount: 15, colors: defaultColors.fireflies }),
+    paint: useReward('hero-title', 'paint', { ...defaultConfigs.paint, particleCount: 20, colors: defaultColors.paint }),
+    music: useReward('hero-title', 'music', { ...defaultConfigs.music, particleCount: 12, colors: defaultColors.music }),
+    balloons: useReward('hero-title', 'balloons', { ...defaultConfigs.balloons, particleCount: 10, colors: defaultColors.balloons }),
+    galaxy: useReward('hero-title', 'galaxy', { ...defaultConfigs.galaxy, particleCount: 40, colors: defaultColors.galaxy }),
   };
 
   const triggerHeroAnimation = () => {
@@ -198,26 +258,66 @@ function App() {
   // Cycle through animations on the hero title
   React.useEffect(() => {
     let animationIndex = 0;
+    let cycleTimer: NodeJS.Timeout | null = null;
+    let initialTimer: NodeJS.Timeout | null = null;
+    let isScrolled = false;
     
-    // Initial animation after page load
-    const initialTimer = setTimeout(() => {
-      heroRewards[animationTypes[0]].reward();
-    }, 500);
-
-    // Set up cycling through animations
-    const cycleTimer = setInterval(() => {
-      animationIndex = (animationIndex + 1) % animationTypes.length;
-      setHeroAnimationIndex(animationIndex);
+    // Check if user has scrolled down
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 200; // Stop after 200px scroll
+      if (scrolled && !isScrolled) {
+        isScrolled = true;
+        // Clear timers when scrolled
+        if (initialTimer) clearTimeout(initialTimer);
+        if (cycleTimer) clearInterval(cycleTimer);
+      } else if (!scrolled && isScrolled) {
+        isScrolled = false;
+        // Restart animations when scrolled back to top
+        startAnimations();
+      }
+    };
+    
+    const startAnimations = () => {
+      // Clear any existing timers
+      if (initialTimer) clearTimeout(initialTimer);
+      if (cycleTimer) clearInterval(cycleTimer);
       
-      // Wait for the current animation to mostly finish before starting the next
-      setTimeout(() => {
-        heroRewards[animationTypes[animationIndex]].reward();
-      }, 100);
-    }, 2500); // Fire next animation after 2.5 seconds
+      // Initial animation after page load
+      initialTimer = setTimeout(() => {
+        if (!isScrolled) {
+          heroRewards[animationTypes[0]].reward();
+        }
+      }, 500);
+
+      // Set up cycling through animations
+      cycleTimer = setInterval(() => {
+        if (!isScrolled) {
+          animationIndex = (animationIndex + 1) % animationTypes.length;
+          setHeroAnimationIndex(animationIndex);
+          
+          // Wait for the current animation to mostly finish before starting the next
+          setTimeout(() => {
+            if (!isScrolled) {
+              heroRewards[animationTypes[animationIndex]].reward();
+            }
+          }, 100);
+        }
+      }, 2500); // Fire next animation after 2.5 seconds
+    };
+    
+    // Start animations initially
+    startAnimations();
+    
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll);
+    
+    // Check initial scroll position
+    handleScroll();
 
     return () => {
-      clearTimeout(initialTimer);
-      clearInterval(cycleTimer);
+      window.removeEventListener('scroll', handleScroll);
+      if (initialTimer) clearTimeout(initialTimer);
+      if (cycleTimer) clearInterval(cycleTimer);
     };
   }, []); // Empty deps to run only once
 
@@ -746,8 +846,8 @@ function App() {
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">🎨</div>
-              <h3>11 Animation Types</h3>
-              <p>Confetti, sparkles, fireworks, hearts, stars, bubbles, snow, emojis, coins, lightning, and petals</p>
+              <h3>17 Animation Types</h3>
+              <p>Confetti, sparkles, fireworks, hearts, stars, bubbles, snow, emojis, coins, lightning, petals, aurora, fireflies, paint, music, balloons, and galaxy</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">⚡</div>
@@ -1142,19 +1242,25 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'fireworks', name: 'Fireworks', icon: '🎆', desc: 'Explosive bursts' },
       { id: 'sparkles', name: 'Sparkles', icon: '✨', desc: 'Magical glitter' },
       { id: 'stars', name: 'Stars', icon: '⭐', desc: 'Shining stars' },
+      { id: 'balloons', name: 'Balloons', icon: '🎈', desc: 'Floating balloons' },
     ],
     emotions: [
       { id: 'hearts', name: 'Hearts', icon: '💕', desc: 'Love and likes' },
       { id: 'emoji', name: 'Emoji', icon: '🎉', desc: 'Custom expressions' },
+      { id: 'music', name: 'Music', icon: '🎵', desc: 'Musical notes' },
     ],
     nature: [
       { id: 'bubbles', name: 'Bubbles', icon: '🫧', desc: 'Floating bubbles' },
       { id: 'snow', name: 'Snow', icon: '❄️', desc: 'Gentle snowfall' },
       { id: 'petals', name: 'Petals', icon: '🌸', desc: 'Flower petals' },
+      { id: 'fireflies', name: 'Fireflies', icon: '✨', desc: 'Glowing lights' },
+      { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
     ],
     special: [
       { id: 'coins', name: 'Coins', icon: '💰', desc: 'Money & rewards' },
       { id: 'lightning', name: 'Lightning', icon: '⚡', desc: 'Electric energy' },
+      { id: 'paint', name: 'Paint', icon: '🎨', desc: 'Paint splatter' },
+      { id: 'galaxy', name: 'Galaxy', icon: '🌟', desc: 'Spiral stars' },
     ],
   };
 

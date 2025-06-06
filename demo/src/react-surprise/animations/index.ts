@@ -10,6 +10,12 @@ import { createEmojiParticles, renderEmojiParticle } from './emoji';
 import { createCoinParticles, renderCoinParticle } from './coins';
 import { createLightningParticles, renderLightningParticle } from './lightning';
 import { createPetalParticles, renderPetalParticle } from './petals';
+import { createAuroraParticles, renderAuroraParticle } from './aurora';
+import { createFireflyParticles, renderFireflyParticle } from './fireflies';
+import { createPaintParticles, renderPaintParticle } from './paint';
+import { createMusicParticles, renderMusicParticle } from './music';
+import { createBalloonParticles, renderBalloonParticle } from './balloons';
+import { createGalaxyParticles, renderGalaxyParticle } from './galaxy';
 
 export type ParticleCreator = (origin: { x: number; y: number }, config: AnimationConfig) => Particle[];
 export type ParticleRenderer = (particle: Particle) => React.ReactNode;
@@ -63,5 +69,29 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   petals: {
     createParticles: createPetalParticles,
     renderParticle: renderPetalParticle,
+  },
+  aurora: {
+    createParticles: createAuroraParticles,
+    renderParticle: renderAuroraParticle,
+  },
+  fireflies: {
+    createParticles: createFireflyParticles,
+    renderParticle: renderFireflyParticle,
+  },
+  paint: {
+    createParticles: createPaintParticles,
+    renderParticle: renderPaintParticle,
+  },
+  music: {
+    createParticles: createMusicParticles,
+    renderParticle: renderMusicParticle,
+  },
+  balloons: {
+    createParticles: createBalloonParticles,
+    renderParticle: renderBalloonParticle,
+  },
+  galaxy: {
+    createParticles: createGalaxyParticles,
+    renderParticle: renderGalaxyParticle,
   },
 };

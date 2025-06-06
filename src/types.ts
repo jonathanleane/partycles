@@ -39,7 +39,13 @@ export type AnimationType =
   | 'emoji'
   | 'coins'
   | 'lightning'
-  | 'petals';
+  | 'petals'
+  | 'aurora'
+  | 'fireflies'
+  | 'paint'
+  | 'music'
+  | 'balloons'
+  | 'galaxy';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;
