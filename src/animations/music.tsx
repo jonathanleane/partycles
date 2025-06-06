@@ -48,10 +48,10 @@ export const renderMusicParticle = (particle: Particle): React.ReactNode => {
   const waveX = Math.sin(particle.life * 0.05) * 20;
   const wobble = Math.sin(particle.life * 0.1) * 10;
   
-  // Fade in/out
-  const maxLife = 300; // Use longer lifetime for proper fading
-  const fadeIn = particle.life > (maxLife - 20) ? (maxLife - particle.life) / 20 : 1;
-  const fadeOut = particle.life < 50 ? particle.life / 50 : 1;
+  // Fade in/out based on actual particle life
+  const progress = 1 - (particle.life / (particle.life + (300 - particle.life))); // 0 to 1 as particle ages
+  const fadeIn = Math.min(1, progress * 10); // Quick fade in
+  const fadeOut = particle.life < 50 ? particle.life / 50 : 1; // Fade out at end
   const opacity = Math.min(fadeIn, fadeOut) * particle.opacity;
   
   return (

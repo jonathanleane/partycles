@@ -261,6 +261,7 @@ function App() {
     let cycleTimer: NodeJS.Timeout | null = null;
     let initialTimer: NodeJS.Timeout | null = null;
     let isScrolled = false;
+    let isTabVisible = true;
     
     // Check if user has scrolled down
     const handleScroll = () => {
@@ -272,7 +273,22 @@ function App() {
         if (cycleTimer) clearInterval(cycleTimer);
       } else if (!scrolled && isScrolled) {
         isScrolled = false;
-        // Restart animations when scrolled back to top
+        // Restart animations when scrolled back to top (and tab is visible)
+        if (isTabVisible) {
+          startAnimations();
+        }
+      }
+    };
+    
+    // Check if tab is visible
+    const handleVisibilityChange = () => {
+      isTabVisible = !document.hidden;
+      if (!isTabVisible) {
+        // Clear timers when tab becomes hidden
+        if (initialTimer) clearTimeout(initialTimer);
+        if (cycleTimer) clearInterval(cycleTimer);
+      } else if (!isScrolled) {
+        // Restart animations when tab becomes visible (and not scrolled)
         startAnimations();
       }
     };
@@ -284,20 +300,20 @@ function App() {
       
       // Initial animation after page load
       initialTimer = setTimeout(() => {
-        if (!isScrolled) {
+        if (!isScrolled && isTabVisible) {
           heroRewards[animationTypes[0]].reward();
         }
       }, 500);
 
       // Set up cycling through animations
       cycleTimer = setInterval(() => {
-        if (!isScrolled) {
+        if (!isScrolled && isTabVisible) {
           animationIndex = (animationIndex + 1) % animationTypes.length;
           setHeroAnimationIndex(animationIndex);
           
           // Wait for the current animation to mostly finish before starting the next
           setTimeout(() => {
-            if (!isScrolled) {
+            if (!isScrolled && isTabVisible) {
               heroRewards[animationTypes[animationIndex]].reward();
             }
           }, 100);
@@ -305,17 +321,22 @@ function App() {
       }, 2500); // Fire next animation after 2.5 seconds
     };
     
-    // Start animations initially
-    startAnimations();
+    // Start animations initially if tab is visible
+    if (!document.hidden) {
+      startAnimations();
+    }
     
-    // Add scroll listener
+    // Add listeners
     window.addEventListener('scroll', handleScroll);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     
-    // Check initial scroll position
+    // Check initial states
     handleScroll();
+    isTabVisible = !document.hidden;
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (initialTimer) clearTimeout(initialTimer);
       if (cycleTimer) clearInterval(cycleTimer);
     };

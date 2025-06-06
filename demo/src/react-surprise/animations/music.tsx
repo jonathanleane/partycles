@@ -27,10 +27,10 @@ export const createMusicParticles = (
       id: generateId(),
       x: origin.x + randomInRange(-20, 20),
       y: origin.y,
-      vx: Math.sin(angle) * velocity,
-      vy: -Math.abs(Math.cos(angle)) * velocity, // Always go up
+      vx: Math.sin(angle) * velocity * 0.3,
+      vy: -Math.abs(Math.cos(angle)) * velocity * 0.5, // Always go up slowly
       life: config.lifetime || 200,
-      opacity: 0,
+      opacity: 1,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: i % notes.length, // Store which note to use
       color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
@@ -48,10 +48,11 @@ export const renderMusicParticle = (particle: Particle): React.ReactNode => {
   const waveX = Math.sin(particle.life * 0.05) * 20;
   const wobble = Math.sin(particle.life * 0.1) * 10;
   
-  // Fade in/out
-  const fadeIn = Math.min(1, (200 - particle.life) / 20);
-  const fadeOut = particle.life / 200;
-  const opacity = Math.min(fadeIn, fadeOut);
+  // Fade in/out based on actual particle life
+  const progress = 1 - (particle.life / (particle.life + (300 - particle.life))); // 0 to 1 as particle ages
+  const fadeIn = Math.min(1, progress * 10); // Quick fade in
+  const fadeOut = particle.life < 50 ? particle.life / 50 : 1; // Fade out at end
+  const opacity = Math.min(fadeIn, fadeOut) * particle.opacity;
   
   return (
     <div

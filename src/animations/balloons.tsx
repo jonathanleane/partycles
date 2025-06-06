@@ -24,9 +24,9 @@ export const createBalloonParticles = (
     
     particles.push({
       id: generateId(),
-      x: origin.x + randomInRange(-30, 30),
-      y: origin.y + randomInRange(0, 20),
-      vx: Math.sin(angle) * velocity * 0.2,
+      x: origin.x + randomInRange(-spread * 0.8, spread * 0.8), // Spread balloons out more
+      y: origin.y + randomInRange(-10, 30),
+      vx: Math.sin(angle) * velocity * 0.3 + randomInRange(-1, 1), // Add horizontal drift
       vy: -velocity * 0.4, // Balloons float up slowly
       life: config.lifetime || 250,
       opacity: 0.9,
