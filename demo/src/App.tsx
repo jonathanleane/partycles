@@ -175,35 +175,51 @@ function App() {
   const animationTypes = Object.keys(defaultConfigs) as Array<keyof typeof defaultConfigs>;
   const [heroAnimationIndex, setHeroAnimationIndex] = useState(0);
   const currentHeroAnimation = animationTypes[heroAnimationIndex];
-  
-  const heroConfig = {
-    ...defaultConfigs[currentHeroAnimation],
-    particleCount: Math.min(defaultConfigs[currentHeroAnimation].particleCount || 30, 40), // Limit particles for hero
-    colors: currentHeroAnimation === 'emoji' ? emojiPresets.celebration : defaultColors[currentHeroAnimation]
+
+  // Create reward hooks for each animation type
+  const heroRewards = {
+    confetti: useReward('hero-title', 'confetti', { ...defaultConfigs.confetti, particleCount: 40, colors: defaultColors.confetti }),
+    sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: 35, colors: defaultColors.sparkles }),
+    hearts: useReward('hero-title', 'hearts', { ...defaultConfigs.hearts, particleCount: 25, colors: defaultColors.hearts }),
+    fireworks: useReward('hero-title', 'fireworks', { ...defaultConfigs.fireworks, particleCount: 50, colors: defaultColors.fireworks }),
+    bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: 30, colors: defaultColors.bubbles }),
+    stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: 35, colors: defaultColors.stars }),
+    snow: useReward('hero-title', 'snow', { ...defaultConfigs.snow, particleCount: 40, colors: defaultColors.snow }),
+    emoji: useReward('hero-title', 'emoji', { ...defaultConfigs.emoji, particleCount: 25, colors: emojiPresets.celebration }),
+    coins: useReward('hero-title', 'coins', { ...defaultConfigs.coins, particleCount: 25, colors: defaultColors.coins }),
+    lightning: useReward('hero-title', 'lightning', { ...defaultConfigs.lightning, particleCount: 15, colors: defaultColors.lightning }),
+    petals: useReward('hero-title', 'petals', { ...defaultConfigs.petals, particleCount: 35, colors: defaultColors.petals }),
   };
 
-  const { reward: rewardHero } = useReward('hero-title', currentHeroAnimation, heroConfig);
+  const triggerHeroAnimation = () => {
+    heroRewards[currentHeroAnimation].reward();
+  };
 
   // Cycle through animations on the hero title
   React.useEffect(() => {
+    let animationIndex = 0;
+    
     // Initial animation after page load
     const initialTimer = setTimeout(() => {
-      rewardHero();
+      heroRewards[animationTypes[0]].reward();
     }, 500);
 
     // Set up cycling through animations
     const cycleTimer = setInterval(() => {
-      setHeroAnimationIndex((prev) => (prev + 1) % animationTypes.length);
+      animationIndex = (animationIndex + 1) % animationTypes.length;
+      setHeroAnimationIndex(animationIndex);
+      
+      // Wait for the current animation to mostly finish before starting the next
       setTimeout(() => {
-        rewardHero();
-      }, 100); // Small delay to ensure animation type has updated
-    }, 3500); // Change animation every 3.5 seconds
+        heroRewards[animationTypes[animationIndex]].reward();
+      }, 100);
+    }, 2500); // Fire next animation after 2.5 seconds
 
     return () => {
       clearTimeout(initialTimer);
       clearInterval(cycleTimer);
     };
-  }, [rewardHero, animationTypes.length]);
+  }, []); // Empty deps to run only once
 
   const handleAnimationChange = (animation: keyof typeof defaultConfigs) => {
     setSelectedAnimation(animation);
@@ -266,7 +282,7 @@ function App() {
           <h1 
             className="hero-title" 
             id="hero-title"
-            onClick={rewardHero}
+            onClick={triggerHeroAnimation}
             style={{ cursor: 'pointer' }}
             title="Click for animation!"
           >
