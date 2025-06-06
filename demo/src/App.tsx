@@ -171,6 +171,25 @@ function App() {
     colors: colors.length > 0 ? colors : undefined,
   });
 
+  // Hero title animation
+  const { reward: rewardHero } = useReward('hero-title', 'emoji', {
+    particleCount: 30,
+    spread: 120,
+    startVelocity: 25,
+    elementSize: 35,
+    lifetime: 200,
+    colors: emojiPresets.celebration,
+    physics: { gravity: 0.3, wind: 0, friction: 0.98 }
+  });
+
+  // Trigger hero animation on page load
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      rewardHero();
+    }, 500); // Small delay for better effect
+    return () => clearTimeout(timer);
+  }, [rewardHero]);
+
   const handleAnimationChange = (animation: keyof typeof defaultConfigs) => {
     setSelectedAnimation(animation);
     setConfig(defaultConfigs[animation]);
@@ -229,7 +248,15 @@ function App() {
       {/* Hero Section */}
       <section className="hero-section" id="main-content">
         <div className="hero-content">
-          <h1 className="hero-title">Partycles</h1>
+          <h1 
+            className="hero-title" 
+            id="hero-title"
+            onClick={rewardHero}
+            style={{ cursor: 'pointer' }}
+            title="Click for animation!"
+          >
+            Partycles
+          </h1>
           <p className="hero-subtitle">
             Beautiful particle animations for React
           </p>

@@ -963,6 +963,12 @@ section {
   animation: gradient 3s ease infinite;
   background-size: 200% 200%;
   text-shadow: 0 0 80px rgba(129, 140, 248, 0.5);
+  transition: transform 0.2s ease;
+}
+
+.hero-title:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 100px rgba(129, 140, 248, 0.7);
 }
 
 @keyframes gradient {
