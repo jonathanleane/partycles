@@ -20,6 +20,26 @@ const defaultColors = {
   music: ['#FF006E', '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B'],
   balloons: ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF', '#06FFB4', '#FF4081'],
   galaxy: ['#FFFFFF', '#FFF9C4', '#BBDEFB', '#C5CAE9', '#D1C4E9', '#FFE082', '#FFCCBC'],
+  butterflies: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#FFDAB9'],
+  leaves: ['#D2691E', '#CD853F', '#A0522D', '#8B4513', '#FF8C00', '#FF6347'],
+  rain: ['#4FC3F7', '#29B6F6', '#03A9F4', '#039BE5', '#0288D1', '#0277BD'],
+  dandelion: ['#FFFACD', '#FFF8DC', '#FFFFE0', '#FFFFF0', '#F0FFF0', '#F5FFFA'],
+  bees: ['#FFD700', '#FFA500', '#000000', '#FFFF00', '#FFC107', '#FFB300'],
+  matrix: ['#00FF00', '#00DD00', '#00BB00', '#009900', '#007700', '#005500'],
+  pixels: ['#FF0080', '#00FF00', '#00FFFF', '#FFFF00', '#FF00FF', '#0080FF'],
+  glitch: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
+  dice: ['#FFFFFF', '#F5F5F5', '#EEEEEE', '#E0E0E0', '#BDBDBD', '#9E9E9E'],
+  levelup: ['#FFD700', '#00FF00', '#00FFFF', '#FF00FF', '#FFFF00', '#FF4500'],
+  magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
+  ghosts: ['#FFFFFF', '#F8F8FF', '#F0F8FF', '#F5F5F5', '#FAFAFA', '#FFF5EE'],
+  crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
+  dragons: ['#FF6B35', '#F7931E', '#FFD700', '#FF0000', '#8B0000', '#FF4500'],
+  runes: ['#9C27B0', '#673AB7', '#3F51B5', '#1976D2', '#00ACC1', '#00897B'],
+  popcorn: ['#FFE5B4', '#FFF8DC', '#FFFACD', '#FFF5EE', '#FFDAB9', '#FFE4B5'],
+  champagne: ['#F0E68C', '#FFD700', '#FFF8DC', '#FFFACD', '#FAFAD2', '#EEE8AA'],
+  candy: ['#FF1744', '#F50057', '#E91E63', '#D500F9', '#651FFF', '#00E676'],
+  donuts: ['#FFB6C1', '#FF69B4', '#FF1493', '#C71585', '#DB7093', '#FFC0CB'],
+  pizza: ['#FF6347', '#FF4500', '#FFD700', '#228B22', '#8B4513', '#FFF8DC'],
 };
 
 const defaultConfigs = {
@@ -158,6 +178,166 @@ const defaultConfigs = {
     elementSize: 8,
     lifetime: 250,
     physics: { gravity: 0, wind: 0, friction: 0.995 }
+  },
+  butterflies: {
+    particleCount: 20,
+    spread: 120,
+    startVelocity: 8,
+    elementSize: 30,
+    lifetime: 200,
+    physics: { gravity: -0.05, wind: 0.1, friction: 0.99 }
+  },
+  leaves: {
+    particleCount: 30,
+    spread: 150,
+    startVelocity: 5,
+    elementSize: 25,
+    lifetime: 250,
+    physics: { gravity: 0.15, wind: 0.2, friction: 0.99 }
+  },
+  rain: {
+    particleCount: 50,
+    spread: 100,
+    startVelocity: 40,
+    elementSize: 15,
+    lifetime: 100,
+    physics: { gravity: 1.5, wind: 0.1, friction: 0.98 }
+  },
+  dandelion: {
+    particleCount: 25,
+    spread: 120,
+    startVelocity: 4,
+    elementSize: 20,
+    lifetime: 300,
+    physics: { gravity: 0.02, wind: 0.3, friction: 0.995 }
+  },
+  bees: {
+    particleCount: 15,
+    spread: 100,
+    startVelocity: 12,
+    elementSize: 25,
+    lifetime: 250,
+    physics: { gravity: 0, wind: 0, friction: 0.99 }
+  },
+  matrix: {
+    particleCount: 40,
+    spread: 180,
+    startVelocity: 20,
+    elementSize: 20,
+    lifetime: 150,
+    physics: { gravity: 0.5, wind: 0, friction: 0.98 }
+  },
+  pixels: {
+    particleCount: 30,
+    spread: 360,
+    startVelocity: 30,
+    elementSize: 15,
+    lifetime: 120,
+    physics: { gravity: 0, wind: 0, friction: 0.95 }
+  },
+  glitch: {
+    particleCount: 25,
+    spread: 360,
+    startVelocity: 50,
+    elementSize: 30,
+    lifetime: 80,
+    physics: { gravity: 0, wind: 0, friction: 0.9 }
+  },
+  dice: {
+    particleCount: 12,
+    spread: 90,
+    startVelocity: 25,
+    elementSize: 35,
+    lifetime: 150,
+    physics: { gravity: 0.6, wind: 0, friction: 0.97 }
+  },
+  levelup: {
+    particleCount: 20,
+    spread: 120,
+    startVelocity: 15,
+    elementSize: 40,
+    lifetime: 180,
+    physics: { gravity: -0.2, wind: 0, friction: 0.99 }
+  },
+  magicdust: {
+    particleCount: 35,
+    spread: 150,
+    startVelocity: 8,
+    elementSize: 15,
+    lifetime: 200,
+    physics: { gravity: -0.1, wind: 0.05, friction: 0.995 }
+  },
+  ghosts: {
+    particleCount: 10,
+    spread: 100,
+    startVelocity: 6,
+    elementSize: 40,
+    lifetime: 250,
+    physics: { gravity: -0.15, wind: 0.1, friction: 0.99 }
+  },
+  crystals: {
+    particleCount: 20,
+    spread: 120,
+    startVelocity: 20,
+    elementSize: 25,
+    lifetime: 180,
+    physics: { gravity: 0.4, wind: 0, friction: 0.98 }
+  },
+  dragons: {
+    particleCount: 8,
+    spread: 180,
+    startVelocity: 15,
+    elementSize: 50,
+    lifetime: 200,
+    physics: { gravity: 0, wind: 0, friction: 0.99 }
+  },
+  runes: {
+    particleCount: 15,
+    spread: 120,
+    startVelocity: 5,
+    elementSize: 35,
+    lifetime: 220,
+    physics: { gravity: -0.08, wind: 0, friction: 0.995 }
+  },
+  popcorn: {
+    particleCount: 25,
+    spread: 120,
+    startVelocity: 35,
+    elementSize: 30,
+    lifetime: 140,
+    physics: { gravity: 0.8, wind: 0, friction: 0.96 }
+  },
+  champagne: {
+    particleCount: 40,
+    spread: 90,
+    startVelocity: 25,
+    elementSize: 20,
+    lifetime: 180,
+    physics: { gravity: -0.3, wind: 0, friction: 0.98 }
+  },
+  candy: {
+    particleCount: 30,
+    spread: 100,
+    startVelocity: 15,
+    elementSize: 35,
+    lifetime: 200,
+    physics: { gravity: 0.5, wind: 0.05, friction: 0.98 }
+  },
+  donuts: {
+    particleCount: 20,
+    spread: 120,
+    startVelocity: 20,
+    elementSize: 40,
+    lifetime: 160,
+    physics: { gravity: 0.6, wind: 0, friction: 0.97 }
+  },
+  pizza: {
+    particleCount: 18,
+    spread: 100,
+    startVelocity: 25,
+    elementSize: 45,
+    lifetime: 150,
+    physics: { gravity: 0.7, wind: 0, friction: 0.96 }
   }
 };
 
@@ -249,6 +429,26 @@ function App() {
     music: useReward('hero-title', 'music', { ...defaultConfigs.music, particleCount: 12, colors: defaultColors.music }),
     balloons: useReward('hero-title', 'balloons', { ...defaultConfigs.balloons, particleCount: 10, colors: defaultColors.balloons }),
     galaxy: useReward('hero-title', 'galaxy', { ...defaultConfigs.galaxy, particleCount: 40, colors: defaultColors.galaxy }),
+    butterflies: useReward('hero-title', 'butterflies', { ...defaultConfigs.butterflies, particleCount: 15, colors: defaultColors.butterflies }),
+    leaves: useReward('hero-title', 'leaves', { ...defaultConfigs.leaves, particleCount: 25, colors: defaultColors.leaves }),
+    rain: useReward('hero-title', 'rain', { ...defaultConfigs.rain, particleCount: 35, colors: defaultColors.rain }),
+    dandelion: useReward('hero-title', 'dandelion', { ...defaultConfigs.dandelion, particleCount: 20, colors: defaultColors.dandelion }),
+    bees: useReward('hero-title', 'bees', { ...defaultConfigs.bees, particleCount: 12, colors: defaultColors.bees }),
+    matrix: useReward('hero-title', 'matrix', { ...defaultConfigs.matrix, particleCount: 30, colors: defaultColors.matrix }),
+    pixels: useReward('hero-title', 'pixels', { ...defaultConfigs.pixels, particleCount: 25, colors: defaultColors.pixels }),
+    glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: 20, colors: defaultColors.glitch }),
+    dice: useReward('hero-title', 'dice', { ...defaultConfigs.dice, particleCount: 10, colors: defaultColors.dice }),
+    levelup: useReward('hero-title', 'levelup', { ...defaultConfigs.levelup, particleCount: 15, colors: defaultColors.levelup }),
+    magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: 25, colors: defaultColors.magicdust }),
+    ghosts: useReward('hero-title', 'ghosts', { ...defaultConfigs.ghosts, particleCount: 8, colors: defaultColors.ghosts }),
+    crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: 15, colors: defaultColors.crystals }),
+    dragons: useReward('hero-title', 'dragons', { ...defaultConfigs.dragons, particleCount: 6, colors: defaultColors.dragons }),
+    runes: useReward('hero-title', 'runes', { ...defaultConfigs.runes, particleCount: 12, colors: defaultColors.runes }),
+    popcorn: useReward('hero-title', 'popcorn', { ...defaultConfigs.popcorn, particleCount: 20, colors: defaultColors.popcorn }),
+    champagne: useReward('hero-title', 'champagne', { ...defaultConfigs.champagne, particleCount: 30, colors: defaultColors.champagne }),
+    candy: useReward('hero-title', 'candy', { ...defaultConfigs.candy, particleCount: 25, colors: defaultColors.candy }),
+    donuts: useReward('hero-title', 'donuts', { ...defaultConfigs.donuts, particleCount: 15, colors: defaultColors.donuts }),
+    pizza: useReward('hero-title', 'pizza', { ...defaultConfigs.pizza, particleCount: 12, colors: defaultColors.pizza }),
   };
 
   const triggerHeroAnimation = () => {
@@ -867,8 +1067,8 @@ function App() {
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">🎨</div>
-              <h3>17 Animation Types</h3>
-              <p>Confetti, sparkles, fireworks, hearts, stars, bubbles, snow, emojis, coins, lightning, petals, aurora, fireflies, paint, music, balloons, and galaxy</p>
+              <h3>37 Animation Types</h3>
+              <p>Confetti, sparkles, fireworks, hearts, stars, bubbles, snow, emoji, coins, lightning, petals, aurora, fireflies, paint, music, balloons, galaxy, butterflies, leaves, rain, dandelion, bees, matrix, pixels, glitch, dice, level up, magic dust, ghosts, crystals, dragons, runes, popcorn, champagne, candy, donuts, and pizza</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">⚡</div>
@@ -1264,6 +1464,8 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'sparkles', name: 'Sparkles', icon: '✨', desc: 'Magical glitter' },
       { id: 'stars', name: 'Stars', icon: '⭐', desc: 'Shining stars' },
       { id: 'balloons', name: 'Balloons', icon: '🎈', desc: 'Floating balloons' },
+      { id: 'popcorn', name: 'Popcorn', icon: '🍿', desc: 'Popping kernels' },
+      { id: 'champagne', name: 'Champagne', icon: '🍾', desc: 'Fizzy celebration' },
     ],
     emotions: [
       { id: 'hearts', name: 'Hearts', icon: '💕', desc: 'Love and likes' },
@@ -1276,6 +1478,30 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'petals', name: 'Petals', icon: '🌸', desc: 'Flower petals' },
       { id: 'fireflies', name: 'Fireflies', icon: '✨', desc: 'Glowing lights' },
       { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
+      { id: 'butterflies', name: 'Butterflies', icon: '🦋', desc: 'Fluttering wings' },
+      { id: 'leaves', name: 'Autumn Leaves', icon: '🍂', desc: 'Falling leaves' },
+      { id: 'rain', name: 'Rain', icon: '🌧️', desc: 'Raindrops falling' },
+      { id: 'dandelion', name: 'Dandelion', icon: '🌾', desc: 'Floating seeds' },
+      { id: 'bees', name: 'Bees', icon: '🐝', desc: 'Buzzing around' },
+    ],
+    tech: [
+      { id: 'matrix', name: 'Matrix', icon: '💻', desc: 'Digital rain' },
+      { id: 'pixels', name: 'Pixels', icon: '🟦', desc: '8-bit explosion' },
+      { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },
+      { id: 'dice', name: 'Dice', icon: '🎲', desc: 'Rolling dice' },
+      { id: 'levelup', name: 'Level Up', icon: '🎮', desc: 'Gaming rewards' },
+    ],
+    magic: [
+      { id: 'magicdust', name: 'Magic Dust', icon: '✨', desc: 'Mystical sparkles' },
+      { id: 'ghosts', name: 'Ghosts', icon: '👻', desc: 'Spooky spirits' },
+      { id: 'crystals', name: 'Crystals', icon: '💎', desc: 'Shimmering gems' },
+      { id: 'dragons', name: 'Dragons', icon: '🐉', desc: 'Fire breathing' },
+      { id: 'runes', name: 'Runes', icon: '🔮', desc: 'Ancient symbols' },
+    ],
+    food: [
+      { id: 'candy', name: 'Candy', icon: '🍬', desc: 'Sweet treats' },
+      { id: 'donuts', name: 'Donuts', icon: '🍩', desc: 'Spinning donuts' },
+      { id: 'pizza', name: 'Pizza', icon: '🍕', desc: 'Pizza slices' },
     ],
     special: [
       { id: 'coins', name: 'Coins', icon: '💰', desc: 'Money & rewards' },

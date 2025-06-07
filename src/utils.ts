@@ -13,7 +13,7 @@ export const generateId = (): string => {
 };
 
 export const getRandomColor = (colors: string[]): string => {
-  return colors[Math.floor(Math.random() * colors.length)] || colors[0];
+  return colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff';
 };
 
 export const createParticleStyle = (

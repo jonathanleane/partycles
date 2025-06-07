@@ -49,7 +49,7 @@ export const createGalaxyParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.3, elementSize) * (1 - progress * 0.5), // Smaller at edges
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 
@@ -59,7 +59,6 @@ export const createGalaxyParticles = (
 export const renderGalaxyParticle = (particle: Particle): React.ReactNode => {
   // Particles slowly rotate around center while expanding
   const age = (250 - particle.life) / 250;
-  const rotationSpeed = 0.5;
   const expansionRate = 1 + age * 0.5;
   
   // Fade in quickly, fade out slowly

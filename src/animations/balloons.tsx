@@ -32,7 +32,7 @@ export const createBalloonParticles = (
       opacity: 0.9,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(-10, 10),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

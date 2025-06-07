@@ -28,7 +28,7 @@ export const createSparkleParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.4, elementSize * 1.2),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

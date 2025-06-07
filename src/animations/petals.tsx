@@ -32,7 +32,7 @@ export const createPetalParticles = (
       opacity: randomInRange(0.7, 1),
       size: randomInRange(elementSize * 0.7, elementSize * 1.3),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

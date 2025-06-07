@@ -35,7 +35,7 @@ export const createPaintParticles = (
         ? randomInRange(elementSize * 1.5, elementSize * 2.5)
         : randomInRange(elementSize * 0.3, elementSize),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

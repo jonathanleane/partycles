@@ -23,13 +23,13 @@ export const createBubbleParticles = (
       id: generateId(),
       x: origin.x + randomInRange(-spread, spread),
       y: origin.y,
-      vx: randomInRange(-2, 2),
-      vy: -randomInRange(startVelocity * 0.3, startVelocity * 0.6),
+      vx: randomInRange(-3, 3),
+      vy: -randomInRange(startVelocity * 0.7, startVelocity * 1.2),
       life: config.lifetime || 160,
       opacity: 0.7,
       size: randomInRange(elementSize * 0.4, elementSize * 1.2),
       rotation: 0,
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

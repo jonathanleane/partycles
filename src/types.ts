@@ -45,7 +45,27 @@ export type AnimationType =
   | 'paint'
   | 'music'
   | 'balloons'
-  | 'galaxy';
+  | 'galaxy'
+  | 'butterflies'
+  | 'leaves'
+  | 'rain'
+  | 'dandelion'
+  | 'bees'
+  | 'matrix'
+  | 'pixels'
+  | 'glitch'
+  | 'dice'
+  | 'levelup'
+  | 'magicdust'
+  | 'ghosts'
+  | 'crystals'
+  | 'dragons'
+  | 'runes'
+  | 'popcorn'
+  | 'champagne'
+  | 'candy'
+  | 'donuts'
+  | 'pizza';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;

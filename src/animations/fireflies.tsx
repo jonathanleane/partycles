@@ -32,7 +32,7 @@ export const createFireflyParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.6, elementSize),
       rotation: randomInRange(0, 360), // Used for blink timing
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 

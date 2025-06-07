@@ -32,7 +32,7 @@ export const createAuroraParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(-15, 15),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
     });
   }
 
