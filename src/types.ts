@@ -10,6 +10,7 @@ export interface Particle {
   rotation: number;
   color: string;
   element?: React.ReactNode;
+  config?: AnimationConfig;  // Store config for render functions
 }
 
 export interface AnimationConfig {
@@ -25,6 +26,15 @@ export interface AnimationConfig {
     gravity?: number;
     wind?: number;
     friction?: number;
+  };
+  // Optional enhanced effects
+  effects?: {
+    flutter?: boolean;      // For confetti - paper-like floating
+    twinkle?: boolean;      // For stars/sparkles - brightness variation
+    pulse?: boolean;        // For hearts - heartbeat effect
+    spin3D?: boolean;       // For coins - 3D rotation effect
+    wobble?: boolean;       // For bubbles - realistic wobble
+    windDrift?: boolean;    // For snow/leaves - horizontal drift
   };
 }
 

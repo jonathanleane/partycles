@@ -91,6 +91,15 @@ interface AnimationConfig {
     wind?: number;             // Horizontal wind force (default: 0)
     friction?: number;         // Air friction (default: 0.99)
   };
+  // NEW: Optional enhanced effects
+  effects?: {
+    flutter?: boolean;         // Paper-like floating for confetti
+    twinkle?: boolean;         // Brightness variation for stars/sparkles
+    pulse?: boolean;           // Heartbeat effect for hearts
+    spin3D?: boolean;          // 3D rotation for coins
+    wobble?: boolean;          // Realistic wobble for bubbles
+    windDrift?: boolean;       // Horizontal drift for snow/leaves
+  };
 }
 ```
 
@@ -103,7 +112,9 @@ Classic celebration effect with colorful paper pieces.
 const { reward } = useReward('buttonId', 'confetti', {
   particleCount: 30,
   spread: 60,
-  colors: ['#ff0000', '#00ff00', '#0000ff']
+  colors: ['#ff0000', '#00ff00', '#0000ff'],
+  // NEW: Enable paper flutter effect
+  effects: { flutter: true }
 });
 ```
 
@@ -372,6 +383,54 @@ function Achievement({ unlocked, name }) {
     </div>
   );
 }
+```
+
+## ✨ Enhanced Effects (v1.1.5+)
+
+Make animations more realistic with optional effects:
+
+```tsx
+// Confetti with paper flutter
+const { reward } = useReward('confetti-btn', 'confetti', {
+  effects: { flutter: true }
+});
+
+// Stars with twinkling
+const { reward } = useReward('star-btn', 'stars', {
+  effects: { twinkle: true }
+});
+
+// Hearts with pulse/heartbeat
+const { reward } = useReward('heart-btn', 'hearts', {
+  effects: { pulse: true }
+});
+
+// Coins with 3D spin
+const { reward } = useReward('coin-btn', 'coins', {
+  effects: { spin3D: true }
+});
+
+// Snow with wind drift
+const { reward } = useReward('snow-btn', 'snow', {
+  effects: { windDrift: true }
+});
+
+// Bubbles with wobble
+const { reward } = useReward('bubble-btn', 'bubbles', {
+  effects: { wobble: true }
+});
+
+// Combine multiple effects
+const { reward } = useReward('magic-btn', 'sparkles', {
+  effects: { 
+    twinkle: true,
+    // Other effects work too!
+  },
+  physics: {
+    gravity: 0.2,
+    wind: 0.1
+  }
+});
 ```
 
 ## 🎯 Best Practices

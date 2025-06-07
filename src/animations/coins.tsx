@@ -42,9 +42,14 @@ export const createCoinParticles = (
   return particles;
 };
 
-export const renderCoinParticle = (particle: Particle): React.ReactNode => {
-  const spinSpeed = 8; // Degrees per frame
+export const renderCoinParticle = (particle: Particle & { config?: AnimationConfig }): React.ReactNode => {
+  const spinSpeed = particle.config?.effects?.spin3D ? 8 : 2; // Faster spin with 3D effect
   const currentRotation = particle.rotation + (120 - particle.life) * spinSpeed;
+  
+  // 3D effect: scale X based on rotation to simulate perspective
+  const scaleX = particle.config?.effects?.spin3D 
+    ? Math.abs(Math.cos((currentRotation * Math.PI) / 180))
+    : 1;
 
   return (
     <div
@@ -54,7 +59,9 @@ export const renderCoinParticle = (particle: Particle): React.ReactNode => {
         height: `${particle.size}px`,
         background: `radial-gradient(ellipse at 30% 30%, ${particle.color}, #B8860B)`,
         borderRadius: '50%',
-        transform: `rotateY(${currentRotation}deg)`,
+        transform: particle.config?.effects?.spin3D 
+          ? `rotateY(${currentRotation}deg) scaleX(${scaleX})`
+          : `rotate(${currentRotation}deg)`,
         transformStyle: 'preserve-3d',
         boxShadow: `
           inset -2px -2px 4px rgba(0, 0, 0, 0.3),
@@ -64,9 +71,10 @@ export const renderCoinParticle = (particle: Particle): React.ReactNode => {
         border: `1px solid ${particle.color}`,
         position: 'relative',
         overflow: 'hidden',
+        backfaceVisibility: 'hidden',
       }}
     >
-      {/* Dollar sign */}
+      {/* Dollar sign - hide when flipped */}
       <div
         style={{
           position: 'absolute',
@@ -78,6 +86,8 @@ export const renderCoinParticle = (particle: Particle): React.ReactNode => {
           color: '#B8860B',
           textShadow: '1px 1px 1px rgba(0, 0, 0, 0.3)',
           fontFamily: 'Arial, sans-serif',
+          opacity: particle.config?.effects?.spin3D && scaleX < 0.3 ? 0 : 1,
+          transition: 'opacity 0.1s',
         }}
       >
         $

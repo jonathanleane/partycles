@@ -62,7 +62,10 @@ export const useReward = (
     particlesRef.current = animationHandler.createParticles(
       origin,
       optimizedConfig || {}
-    );
+    ).map(particle => ({
+      ...particle,
+      config: optimizedConfig || config // Store config in particle for render functions
+    }));
 
     // Create container
     const container = document.createElement('div');
@@ -117,6 +120,26 @@ export const useReward = (
         particle.rotation += particle.vx * 2;
         particle.life -= 1.2;
 
+        // Apply optional effects
+        const effects = config?.effects;
+        
+        // Flutter effect for confetti
+        if (effects?.flutter && animationType === 'confetti') {
+          particle.x += Math.sin(particle.life * 0.1) * 0.5;
+          particle.rotation += Math.sin(particle.life * 0.05) * 2;
+        }
+        
+        // Wind drift for snow/leaves
+        if (effects?.windDrift && (animationType === 'snow' || animationType === 'leaves')) {
+          particle.x += Math.sin(particle.life * 0.05 + particle.id.charCodeAt(0)) * 0.8;
+        }
+        
+        // Wobble effect for bubbles
+        if (effects?.wobble && animationType === 'bubbles') {
+          particle.x += Math.sin(particle.life * 0.08) * 0.3;
+          particle.y += Math.cos(particle.life * 0.08) * 0.2;
+        }
+
         // Special opacity handling for sparkles
         if (animationType === 'sparkles') {
           if (particle.life > 70) {
@@ -124,6 +147,13 @@ export const useReward = (
           } else if (particle.life < 30) {
             particle.opacity = particle.life / 30;
           }
+          // Twinkle effect
+          if (effects?.twinkle) {
+            particle.opacity *= 0.5 + Math.sin(particle.life * 0.3) * 0.5;
+          }
+        } else if (animationType === 'stars' && effects?.twinkle) {
+          // Twinkle effect for stars
+          particle.opacity = (particle.life / 100) * (0.5 + Math.sin(particle.life * 0.3) * 0.5);
         } else {
           particle.opacity = particle.life / 100;
         }
