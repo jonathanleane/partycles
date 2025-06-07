@@ -4,6 +4,7 @@ import { createRoot, Root } from 'react-dom/client';
 import { AnimationType, AnimationConfig, Particle } from './types';
 import { animations } from './animations';
 import { createParticleStyle } from './utils';
+import { isMobileDevice, optimizeConfigForMobile, shouldSkipFrame } from './mobileOptimizations';
 
 interface UseRewardReturn {
   reward: () => void;
@@ -20,6 +21,17 @@ export const useReward = (
   const particlesRef = useRef<Particle[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rootRef = useRef<Root | null>(null);
+  const isTabVisible = useRef(true);
+  
+  // Monitor tab visibility
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      isTabVisible.current = !document.hidden;
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const animate = useCallback(() => {
     const element = document.getElementById(elementId);
@@ -37,8 +49,11 @@ export const useReward = (
       return;
     }
 
+    // Apply mobile performance optimizations
+    const optimizedConfig = config ? optimizeConfigForMobile(config) : undefined;
+    
     // Create particles
-    particlesRef.current = animationHandler.createParticles(origin, config || {});
+    particlesRef.current = animationHandler.createParticles(origin, optimizedConfig || {});
 
     // Create container
     const container = document.createElement('div');
@@ -63,8 +78,15 @@ export const useReward = (
     const friction = config?.physics?.friction ?? 0.98;
     const wind = config?.physics?.wind ?? 0;
 
+    // Track frame count for mobile optimization
+    let frameCount = 0;
+    
     const updateParticles = () => {
       let activeParticles = 0;
+      frameCount++;
+
+      // Skip frame rendering on mobile to improve performance
+      const skipFrame = shouldSkipFrame(frameCount);
 
       particlesRef.current = particlesRef.current.map((particle) => {
         if (particle.life <= 0) return particle;
@@ -95,8 +117,8 @@ export const useReward = (
         return particle;
       });
 
-      // Render particles
-      if (rootRef.current) {
+      // Render particles (skip rendering on mobile for some frames)
+      if (rootRef.current && !skipFrame) {
         rootRef.current.render(
           <React.Fragment>
             {particlesRef.current
@@ -113,7 +135,7 @@ export const useReward = (
         );
       }
 
-      if (activeParticles > 0) {
+      if (activeParticles > 0 && isTabVisible.current) {
         animationFrameRef.current = requestAnimationFrame(updateParticles);
       } else {
         // Cleanup

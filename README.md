@@ -359,7 +359,7 @@ function Achievement({ unlocked, name }) {
 1. **Unique IDs**: Ensure each animated element has a unique ID
 2. **Performance**: Avoid triggering multiple animations simultaneously
 3. **Accessibility**: Provide alternative feedback for users who prefer reduced motion
-4. **Mobile**: Test animations on mobile devices and adjust particle counts if needed
+4. **Mobile**: Partycles automatically optimizes for mobile devices
 
 ```tsx
 // Respect user preferences
@@ -367,6 +367,32 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 const { reward } = useReward('buttonId', 'confetti', {
   particleCount: prefersReducedMotion ? 0 : 30
+});
+```
+
+## 📱 Mobile Optimization
+
+Partycles automatically detects mobile devices and optimizes performance:
+
+- **Reduced particle counts** (60% of desktop)
+- **Smaller particle sizes** (80% of desktop)
+- **Shorter lifetimes** (80% of desktop)
+- **Frame skipping** for smoother performance
+- **Tab visibility detection** to pause when inactive
+
+You can also manually check for mobile devices:
+
+```tsx
+import { isMobileDevice, optimizeConfigForMobile } from 'partycles';
+
+if (isMobileDevice()) {
+  // Custom mobile logic
+}
+
+// Or manually optimize a config
+const mobileConfig = optimizeConfigForMobile({
+  particleCount: 100,
+  elementSize: 30
 });
 ```
 

@@ -635,6 +635,12 @@ input[type="color"]::-webkit-color-swatch {
     0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+.config-display pre code {
+  background: none;
+  padding: 0;
+  border: none;
+}
+
 .copy-button {
   position: absolute;
   top: 0.75rem;
@@ -1211,6 +1217,9 @@ section {
 .code-example code {
   color: #f8f8f2;
   display: block;
+  background: none;
+  padding: 0;
+  border: none;
 }
 
 /* Features Section */
@@ -1492,6 +1501,10 @@ section {
   color: #f8f8f2;
   white-space: pre-wrap;
   word-break: break-word;
+  background: none;
+  padding: 0;
+  border: none;
+  display: block;
 }
 
 .example-code .code-copy-btn {
@@ -1666,6 +1679,17 @@ section {
   font-size: 0.9em;
   color: #c7d2fe;
   font-weight: 500;
+}
+
+/* Safari-specific fixes for code blocks */
+@supports (-webkit-appearance: none) {
+  pre code::before {
+    content: none !important;
+  }
+  
+  code {
+    -webkit-text-size-adjust: 100%;
+  }
 }
 
 /* Code Syntax Highlighting */

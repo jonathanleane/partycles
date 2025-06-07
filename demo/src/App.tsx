@@ -248,27 +248,31 @@ function App() {
   const [heroAnimationIndex, setHeroAnimationIndex] = useState(0);
   const currentHeroAnimation = animationTypes[heroAnimationIndex];
 
-  // Create reward hooks for each animation type
+  // Detect mobile for reduced particle counts
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+  const mobileFactor = isMobile ? 0.5 : 1;
+  
+  // Create reward hooks for each animation type with mobile optimization
   const heroRewards = {
-    confetti: useReward('hero-title', 'confetti', { ...defaultConfigs.confetti, particleCount: 40, colors: defaultColors.confetti }),
-    sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: 35, colors: defaultColors.sparkles }),
-    hearts: useReward('hero-title', 'hearts', { ...defaultConfigs.hearts, particleCount: 25, colors: defaultColors.hearts }),
-    fireworks: useReward('hero-title', 'fireworks', { ...defaultConfigs.fireworks, particleCount: 50, colors: defaultColors.fireworks }),
-    bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: 25, colors: defaultColors.bubbles }),
-    stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: 35, colors: defaultColors.stars }),
-    snow: useReward('hero-title', 'snow', { ...defaultConfigs.snow, particleCount: 40, colors: defaultColors.snow }),
-    emoji: useReward('hero-title', 'emoji', { ...defaultConfigs.emoji, particleCount: 25, colors: emojiPresets.celebration }),
-    coins: useReward('hero-title', 'coins', { ...defaultConfigs.coins, particleCount: 25, colors: defaultColors.coins }),
-    petals: useReward('hero-title', 'petals', { ...defaultConfigs.petals, particleCount: 35, colors: defaultColors.petals }),
-    aurora: useReward('hero-title', 'aurora', { ...defaultConfigs.aurora, particleCount: 12, colors: defaultColors.aurora }),
-    fireflies: useReward('hero-title', 'fireflies', { ...defaultConfigs.fireflies, particleCount: 15, colors: defaultColors.fireflies }),
-    paint: useReward('hero-title', 'paint', { ...defaultConfigs.paint, particleCount: 20, colors: defaultColors.paint }),
-    balloons: useReward('hero-title', 'balloons', { ...defaultConfigs.balloons, particleCount: 10, colors: defaultColors.balloons }),
-    galaxy: useReward('hero-title', 'galaxy', { ...defaultConfigs.galaxy, particleCount: 40, colors: defaultColors.galaxy }),
-    leaves: useReward('hero-title', 'leaves', { ...defaultConfigs.leaves, particleCount: 25, colors: defaultColors.leaves }),
-    glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: 20, colors: defaultColors.glitch }),
-    magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: 25, colors: defaultColors.magicdust }),
-    crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: 15, colors: defaultColors.crystals })
+    confetti: useReward('hero-title', 'confetti', { ...defaultConfigs.confetti, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.confetti }),
+    sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.sparkles }),
+    hearts: useReward('hero-title', 'hearts', { ...defaultConfigs.hearts, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.hearts }),
+    fireworks: useReward('hero-title', 'fireworks', { ...defaultConfigs.fireworks, particleCount: Math.floor(50 * mobileFactor), colors: defaultColors.fireworks }),
+    bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bubbles }),
+    stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.stars }),
+    snow: useReward('hero-title', 'snow', { ...defaultConfigs.snow, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.snow }),
+    emoji: useReward('hero-title', 'emoji', { ...defaultConfigs.emoji, particleCount: Math.floor(25 * mobileFactor), colors: emojiPresets.celebration }),
+    coins: useReward('hero-title', 'coins', { ...defaultConfigs.coins, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.coins }),
+    petals: useReward('hero-title', 'petals', { ...defaultConfigs.petals, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.petals }),
+    aurora: useReward('hero-title', 'aurora', { ...defaultConfigs.aurora, particleCount: Math.floor(12 * mobileFactor), colors: defaultColors.aurora }),
+    fireflies: useReward('hero-title', 'fireflies', { ...defaultConfigs.fireflies, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.fireflies }),
+    paint: useReward('hero-title', 'paint', { ...defaultConfigs.paint, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.paint }),
+    balloons: useReward('hero-title', 'balloons', { ...defaultConfigs.balloons, particleCount: Math.floor(10 * mobileFactor), colors: defaultColors.balloons }),
+    galaxy: useReward('hero-title', 'galaxy', { ...defaultConfigs.galaxy, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.galaxy }),
+    leaves: useReward('hero-title', 'leaves', { ...defaultConfigs.leaves, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.leaves }),
+    glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
+    magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
+    crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals })
   };
 
   const triggerHeroAnimation = () => {

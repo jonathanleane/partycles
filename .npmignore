@@ -1,45 +1,33 @@
-# Source files
+# Source files (only include built files)
 src/
 demo/
-
-# Config files
-.github/
-.eslintrc.json
-.prettierrc.json
-.prettierignore
 rollup.config.mjs
 tsconfig.json
 
 # Development files
+.git/
+.gitignore
+node_modules/
 *.log
 .DS_Store
-node_modules/
+
+# CI/Build files
+.github/
+.eslintrc
+.prettierrc
+
+# Documentation files that shouldn't be in npm
+CONTRIBUTING.md
+*.test.ts
+*.test.tsx
 coverage/
 .nyc_output/
 
-# Editor files
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Git files
-.git/
-.gitignore
-
-# CI files
-.travis.yml
-.circleci/
-
-# Test files
-__tests__/
-*.test.ts
-*.test.tsx
-*.spec.ts
-*.spec.tsx
-
-# Keep only dist folder and necessary files
-!dist/
-!README.md
-!LICENSE
-!package.json
+# Build artifacts not needed
+*.map
