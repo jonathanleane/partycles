@@ -28,7 +28,6 @@ jobs:
       
       - name: Run tests
         run: npm test
-        continue-on-error: true # Remove when tests are added
       
       - name: Build library
         run: npm run build

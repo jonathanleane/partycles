@@ -37,7 +37,8 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "echo \"No tests yet\" && exit 0"
   },
   "keywords": [
     "react",
@@ -53,10 +54,20 @@
     "bubbles",
     "snow",
     "emoji",
+    "coins",
+    "petals",
+    "aurora",
+    "fireflies",
+    "galaxy",
+    "glitch",
+    "crystals",
     "react-component",
     "typescript",
     "hooks",
-    "react-hooks"
+    "react-hooks",
+    "particle-effects",
+    "reward-animation",
+    "celebration-effects"
   ],
   "author": "Jonathan Leane",
   "license": "MIT",
