@@ -28,7 +28,7 @@ export interface AnimationConfig {
   };
 }
 
-export type AnimationType = 
+export type AnimationType =
   | 'confetti'
   | 'sparkles'
   | 'fireworks'

@@ -2,7 +2,14 @@ import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId, getRandomColor } from '../utils';
 
-const defaultColors = ['#D2691E', '#CD853F', '#8B4513', '#A0522D', '#FF8C00', '#FF6347'];
+const defaultColors = [
+  '#D2691E',
+  '#CD853F',
+  '#8B4513',
+  '#A0522D',
+  '#FF8C00',
+  '#FF6347',
+];
 
 export const createLeafParticles = (
   origin: { x: number; y: number },
@@ -11,11 +18,11 @@ export const createLeafParticles = (
   const {
     particleCount = 10,
     colors = defaultColors,
-    elementSize = 25
+    elementSize = 25,
   } = config;
 
   const particles: Particle[] = [];
-  
+
   for (let i = 0; i < particleCount; i++) {
     particles.push({
       id: generateId(),
@@ -27,14 +34,15 @@ export const createLeafParticles = (
       opacity: 1,
       size: randomInRange(elementSize * 0.6, elementSize),
       // Encode tumble phase (0-360), sway phase (0-360), and sway amount (20-40) + rotation speed (-3 to 3)
-      rotation: Math.floor(randomInRange(0, 360)) + 
-                (Math.floor(randomInRange(0, 360)) * 1000) + 
-                (Math.floor(randomInRange(20, 40)) * 1000000) +
-                ((Math.floor(randomInRange(-3, 3)) + 3) * 100000000),
+      rotation:
+        Math.floor(randomInRange(0, 360)) +
+        Math.floor(randomInRange(0, 360)) * 1000 +
+        Math.floor(randomInRange(20, 40)) * 1000000 +
+        (Math.floor(randomInRange(-3, 3)) + 3) * 100000000,
       color: getRandomColor(colors),
     });
   }
-  
+
   return particles;
 };
 
@@ -43,13 +51,15 @@ export const renderLeafParticle = (particle: Particle): React.ReactNode => {
   const tumblePhase = particle.rotation % 1000;
   const swayPhase = Math.floor((particle.rotation % 1000000) / 1000);
   const swayAmount = Math.floor((particle.rotation % 100000000) / 1000000);
-  const rotationSpeed = (Math.floor(particle.rotation / 100000000) - 3);
-  
+  const rotationSpeed = Math.floor(particle.rotation / 100000000) - 3;
+
   // Calculate tumbling and swaying
-  const tumble = Math.sin((Date.now() * 0.002 + tumblePhase) * Math.PI / 180) * 30;
-  const swayX = Math.sin((Date.now() * 0.001 + swayPhase) * Math.PI / 180) * swayAmount;
+  const tumble =
+    Math.sin(((Date.now() * 0.002 + tumblePhase) * Math.PI) / 180) * 30;
+  const swayX =
+    Math.sin(((Date.now() * 0.001 + swayPhase) * Math.PI) / 180) * swayAmount;
   const rotation = (Date.now() * rotationSpeed * 0.01 + tumble) % 360;
-  
+
   return (
     <div
       key={particle.id}
@@ -63,7 +73,7 @@ export const renderLeafParticle = (particle: Particle): React.ReactNode => {
       <svg
         width={particle.size}
         height={particle.size}
-        viewBox={`-${particle.size/2} -${particle.size/2} ${particle.size} ${particle.size}`}
+        viewBox={`-${particle.size / 2} -${particle.size / 2} ${particle.size} ${particle.size}`}
         style={{
           position: 'absolute',
           top: 0,
@@ -80,7 +90,7 @@ export const renderLeafParticle = (particle: Particle): React.ReactNode => {
           fill={particle.color}
           opacity="0.9"
         />
-        
+
         {/* Leaf vein */}
         <line
           x1="0"
@@ -91,7 +101,7 @@ export const renderLeafParticle = (particle: Particle): React.ReactNode => {
           strokeWidth="1"
           opacity="0.5"
         />
-        
+
         {/* Side veins */}
         <line
           x1="0"

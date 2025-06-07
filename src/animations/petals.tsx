@@ -13,7 +13,7 @@ export const createPetalParticles = (
     spread = 100,
     startVelocity = 8,
     colors = petalColors,
-    elementSize = 20
+    elementSize = 20,
   } = config;
 
   const particles: Particle[] = [];
@@ -21,7 +21,7 @@ export const createPetalParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + randomInRange(-20, 20),
@@ -32,7 +32,10 @@ export const createPetalParticles = (
       opacity: randomInRange(0.7, 1),
       size: randomInRange(elementSize * 0.7, elementSize * 1.3),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -44,7 +47,7 @@ export const renderPetalParticle = (particle: Particle): React.ReactNode => {
   const spiralPhase = (200 - particle.life) * 0.1;
   const spiralX = Math.sin(spiralPhase) * 15;
   const wobble = Math.sin(particle.life * 0.1) * 10;
-  
+
   return (
     <div
       key={particle.id}

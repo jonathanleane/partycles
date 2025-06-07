@@ -4,7 +4,10 @@ import { createRoot, Root } from 'react-dom/client';
 import { AnimationType, AnimationConfig, Particle } from './types';
 import { animations } from './animations';
 import { createParticleStyle } from './utils';
-import { isMobileDevice, optimizeConfigForMobile, shouldSkipFrame } from './mobileOptimizations';
+import {
+  optimizeConfigForMobile,
+  shouldSkipFrame,
+} from './mobileOptimizations';
 
 interface UseRewardReturn {
   reward: () => void;
@@ -22,15 +25,16 @@ export const useReward = (
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rootRef = useRef<Root | null>(null);
   const isTabVisible = useRef(true);
-  
+
   // Monitor tab visibility
   useEffect(() => {
     const handleVisibilityChange = () => {
       isTabVisible.current = !document.hidden;
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    return () =>
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   const animate = useCallback(() => {
@@ -50,10 +54,15 @@ export const useReward = (
     }
 
     // Apply mobile performance optimizations
-    const optimizedConfig = config ? optimizeConfigForMobile(config) : undefined;
-    
+    const optimizedConfig = config
+      ? optimizeConfigForMobile(config)
+      : undefined;
+
     // Create particles
-    particlesRef.current = animationHandler.createParticles(origin, optimizedConfig || {});
+    particlesRef.current = animationHandler.createParticles(
+      origin,
+      optimizedConfig || {}
+    );
 
     // Create container
     const container = document.createElement('div');
@@ -73,14 +82,19 @@ export const useReward = (
 
     const containerRect = container.getBoundingClientRect();
     // Default gravity varies by animation type
-    const defaultGravity = animationType === 'bubbles' ? -0.1 : animationType === 'snow' ? 0.05 : 0.35;
+    const defaultGravity =
+      animationType === 'bubbles'
+        ? -0.1
+        : animationType === 'snow'
+          ? 0.05
+          : 0.35;
     const gravity = config?.physics?.gravity ?? defaultGravity;
     const friction = config?.physics?.friction ?? 0.98;
     const wind = config?.physics?.wind ?? 0;
 
     // Track frame count for mobile optimization
     let frameCount = 0;
-    
+
     const updateParticles = () => {
       let activeParticles = 0;
       frameCount++;
@@ -146,7 +160,10 @@ export const useReward = (
           rootRef.current.unmount();
           rootRef.current = null;
         }
-        if (containerRef.current && document.body.contains(containerRef.current)) {
+        if (
+          containerRef.current &&
+          document.body.contains(containerRef.current)
+        ) {
           document.body.removeChild(containerRef.current);
           containerRef.current = null;
         }
@@ -174,7 +191,10 @@ export const useReward = (
         rootRef.current.unmount();
         rootRef.current = null;
       }
-      if (containerRef.current && document.body.contains(containerRef.current)) {
+      if (
+        containerRef.current &&
+        document.body.contains(containerRef.current)
+      ) {
         document.body.removeChild(containerRef.current);
         containerRef.current = null;
       }

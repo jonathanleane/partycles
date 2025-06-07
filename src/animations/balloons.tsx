@@ -2,7 +2,15 @@ import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
 
-const balloonColors = ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF', '#06FFB4', '#FF4081'];
+const balloonColors = [
+  '#FF006E',
+  '#FB5607',
+  '#FFBE0B',
+  '#8338EC',
+  '#3A86FF',
+  '#06FFB4',
+  '#FF4081',
+];
 
 export const createBalloonParticles = (
   origin: { x: number; y: number },
@@ -13,7 +21,7 @@ export const createBalloonParticles = (
     spread = 80,
     startVelocity = 10,
     colors = balloonColors,
-    elementSize = 35
+    elementSize = 35,
   } = config;
 
   const particles: Particle[] = [];
@@ -21,7 +29,7 @@ export const createBalloonParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.7, startVelocity);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + randomInRange(-spread * 0.8, spread * 0.8), // Spread balloons out more
@@ -32,7 +40,10 @@ export const createBalloonParticles = (
       opacity: 0.9,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(-10, 10),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -43,10 +54,10 @@ export const renderBalloonParticle = (particle: Particle): React.ReactNode => {
   // Gentle swaying motion
   const sway = Math.sin(particle.life * 0.03) * 15;
   const bob = Math.sin(particle.life * 0.05) * 5;
-  
+
   // Fade out near the end
   const fadeOut = particle.life > 50 ? 1 : particle.life / 50;
-  
+
   return (
     <div
       key={particle.id}
@@ -84,12 +95,13 @@ export const renderBalloonParticle = (particle: Particle): React.ReactNode => {
             left: '20%',
             width: '25%',
             height: '30%',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)',
+            background:
+              'radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)',
             borderRadius: '50%',
             transform: 'rotate(-20deg)',
           }}
         />
-        
+
         {/* Balloon knot */}
         <div
           style={{
@@ -105,7 +117,7 @@ export const renderBalloonParticle = (particle: Particle): React.ReactNode => {
           }}
         />
       </div>
-      
+
       {/* String */}
       <svg
         style={{

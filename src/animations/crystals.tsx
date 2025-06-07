@@ -1,8 +1,22 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
-import { randomInRange, degreesToRadians, generateId, getRandomColor } from '../utils';
+import {
+  randomInRange,
+  degreesToRadians,
+  generateId,
+  getRandomColor,
+} from '../utils';
 
-const defaultColors = ['#FF1493', '#00CED1', '#FFD700', '#FF69B4', '#7B68EE', '#00FA9A', '#FF6347', '#4169E1'];
+const defaultColors = [
+  '#FF1493',
+  '#00CED1',
+  '#FFD700',
+  '#FF69B4',
+  '#7B68EE',
+  '#00FA9A',
+  '#FF6347',
+  '#4169E1',
+];
 
 export const createCrystalParticles = (
   origin: { x: number; y: number },
@@ -12,7 +26,7 @@ export const createCrystalParticles = (
     particleCount = 15,
     startVelocity = 15,
     colors = defaultColors,
-    elementSize = 25
+    elementSize = 25,
   } = config;
 
   const particles: Particle[] = [];
@@ -22,7 +36,7 @@ export const createCrystalParticles = (
     const angle = randomInRange(0, 360);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
     const color = getRandomColor(colors);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x,
@@ -43,7 +57,7 @@ export const createCrystalParticles = (
 export const renderCrystalParticle = (particle: Particle): React.ReactNode => {
   // Create rainbow refraction effect
   const hue = (Date.now() * 0.5 + particle.x + particle.y) % 360;
-  
+
   return (
     <div
       key={particle.id}
@@ -65,7 +79,7 @@ export const renderCrystalParticle = (particle: Particle): React.ReactNode => {
           boxShadow: `0 0 ${particle.size}px ${particle.color}44`,
         }}
       />
-      
+
       {/* Inner facets */}
       <div
         style={{
@@ -78,7 +92,7 @@ export const renderCrystalParticle = (particle: Particle): React.ReactNode => {
           clipPath: 'polygon(50% 10%, 90% 45%, 65% 90%, 35% 90%, 10% 45%)',
         }}
       />
-      
+
       {/* Rainbow refraction overlay */}
       <div
         style={{
@@ -94,7 +108,7 @@ export const renderCrystalParticle = (particle: Particle): React.ReactNode => {
           mixBlendMode: 'screen',
         }}
       />
-      
+
       {/* Shine effect */}
       <div
         style={{
@@ -103,7 +117,8 @@ export const renderCrystalParticle = (particle: Particle): React.ReactNode => {
           height: '30%',
           top: '20%',
           left: '35%',
-          background: 'radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent)',
+          background:
+            'radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent)',
           borderRadius: '50%',
           filter: 'blur(2px)',
         }}

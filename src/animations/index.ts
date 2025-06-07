@@ -33,7 +33,10 @@ import { createLeafParticles, renderLeafParticle } from './leaves';
 // export { default as Donuts } from './donuts';
 // export { default as Pizza } from './pizza';
 
-export type ParticleCreator = (origin: { x: number; y: number }, config: AnimationConfig) => Particle[];
+export type ParticleCreator = (
+  origin: { x: number; y: number },
+  config: AnimationConfig
+) => Particle[];
 export type ParticleRenderer = (particle: Particle) => React.ReactNode;
 
 interface AnimationHandler {

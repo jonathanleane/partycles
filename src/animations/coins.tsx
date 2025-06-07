@@ -13,7 +13,7 @@ export const createCoinParticles = (
     spread = 70,
     startVelocity = 25,
     colors = coinColors,
-    elementSize = 25
+    elementSize = 25,
   } = config;
 
   const particles: Particle[] = [];
@@ -21,7 +21,7 @@ export const createCoinParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x,
@@ -32,7 +32,10 @@ export const createCoinParticles = (
       opacity: 1,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -42,7 +45,7 @@ export const createCoinParticles = (
 export const renderCoinParticle = (particle: Particle): React.ReactNode => {
   const spinSpeed = 8; // Degrees per frame
   const currentRotation = particle.rotation + (120 - particle.life) * spinSpeed;
-  
+
   return (
     <div
       key={particle.id}

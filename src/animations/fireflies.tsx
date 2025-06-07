@@ -13,7 +13,7 @@ export const createFireflyParticles = (
     spread = 150,
     startVelocity = 2,
     colors = fireflyColors,
-    elementSize = 8
+    elementSize = 8,
   } = config;
 
   const particles: Particle[] = [];
@@ -21,10 +21,10 @@ export const createFireflyParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = randomInRange(0, 360) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
-    
+
     particles.push({
       id: generateId(),
-      x: origin.x + randomInRange(-spread/2, spread/2),
+      x: origin.x + randomInRange(-spread / 2, spread / 2),
       y: origin.y + randomInRange(-20, 20),
       vx: Math.cos(angle) * velocity,
       vy: Math.sin(angle) * velocity * 0.5, // More horizontal movement
@@ -32,7 +32,10 @@ export const createFireflyParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.6, elementSize),
       rotation: randomInRange(0, 360), // Used for blink timing
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -43,17 +46,17 @@ export const renderFireflyParticle = (particle: Particle): React.ReactNode => {
   // Create organic floating motion
   const floatX = Math.sin(particle.life * 0.02 + particle.rotation) * 15;
   const floatY = Math.cos(particle.life * 0.03 + particle.rotation) * 10;
-  
+
   // Blinking effect - each firefly has its own rhythm based on rotation
   const blinkCycle = Math.sin(particle.life * 0.1 + particle.rotation * 0.1);
   const isBlinking = blinkCycle > 0.3;
   const glowIntensity = isBlinking ? 1 : 0.1;
-  
+
   // Fade in/out
   const fadeIn = Math.min(1, (300 - particle.life) / 30);
   const fadeOut = particle.life / 300;
   const baseFade = Math.min(fadeIn, fadeOut);
-  
+
   return (
     <div
       key={particle.id}

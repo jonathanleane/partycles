@@ -1,8 +1,22 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
-import { randomInRange, degreesToRadians, generateId, getRandomColor } from '../utils';
+import {
+  randomInRange,
+  degreesToRadians,
+  generateId,
+  getRandomColor,
+} from '../utils';
 
-const defaultColors = ['#9C27B0', '#E91E63', '#FF00FF', '#00FFFF', '#FFD700', '#FF69B4', '#DA70D6', '#9370DB'];
+const defaultColors = [
+  '#9C27B0',
+  '#E91E63',
+  '#FF00FF',
+  '#00FFFF',
+  '#FFD700',
+  '#FF69B4',
+  '#DA70D6',
+  '#9370DB',
+];
 
 export const createMagicDustParticles = (
   origin: { x: number; y: number },
@@ -12,7 +26,7 @@ export const createMagicDustParticles = (
     particleCount = 40,
     startVelocity = 8,
     colors = defaultColors,
-    elementSize = 12
+    elementSize = 12,
   } = config;
 
   const particles: Particle[] = [];
@@ -22,7 +36,7 @@ export const createMagicDustParticles = (
     const angle = (i / particleCount) * 360 + randomInRange(-30, 30);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
     const color = getRandomColor(colors);
-    
+
     // Add some particles that trail behind cursor movement
     const offsetAngle = randomInRange(0, 360);
     const offsetDistance = randomInRange(0, 30);
@@ -44,9 +58,11 @@ export const createMagicDustParticles = (
   return particles;
 };
 
-export const renderMagicDustParticle = (particle: Particle): React.ReactNode => {
+export const renderMagicDustParticle = (
+  particle: Particle
+): React.ReactNode => {
   const sparkleSize = particle.size * 0.7;
-  
+
   return (
     <div
       key={particle.id}

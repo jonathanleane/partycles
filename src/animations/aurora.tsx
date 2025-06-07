@@ -2,7 +2,15 @@ import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
 
-const auroraColors = ['#00ff88', '#00ffaa', '#00ddff', '#0099ff', '#0066ff', '#9933ff', '#ff00ff'];
+const auroraColors = [
+  '#00ff88',
+  '#00ffaa',
+  '#00ddff',
+  '#0099ff',
+  '#0066ff',
+  '#9933ff',
+  '#ff00ff',
+];
 
 export const createAuroraParticles = (
   origin: { x: number; y: number },
@@ -13,7 +21,7 @@ export const createAuroraParticles = (
     spread = 200,
     startVelocity = 3,
     colors = auroraColors,
-    elementSize = 100
+    elementSize = 100,
   } = config;
 
   const particles: Particle[] = [];
@@ -21,7 +29,7 @@ export const createAuroraParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = (i / particleCount) * spread - spread / 2;
     const offset = randomInRange(-30, 30);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + angle + offset,
@@ -32,7 +40,10 @@ export const createAuroraParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(-15, 15),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -45,7 +56,7 @@ export const renderAuroraParticle = (particle: Particle): React.ReactNode => {
   const fadeIn = Math.min(1, (250 - particle.life) / 50);
   const fadeOut = particle.life / 250;
   const opacity = Math.min(fadeIn, fadeOut) * 0.4;
-  
+
   return (
     <div
       key={particle.id}

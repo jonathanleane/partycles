@@ -13,7 +13,7 @@ export const createSnowParticles = (
     spread = 200,
     startVelocity = 3,
     colors = snowColors,
-    elementSize = 15
+    elementSize = 15,
   } = config;
 
   const particles: Particle[] = [];
@@ -22,7 +22,7 @@ export const createSnowParticles = (
     // Spread particles across the width, starting from above viewport
     const x = origin.x + randomInRange(-spread * 2, spread * 2);
     const y = origin.y - randomInRange(100, 300); // Start above the trigger point
-    
+
     particles.push({
       id: generateId(),
       x,
@@ -33,7 +33,10 @@ export const createSnowParticles = (
       opacity: randomInRange(0.4, 0.9),
       size: randomInRange(elementSize * 0.3, elementSize),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
