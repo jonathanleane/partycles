@@ -12,7 +12,7 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **8 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, and emoji
+- 🎨 **19 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, and leaves
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
@@ -52,7 +52,7 @@ That's it! No configuration needed - it just works. 🎊
 
 - **Zero Dependencies** - No bloat, just pure React code
 - **One Hook** - Simple `useReward` hook handles everything  
-- **8 Animations** - From confetti to emoji, we've got you covered
+- **19 Animations** - From confetti to magical effects, we've got you covered
 - **Fully Typed** - Great TypeScript support out of the box
 - **Customizable** - Tweak colors, physics, particle count, and more
 - **Performant** - Optimized animations that won't slow down your app
@@ -66,7 +66,7 @@ The main hook for creating reward animations.
 #### Parameters
 
 - `elementId` (string): The ID of the element to animate from
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -192,6 +192,115 @@ const { reward } = useReward('buttonId', 'emoji', {
 - `emojiPresets.nature` - Nature emojis
 - `emojiPresets.food` - Food emojis
 
+### Coins 💰
+Falling coins for rewards and achievements.
+
+```tsx
+const { reward } = useReward('buttonId', 'coins', {
+  particleCount: 25,
+  physics: { gravity: 0.5 }
+});
+```
+
+### Petals 🌸
+Delicate flower petals floating in the wind.
+
+```tsx
+const { reward } = useReward('buttonId', 'petals', {
+  particleCount: 40,
+  physics: { gravity: 0.08, wind: 0.15 }
+});
+```
+
+### Aurora 🌌
+Northern lights effect with flowing ribbons.
+
+```tsx
+const { reward } = useReward('buttonId', 'aurora', {
+  particleCount: 15,
+  elementSize: 100
+});
+```
+
+### Fireflies ✨
+Glowing fireflies with organic movement.
+
+```tsx
+const { reward } = useReward('buttonId', 'fireflies', {
+  particleCount: 20,
+  lifetime: 300
+});
+```
+
+### Paint 🎨
+Paint splatter effect for creative actions.
+
+```tsx
+const { reward } = useReward('buttonId', 'paint', {
+  particleCount: 25,
+  startVelocity: 35
+});
+```
+
+### Balloons 🎈
+Floating balloons with realistic physics.
+
+```tsx
+const { reward } = useReward('buttonId', 'balloons', {
+  particleCount: 15,
+  lifetime: 400
+});
+```
+
+### Galaxy 🌟
+Spiral star formation with twinkling effects.
+
+```tsx
+const { reward } = useReward('buttonId', 'galaxy', {
+  particleCount: 60,
+  spread: 200
+});
+```
+
+### Glitch 📺
+Digital glitch effect for tech themes.
+
+```tsx
+const { reward } = useReward('buttonId', 'glitch', {
+  particleCount: 30,
+  elementSize: 40
+});
+```
+
+### Magic Dust ✨
+Magical sparkling dust particles.
+
+```tsx
+const { reward } = useReward('buttonId', 'magicdust', {
+  particleCount: 35,
+  colors: ['#9c27b0', '#673ab7', '#3f51b5']
+});
+```
+
+### Crystals 💎
+Shimmering crystal fragments.
+
+```tsx
+const { reward } = useReward('buttonId', 'crystals', {
+  particleCount: 20,
+  elementSize: 25
+});
+```
+
+### Leaves 🍃
+Falling autumn leaves with natural movement.
+
+```tsx
+const { reward } = useReward('buttonId', 'leaves', {
+  particleCount: 30,
+  physics: { gravity: 0.05, wind: 0.2 }
+});
+```
 
 ## 💡 Examples
 
@@ -364,7 +473,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ### v1.1.3 (Latest)
 - 🚀 Added automatic mobile performance optimizations
 - 🐛 Fixed Safari compatibility issues
-- 📦 Streamlined bundle size by removing 18 animations
+- 📦 Streamlined bundle size by removing 7 animations
 - 🔧 Fixed CI/CD pipeline and npm publishing
 
 ### v1.0.0
