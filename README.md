@@ -12,11 +12,11 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **17 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, lightning, petals, aurora, fireflies, paint, music, balloons, and galaxy
+- 🎨 **8 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, and emoji
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
-- 📱 **Responsive** - Works seamlessly on all devices
+- 📱 **Mobile Optimized** - Automatic performance optimizations for mobile devices
 - 🔧 **TypeScript Support** - Fully typed for excellent DX
 - ⚡ **React 18 Ready** - Built with the latest React features
 
@@ -52,7 +52,7 @@ That's it! No configuration needed - it just works. 🎊
 
 - **Zero Dependencies** - No bloat, just pure React code
 - **One Hook** - Simple `useReward` hook handles everything  
-- **11 Animations** - From confetti to lightning, we've got you covered
+- **8 Animations** - From confetti to emoji, we've got you covered
 - **Fully Typed** - Great TypeScript support out of the box
 - **Customizable** - Tweak colors, physics, particle count, and more
 - **Performant** - Optimized animations that won't slow down your app
@@ -66,7 +66,7 @@ The main hook for creating reward animations.
 #### Parameters
 
 - `elementId` (string): The ID of the element to animate from
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'lightning'`, `'petals'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -192,95 +192,6 @@ const { reward } = useReward('buttonId', 'emoji', {
 - `emojiPresets.nature` - Nature emojis
 - `emojiPresets.food` - Food emojis
 
-### Coins 💰
-Falling coins for rewards and achievements.
-
-```tsx
-const { reward } = useReward('buttonId', 'coins', {
-  particleCount: 25,
-  physics: { gravity: 0.5 }
-});
-```
-
-### Lightning ⚡
-Electric energy bursts for powerful actions.
-
-```tsx
-const { reward } = useReward('buttonId', 'lightning', {
-  particleCount: 20,
-  spread: 360
-});
-```
-
-### Petals 🌸
-Delicate flower petals floating in the wind.
-
-```tsx
-const { reward } = useReward('buttonId', 'petals', {
-  particleCount: 40,
-  physics: { gravity: 0.08, wind: 0.15 }
-});
-```
-
-### Aurora 🌌
-Northern lights effect with flowing ribbons.
-
-```tsx
-const { reward } = useReward('buttonId', 'aurora', {
-  particleCount: 15,
-  elementSize: 100
-});
-```
-
-### Fireflies ✨
-Glowing fireflies with organic movement.
-
-```tsx
-const { reward } = useReward('buttonId', 'fireflies', {
-  particleCount: 20,
-  lifetime: 300
-});
-```
-
-### Paint 🎨
-Paint splatter effect for creative actions.
-
-```tsx
-const { reward } = useReward('buttonId', 'paint', {
-  particleCount: 25,
-  startVelocity: 35
-});
-```
-
-### Music 🎵
-Musical notes floating upward.
-
-```tsx
-const { reward } = useReward('buttonId', 'music', {
-  particleCount: 20,
-  physics: { gravity: -0.08 }
-});
-```
-
-### Balloons 🎈
-Floating balloons with realistic physics.
-
-```tsx
-const { reward } = useReward('buttonId', 'balloons', {
-  particleCount: 15,
-  lifetime: 400
-});
-```
-
-### Galaxy 🌟
-Spiral star formation with twinkling effects.
-
-```tsx
-const { reward } = useReward('buttonId', 'galaxy', {
-  particleCount: 60,
-  spread: 200
-});
-```
 
 ## 💡 Examples
 
@@ -447,6 +358,17 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## 📈 Changelog
+
+### v1.1.3 (Latest)
+- 🚀 Added automatic mobile performance optimizations
+- 🐛 Fixed Safari compatibility issues
+- 📦 Streamlined bundle size by removing 18 animations
+- 🔧 Fixed CI/CD pipeline and npm publishing
+
+### v1.0.0
+- 🎉 Initial release with 26 animations
 
 ## 📄 License
 
