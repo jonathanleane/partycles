@@ -15,7 +15,14 @@ export interface AnimationInstance {
     wind: number;
   };
   animationType: string;
-  config?: any;
+  config?: {
+    effects?: {
+      flutter?: boolean;
+      windDrift?: boolean;
+      wobble?: boolean;
+      twinkle?: boolean;
+    };
+  };
   frameCount: number;
   isPaused?: boolean;
   pausedAt?: number;
@@ -52,7 +59,7 @@ class AnimationManager {
     const animation = this.animations.get(id);
     if (animation) {
       // Release particles back to pool
-      particlePool.releaseAll(animation.particles as any);
+      particlePool.releaseAll(animation.particles as Particle[]);
       
       // Remove container
       if (animation.containerElement && document.body.contains(animation.containerElement)) {

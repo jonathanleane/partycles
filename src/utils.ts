@@ -20,7 +20,7 @@ export const getRandomColor = (colors: string[]): string => {
 
 export const createParticleStyle = (
   particle: Particle,
-  containerRect: DOMRect
+  _containerRect: DOMRect
 ): React.CSSProperties => {
   return {
     position: 'absolute',

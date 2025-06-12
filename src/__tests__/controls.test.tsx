@@ -1,7 +1,5 @@
-import React from 'react';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useReward } from '../useReward';
-import { animationManager } from '../animationManager';
 
 // Mock the animations module
 jest.mock('../animations', () => ({

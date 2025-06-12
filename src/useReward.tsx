@@ -209,10 +209,17 @@ export function useReward(
     return animate();
   }, [animate]);
 
+  const [animationId, setAnimationId] = useState<string | null>(null);
+
+  // Update animation ID in state when it changes
+  useEffect(() => {
+    setAnimationId(animationIdRef.current);
+  }, [isAnimating]);
+
   const isPaused = useMemo(() => {
-    if (!animationIdRef.current) return false;
-    return animationManager.isAnimationPaused(animationIdRef.current);
-  }, [isAnimating]); // Re-compute when animation state changes
+    if (!animationId) return false;
+    return animationManager.isAnimationPaused(animationId);
+  }, [animationId]); // Re-compute when animation ID changes
 
   // Cleanup on unmount
   useEffect(() => {

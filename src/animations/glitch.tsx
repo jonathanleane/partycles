@@ -1,7 +1,6 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
-import { createPooledParticles } from '../particlePool';
 
 export const createGlitchParticles = (
   origin: { x: number; y: number },

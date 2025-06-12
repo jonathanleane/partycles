@@ -12,6 +12,7 @@ global.cancelAnimationFrame = (id: number) => {
 
 // Mock performance.now for tests
 if (!global.performance) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (global as any).performance = {
     now: () => Date.now(),
   };

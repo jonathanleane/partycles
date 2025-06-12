@@ -67,9 +67,10 @@ describe('ParticlePool', () => {
     expect(particle.y).toBe(200);
   });
 
-  it('should respect max pool size', () => {
+  it('should respect max pool size', async () => {
     // Create a small pool for testing
-    const testPool = new (require('../particlePool').ParticlePool)(5);
+    const { ParticlePool } = await import('../particlePool');
+    const testPool = new ParticlePool(5);
     
     // Create and release 10 particles
     const particles = [];

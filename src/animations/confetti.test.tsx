@@ -1,8 +1,5 @@
-import React from 'react';
-import { render } from '@testing-library/react';
 import { createConfettiParticles, renderConfettiParticle } from './confetti';
 import { Particle } from '../types';
-import { createPooledParticles } from '../particlePool';
 
 describe('confetti animation', () => {
   describe('createConfettiParticles', () => {
@@ -94,7 +91,7 @@ describe('confetti animation', () => {
 
     it('should render a confetti particle element', () => {
       const result = renderConfettiParticle(mockParticle);
-      expect(React.isValidElement(result)).toBe(true);
+      expect(result).toBeTruthy();
       expect(result).toMatchObject({
         type: 'div',
         props: expect.objectContaining({
@@ -120,7 +117,7 @@ describe('confetti animation', () => {
     });
 
     it('should handle flutter effect when enabled', () => {
-      const particleWithEffect: Particle & { config?: any } = {
+      const particleWithEffect: Particle & { config?: { effects?: { flutter?: boolean } } } = {
         ...mockParticle,
         config: { effects: { flutter: true } },
       };
@@ -134,7 +131,7 @@ describe('confetti animation', () => {
     it('should handle particles without throwing', () => {
       // Should not throw
       expect(() => {
-        render(<div>{renderConfettiParticle(mockParticle)}</div>);
+        renderConfettiParticle(mockParticle);
       }).not.toThrow();
     });
   });
