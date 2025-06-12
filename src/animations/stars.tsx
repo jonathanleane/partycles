@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const starColors = ['#FFD700', '#FFA500', '#FF6347', '#FFE4B5'];
 
@@ -15,13 +16,11 @@ export const createStarParticles = (
     elementSize = 30,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(0, 360);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -35,10 +34,8 @@ export const createStarParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderStarParticle = (particle: Particle): React.ReactNode => {

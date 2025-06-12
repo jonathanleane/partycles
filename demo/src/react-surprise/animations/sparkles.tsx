@@ -11,7 +11,7 @@ export const createSparkleParticles = (
     spread = 120,
     startVelocity = 15,
     elementSize = 25,
-    colors = ['#FFD700', '#FFFFFF']
+    colors = ['#FFD700', '#FFFFFF'],
   } = config;
 
   const particles: Particle[] = [];
@@ -28,7 +28,10 @@ export const createSparkleParticles = (
       opacity: 0,
       size: randomInRange(elementSize * 0.4, elementSize * 1.2),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -37,7 +40,7 @@ export const createSparkleParticles = (
 
 export const renderSparkleParticle = (particle: Particle): React.ReactNode => {
   const scale = particle.opacity;
-  
+
   return (
     <svg
       key={particle.id}

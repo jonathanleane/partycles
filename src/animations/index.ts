@@ -19,7 +19,6 @@ import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
 
-
 export type ParticleCreator = (
   origin: { x: number; y: number },
   config: AnimationConfig

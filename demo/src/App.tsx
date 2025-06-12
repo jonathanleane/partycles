@@ -1,8 +1,42 @@
 import React, { useState } from 'react';
 import { useReward, emojiPresets } from './react-surprise/index';
+import { ControlsDemo } from './components/ControlsDemo';
 import './App.css';
 
-const defaultColors = {
+interface AnimationEffects {
+  flutter?: boolean;
+  twinkle?: boolean;
+  pulse?: boolean;
+  spin3D?: boolean;
+  wobble?: boolean;
+  windDrift?: boolean;
+}
+
+interface AnimationConfigWithEffects {
+  particleCount: number;
+  spread: number;
+  startVelocity: number;
+  elementSize: number;
+  lifetime: number;
+  physics: {
+    gravity: number;
+    wind: number;
+    friction: number;
+  };
+  radial?: {
+    enabled?: boolean;
+    pattern?: 'circular' | 'cone' | 'random' | 'spiral' | 'vortex' | 'pinwheel';
+    angleVariation?: number;
+    velocityVariation?: number;
+    spiralTurns?: number;
+    vortexPull?: number;
+    pinwheelArms?: number;
+    rotationSpeed?: number;
+  };
+  effects: AnimationEffects;
+}
+
+const defaultColors: Record<string, string[]> = {
   confetti: ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3'],
   sparkles: ['#FFD700', '#FFFFFF'],
   hearts: ['#ff1744', '#e91e63', '#ff4569', '#ff6b6b'],
@@ -24,14 +58,15 @@ const defaultColors = {
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
 };
 
-const defaultConfigs = {
+const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
   confetti: {
     particleCount: 50,
     spread: 90,
     startVelocity: 20,
     elementSize: 20,
     lifetime: 150,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: { flutter: false }
   },
   sparkles: {
     particleCount: 35,
@@ -39,7 +74,8 @@ const defaultConfigs = {
     startVelocity: 15,
     elementSize: 25,
     lifetime: 120,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: { twinkle: false }
   },
   hearts: {
     particleCount: 25,
@@ -47,7 +83,8 @@ const defaultConfigs = {
     startVelocity: 12,
     elementSize: 30,
     lifetime: 180,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: { pulse: false }
   },
   fireworks: {
     particleCount: 60,
@@ -55,7 +92,8 @@ const defaultConfigs = {
     startVelocity: 25,
     elementSize: 8,
     lifetime: 140,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: {}
   },
   bubbles: {
     particleCount: 30,
@@ -63,7 +101,8 @@ const defaultConfigs = {
     startVelocity: 3,
     elementSize: 40,
     lifetime: 300,
-    physics: { gravity: -0.05, wind: 0.02, friction: 0.995 }
+    physics: { gravity: -0.05, wind: 0.02, friction: 0.995 },
+    effects: { wobble: false }
   },
   stars: {
     particleCount: 40,
@@ -71,7 +110,8 @@ const defaultConfigs = {
     startVelocity: 18,
     elementSize: 30,
     lifetime: 150,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: { twinkle: false }
   },
   snow: {
     particleCount: 50,
@@ -79,7 +119,8 @@ const defaultConfigs = {
     startVelocity: 3,
     elementSize: 15,
     lifetime: 300,
-    physics: { gravity: 0.05, wind: 0.1, friction: 0.99 }
+    physics: { gravity: 0.05, wind: 0.1, friction: 0.99 },
+    effects: { windDrift: false }
   },
   emoji: {
     particleCount: 30,
@@ -87,7 +128,8 @@ const defaultConfigs = {
     startVelocity: 15,
     elementSize: 35,
     lifetime: 180,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: {}
   },
   coins: {
     particleCount: 30,
@@ -95,7 +137,8 @@ const defaultConfigs = {
     startVelocity: 25,
     elementSize: 25,
     lifetime: 120,
-    physics: { gravity: 0.5, wind: 0, friction: 0.97 }
+    physics: { gravity: 0.5, wind: 0, friction: 0.97 },
+    effects: { spin3D: false }
   },
   petals: {
     particleCount: 40,
@@ -103,7 +146,8 @@ const defaultConfigs = {
     startVelocity: 8,
     elementSize: 20,
     lifetime: 200,
-    physics: { gravity: 0.08, wind: 0.15, friction: 0.99 }
+    physics: { gravity: 0.08, wind: 0.15, friction: 0.99 },
+    effects: {}
   },
   aurora: {
     particleCount: 15,
@@ -111,7 +155,8 @@ const defaultConfigs = {
     startVelocity: 3,
     elementSize: 100,
     lifetime: 250,
-    physics: { gravity: -0.2, wind: 0, friction: 0.99 }
+    physics: { gravity: -0.2, wind: 0, friction: 0.99 },
+    effects: {}
   },
   fireflies: {
     particleCount: 20,
@@ -119,7 +164,8 @@ const defaultConfigs = {
     startVelocity: 2,
     elementSize: 8,
     lifetime: 300,
-    physics: { gravity: 0, wind: 0, friction: 0.99 }
+    physics: { gravity: 0, wind: 0, friction: 0.99 },
+    effects: {}
   },
   paint: {
     particleCount: 25,
@@ -127,7 +173,8 @@ const defaultConfigs = {
     startVelocity: 35,
     elementSize: 30,
     lifetime: 150,
-    physics: { gravity: 0.6, wind: 0, friction: 0.96 }
+    physics: { gravity: 0.6, wind: 0, friction: 0.96 },
+    effects: {}
   },
   balloons: {
     particleCount: 15,
@@ -135,7 +182,8 @@ const defaultConfigs = {
     startVelocity: 3,
     elementSize: 35,
     lifetime: 400,
-    physics: { gravity: -0.05, wind: 0.02, friction: 0.998 }
+    physics: { gravity: -0.05, wind: 0.02, friction: 0.998 },
+    effects: {}
   },
   galaxy: {
     particleCount: 60,
@@ -143,7 +191,8 @@ const defaultConfigs = {
     startVelocity: 15,
     elementSize: 8,
     lifetime: 250,
-    physics: { gravity: 0, wind: 0, friction: 0.995 }
+    physics: { gravity: 0, wind: 0, friction: 0.995 },
+    effects: {}
   },
   leaves: {
     particleCount: 30,
@@ -151,7 +200,8 @@ const defaultConfigs = {
     startVelocity: 5,
     elementSize: 25,
     lifetime: 250,
-    physics: { gravity: 0.15, wind: 0.2, friction: 0.99 }
+    physics: { gravity: 0.15, wind: 0.2, friction: 0.99 },
+    effects: { windDrift: false }
   },
   glitch: {
     particleCount: 25,
@@ -159,7 +209,8 @@ const defaultConfigs = {
     startVelocity: 50,
     elementSize: 30,
     lifetime: 80,
-    physics: { gravity: 0, wind: 0, friction: 0.9 }
+    physics: { gravity: 0, wind: 0, friction: 0.9 },
+    effects: {}
   },
   magicdust: {
     particleCount: 35,
@@ -167,7 +218,8 @@ const defaultConfigs = {
     startVelocity: 8,
     elementSize: 15,
     lifetime: 200,
-    physics: { gravity: -0.1, wind: 0.05, friction: 0.995 }
+    physics: { gravity: -0.1, wind: 0.05, friction: 0.995 },
+    effects: {}
   },
   crystals: {
     particleCount: 20,
@@ -175,7 +227,8 @@ const defaultConfigs = {
     startVelocity: 20,
     elementSize: 25,
     lifetime: 180,
-    physics: { gravity: 0.4, wind: 0, friction: 0.98 }
+    physics: { gravity: 0.4, wind: 0, friction: 0.98 },
+    effects: {}
   }
 };
 
@@ -233,12 +286,13 @@ function highlightJSON(json: string): JSX.Element {
 
 function App() {
   const [selectedAnimation, setSelectedAnimation] = useState<keyof typeof defaultConfigs>('confetti');
-  const [config, setConfig] = useState(defaultConfigs[selectedAnimation]);
+  const [config, setConfig] = useState<AnimationConfigWithEffects>(defaultConfigs[selectedAnimation]);
   const [colors, setColors] = useState(defaultColors[selectedAnimation]);
   const [showPresets, setShowPresets] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [animationCompleted, setAnimationCompleted] = useState(false);
 
-  const { reward, isAnimating } = useReward('playground', selectedAnimation, {
+  const { reward, isAnimating } = useReward('playground', selectedAnimation as any, {
     ...config,
     colors: colors.length > 0 ? colors : undefined,
   });
@@ -276,7 +330,7 @@ function App() {
   };
 
   const triggerHeroAnimation = () => {
-    heroRewards[currentHeroAnimation].reward();
+    (heroRewards as any)[currentHeroAnimation].reward();
   };
 
   // Cycle through animations on the hero title
@@ -325,7 +379,7 @@ function App() {
       // Initial animation after page load
       initialTimer = setTimeout(() => {
         if (!isScrolled && isTabVisible) {
-          heroRewards[animationTypes[0]].reward();
+          (heroRewards as any)[animationTypes[0]].reward();
         }
       }, 500);
 
@@ -338,7 +392,7 @@ function App() {
           // Wait for the current animation to mostly finish before starting the next
           setTimeout(() => {
             if (!isScrolled && isTabVisible) {
-              heroRewards[animationTypes[animationIndex]].reward();
+              (heroRewards as any)[animationTypes[animationIndex]].reward();
             }
           }, 100);
         }
@@ -614,6 +668,304 @@ function App() {
               </label>
             </div>
 
+            {/* Enhanced Effects Section */}
+            {(selectedAnimation === 'confetti' || 
+              selectedAnimation === 'stars' || 
+              selectedAnimation === 'sparkles' || 
+              selectedAnimation === 'hearts' || 
+              selectedAnimation === 'coins' || 
+              selectedAnimation === 'bubbles' || 
+              selectedAnimation === 'snow' || 
+              selectedAnimation === 'leaves') && (
+              <>
+                <h3 title="Optional visual enhancements">
+                  Enhanced Effects <span className="badge">NEW</span> <span className="tooltip-icon">?</span>
+                </h3>
+                
+                {selectedAnimation === 'confetti' && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.flutter || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, flutter: e.target.checked }
+                        }))}
+                      />
+                      <span>Flutter Effect</span>
+                      <span className="hint">Paper-like floating motion</span>
+                    </label>
+                  </div>
+                )}
+                
+                {(selectedAnimation === 'stars' || selectedAnimation === 'sparkles') && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.twinkle || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, twinkle: e.target.checked }
+                        }))}
+                      />
+                      <span>Twinkle Effect</span>
+                      <span className="hint">Brightness variation</span>
+                    </label>
+                  </div>
+                )}
+                
+                {selectedAnimation === 'hearts' && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.pulse || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, pulse: e.target.checked }
+                        }))}
+                      />
+                      <span>Pulse Effect</span>
+                      <span className="hint">Heartbeat animation</span>
+                    </label>
+                  </div>
+                )}
+                
+                {selectedAnimation === 'coins' && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.spin3D || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, spin3D: e.target.checked }
+                        }))}
+                      />
+                      <span>3D Spin</span>
+                      <span className="hint">Realistic coin flip</span>
+                    </label>
+                  </div>
+                )}
+                
+                {selectedAnimation === 'bubbles' && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.wobble || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, wobble: e.target.checked }
+                        }))}
+                      />
+                      <span>Wobble Effect</span>
+                      <span className="hint">Natural bubble movement</span>
+                    </label>
+                  </div>
+                )}
+                
+                {(selectedAnimation === 'snow' || selectedAnimation === 'leaves') && (
+                  <div className="control-group">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={config.effects?.windDrift || false}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          effects: { ...prev.effects, windDrift: e.target.checked }
+                        }))}
+                      />
+                      <span>Wind Drift</span>
+                      <span className="hint">Horizontal floating motion</span>
+                    </label>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Radial Movement Section */}
+            <h3 title="Configure particles to burst outward from the trigger point">
+              Radial Movement <span className="badge">NEW</span> <span className="tooltip-icon">?</span>
+            </h3>
+            <div className="control-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={config.radial?.enabled || false}
+                  onChange={(e) => setConfig(prev => ({
+                    ...prev,
+                    radial: { ...prev.radial, enabled: e.target.checked }
+                  }))}
+                />
+                <span>Enable Radial Burst</span>
+                <span className="hint">Particles move outward from center</span>
+              </label>
+            </div>
+
+            {config.radial?.enabled && (
+              <>
+                <div className="control-group">
+                  <label title="Pattern of radial movement">
+                    <span className="param-label">
+                      <span>Pattern</span>
+                      <span className="tooltip-icon">?</span>
+                    </span>
+                    <select
+                      value={config.radial?.pattern || 'circular'}
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
+                        radial: { ...prev.radial, pattern: e.target.value as 'circular' | 'cone' | 'random' | 'spiral' | 'vortex' | 'pinwheel' }
+                      }))}
+                      style={{ width: '100%', padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}
+                    >
+                      <option value="circular">Circular - Even distribution</option>
+                      <option value="cone">Cone - Upward burst</option>
+                      <option value="random">Random - Chaotic burst</option>
+                      <option value="spiral">Spiral - Rotating outward</option>
+                      <option value="vortex">Vortex - Inward spiral drain</option>
+                      <option value="pinwheel">Pinwheel - Catherine wheel</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div className="control-group">
+                  <label title="Randomness in particle angles (0 = uniform, 1 = very random)">
+                    <span className="param-label">
+                      <span>Angle Variation</span>
+                      <span className="value">{(config.radial?.angleVariation ?? 0.2).toFixed(2)}</span>
+                      <span className="tooltip-icon">?</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={config.radial?.angleVariation ?? 0.2}
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
+                        radial: { ...prev.radial, angleVariation: Number(e.target.value) }
+                      }))}
+                    />
+                  </label>
+                </div>
+
+                <div className="control-group">
+                  <label title="Randomness in particle velocities (0 = uniform speed, 1 = very varied)">
+                    <span className="param-label">
+                      <span>Velocity Variation</span>
+                      <span className="value">{(config.radial?.velocityVariation ?? 0.3).toFixed(2)}</span>
+                      <span className="tooltip-icon">?</span>
+                    </span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      value={config.radial?.velocityVariation ?? 0.3}
+                      onChange={(e) => setConfig(prev => ({
+                        ...prev,
+                        radial: { ...prev.radial, velocityVariation: Number(e.target.value) }
+                      }))}
+                    />
+                  </label>
+                </div>
+
+                {config.radial?.pattern === 'spiral' && (
+                  <div className="control-group">
+                    <label title="Number of complete rotations in the spiral">
+                      <span className="param-label">
+                        <span>Spiral Turns</span>
+                        <span className="value">{(config.radial?.spiralTurns ?? 2).toFixed(1)}</span>
+                        <span className="tooltip-icon">?</span>
+                      </span>
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="5"
+                        step="0.5"
+                        value={config.radial?.spiralTurns ?? 2}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          radial: { ...prev.radial, spiralTurns: Number(e.target.value) }
+                        }))}
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {config.radial?.pattern === 'vortex' && (
+                  <div className="control-group">
+                    <label title="Strength of the inward pull - like a drain or black hole">
+                      <span className="param-label">
+                        <span>Vortex Pull</span>
+                        <span className="value">{(config.radial?.vortexPull ?? 0.02).toFixed(3)}</span>
+                        <span className="tooltip-icon">?</span>
+                      </span>
+                      <input
+                        type="range"
+                        min="0.005"
+                        max="0.1"
+                        step="0.005"
+                        value={config.radial?.vortexPull ?? 0.02}
+                        onChange={(e) => setConfig(prev => ({
+                          ...prev,
+                          radial: { ...prev.radial, vortexPull: Number(e.target.value) }
+                        }))}
+                      />
+                    </label>
+                  </div>
+                )}
+
+                {config.radial?.pattern === 'pinwheel' && (
+                  <>
+                    <div className="control-group">
+                      <label title="Number of spinning arms in the pinwheel">
+                        <span className="param-label">
+                          <span>Pinwheel Arms</span>
+                          <span className="value">{config.radial?.pinwheelArms ?? 4}</span>
+                          <span className="tooltip-icon">?</span>
+                        </span>
+                        <input
+                          type="range"
+                          min="2"
+                          max="8"
+                          step="1"
+                          value={config.radial?.pinwheelArms ?? 4}
+                          onChange={(e) => setConfig(prev => ({
+                            ...prev,
+                            radial: { ...prev.radial, pinwheelArms: Number(e.target.value) }
+                          }))}
+                        />
+                      </label>
+                    </div>
+                    <div className="control-group">
+                      <label title="Speed of rotation">
+                        <span className="param-label">
+                          <span>Rotation Speed</span>
+                          <span className="value">{(config.radial?.rotationSpeed ?? 0.2).toFixed(2)}</span>
+                          <span className="tooltip-icon">?</span>
+                        </span>
+                        <input
+                          type="range"
+                          min="0.05"
+                          max="1"
+                          step="0.05"
+                          value={config.radial?.rotationSpeed ?? 0.2}
+                          onChange={(e) => setConfig(prev => ({
+                            ...prev,
+                            radial: { ...prev.radial, rotationSpeed: Number(e.target.value) }
+                          }))}
+                        />
+                      </label>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
             <h3 title={selectedAnimation === 'emoji' ? "Select emoji preset or customize emojis" : "Particles randomly pick from these colors"}>
               {selectedAnimation === 'emoji' ? 'Emojis' : 'Colors'} <span className="tooltip-icon">?</span>
             </h3>
@@ -691,12 +1043,17 @@ function App() {
             <button
               className="trigger-button"
               id="playground"
-              onClick={reward}
+              onClick={async () => {
+                setAnimationCompleted(false);
+                await reward();
+                setAnimationCompleted(true);
+                setTimeout(() => setAnimationCompleted(false), 2000);
+              }}
               disabled={isAnimating}
               aria-label="Trigger particle animation"
               aria-disabled={isAnimating}
             >
-              Click to Trigger Animation!
+              {isAnimating ? 'Animating...' : animationCompleted ? '✓ Animation Complete!' : 'Click to Trigger Animation!'}
             </button>
 
             <div className="config-display">
@@ -1024,6 +1381,33 @@ useEffect(() => {
         </div>
       </section>
 
+      {/* Animation Controls Section */}
+      <section className="controls-section">
+        <div className="section-container">
+          <h2>Animation Controls</h2>
+          <p className="section-subtitle">Control your animations with imperative API methods</p>
+          
+          <ControlsDemo />
+          
+          <div className="api-card" style={{ marginTop: '2rem' }}>
+            <h3>Control Methods</h3>
+            <pre><code>{highlightCode(`const { 
+  reward,      // Start animation
+  pause,       // Pause animation
+  resume,      // Resume animation
+  replay,      // Replay animation
+  isPaused,    // Check if paused
+  isAnimating  // Check if animating
+} = useReward(ref, 'confetti');`)}</code></pre>
+            
+            <p style={{ marginTop: '1rem', color: 'rgba(203, 213, 225, 0.9)' }}>
+              These methods give you full control over the animation lifecycle,
+              perfect for complex interactions and synchronized effects.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* API Section */}
       <section className="api-section">
         <div className="section-container">
@@ -1032,9 +1416,18 @@ useEffect(() => {
           <div className="api-card">
             <h3>useReward Hook</h3>
             <p style={{ marginBottom: '1.5rem', color: 'rgba(203, 213, 225, 0.9)', lineHeight: 1.6 }}>
-              The main hook for creating particle animations:
+              The main hook for creating particle animations. Supports both ref-based and ID-based APIs:
             </p>
-            <pre><code>{highlightCode(`const { reward, isAnimating } = useReward(
+            <pre><code>{highlightCode(`// Ref-based API (recommended)
+const ref = useRef<HTMLElement>(null);
+const { reward, isAnimating, pause, resume, replay, isPaused } = useReward(
+  ref,
+  animationType: AnimationType,
+  config?: AnimationConfig
+);
+
+// ID-based API (legacy)
+const { reward, isAnimating } = useReward(
   elementId: string,
   animationType: AnimationType,
   config?: AnimationConfig
@@ -1042,9 +1435,20 @@ useEffect(() => {
 
             <h4>Hook Parameters</h4>
             <ul>
-              <li><code>elementId</code> - The ID of the element to trigger the animation from</li>
+              <li><code>elementRef/elementId</code> - React ref or ID of the element to trigger the animation from</li>
               <li><code>animationType</code> - One of: 'confetti', 'sparkles', 'fireworks', 'hearts', 'stars', 'bubbles', 'snow', 'emoji', 'coins', 'lightning', 'petals'</li>
               <li><code>config</code> - Optional configuration object (see below)</li>
+            </ul>
+            
+            <h4>Return Values</h4>
+            <ul>
+              <li><code>reward()</code> - Triggers the animation, returns a Promise that resolves when complete</li>
+              <li><code>isAnimating</code> - Boolean indicating if animation is currently running</li>
+              <li><code>pause()</code> - Pauses the current animation</li>
+              <li><code>resume()</code> - Resumes a paused animation</li>
+              <li><code>replay()</code> - Stops current animation and starts a new one</li>
+              <li><code>isPaused</code> - Boolean indicating if animation is paused</li>
+              <li><code>targetRef</code> - The ref passed to the hook (ref-based API only)</li>
             </ul>
 
             <h4>Configuration Options</h4>

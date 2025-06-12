@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const balloonColors = [
   '#FF006E',
@@ -24,13 +25,11 @@ export const createBalloonParticles = (
     elementSize = 35,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.7, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-spread * 0.8, spread * 0.8), // Spread balloons out more
       y: origin.y + randomInRange(-10, 30),
@@ -44,10 +43,8 @@ export const createBalloonParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderBalloonParticle = (particle: Particle): React.ReactNode => {

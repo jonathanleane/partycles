@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const coinColors = ['#FFD700', '#FFA500', '#FFB300', '#FFC700'];
 
@@ -16,13 +17,11 @@ export const createCoinParticles = (
     elementSize = 25,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -36,18 +35,18 @@ export const createCoinParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
-export const renderCoinParticle = (particle: Particle & { config?: AnimationConfig }): React.ReactNode => {
+export const renderCoinParticle = (
+  particle: Particle & { config?: AnimationConfig }
+): React.ReactNode => {
   const spinSpeed = particle.config?.effects?.spin3D ? 8 : 2; // Faster spin with 3D effect
   const currentRotation = particle.rotation + (120 - particle.life) * spinSpeed;
-  
+
   // 3D effect: scale X based on rotation to simulate perspective
-  const scaleX = particle.config?.effects?.spin3D 
+  const scaleX = particle.config?.effects?.spin3D
     ? Math.abs(Math.cos((currentRotation * Math.PI) / 180))
     : 1;
 
@@ -59,7 +58,7 @@ export const renderCoinParticle = (particle: Particle & { config?: AnimationConf
         height: `${particle.size}px`,
         background: `radial-gradient(ellipse at 30% 30%, ${particle.color}, #B8860B)`,
         borderRadius: '50%',
-        transform: particle.config?.effects?.spin3D 
+        transform: particle.config?.effects?.spin3D
           ? `rotateY(${currentRotation}deg) scaleX(${scaleX})`
           : `rotate(${currentRotation}deg)`,
         transformStyle: 'preserve-3d',

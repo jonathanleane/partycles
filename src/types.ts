@@ -10,7 +10,7 @@ export interface Particle {
   rotation: number;
   color: string;
   element?: React.ReactNode;
-  config?: AnimationConfig;  // Store config for render functions
+  config?: AnimationConfig; // Store config for render functions
 }
 
 export interface AnimationConfig {
@@ -29,12 +29,12 @@ export interface AnimationConfig {
   };
   // Optional enhanced effects
   effects?: {
-    flutter?: boolean;      // For confetti - paper-like floating
-    twinkle?: boolean;      // For stars/sparkles - brightness variation
-    pulse?: boolean;        // For hearts - heartbeat effect
-    spin3D?: boolean;       // For coins - 3D rotation effect
-    wobble?: boolean;       // For bubbles - realistic wobble
-    windDrift?: boolean;    // For snow/leaves - horizontal drift
+    flutter?: boolean; // For confetti - paper-like floating
+    twinkle?: boolean; // For stars/sparkles - brightness variation
+    pulse?: boolean; // For hearts - heartbeat effect
+    spin3D?: boolean; // For coins - 3D rotation effect
+    wobble?: boolean; // For bubbles - realistic wobble
+    windDrift?: boolean; // For snow/leaves - horizontal drift
   };
 }
 
@@ -61,4 +61,11 @@ export type AnimationType =
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;
+}
+
+export interface AnimationControls {
+  pause: () => void;
+  resume: () => void;
+  replay: () => Promise<void>;
+  isPaused: boolean;
 }

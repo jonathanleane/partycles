@@ -12,7 +12,7 @@ export const createStarParticles = (
     particleCount = 40,
     startVelocity = 18,
     colors = starColors,
-    elementSize = 30
+    elementSize = 30,
   } = config;
 
   const particles: Particle[] = [];
@@ -31,7 +31,10 @@ export const createStarParticles = (
       opacity: 1,
       size: randomInRange(elementSize * 0.5, elementSize * 1.3),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 

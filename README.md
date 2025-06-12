@@ -33,13 +33,15 @@ pnpm add partycles
 ## 🚀 Quick Start
 
 ```tsx
+import { useRef } from 'react';
 import { useReward } from 'partycles';
 
 function App() {
-  const { reward, isAnimating } = useReward('rewardId', 'confetti');
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { reward, isAnimating } = useReward(buttonRef, 'confetti');
 
   return (
-    <button id="rewardId" onClick={reward} disabled={isAnimating}>
+    <button ref={buttonRef} onClick={reward} disabled={isAnimating}>
       Click me for a surprise! 🎉
     </button>
   );
@@ -47,6 +49,18 @@ function App() {
 ```
 
 That's it! No configuration needed - it just works. 🎊
+
+### Using String IDs (Legacy)
+
+For backward compatibility, you can still use element IDs:
+
+```tsx
+const { reward, isAnimating } = useReward('my-button', 'confetti');
+
+<button id="my-button" onClick={reward}>
+  Click me! 🎉
+</button>
+```
 
 ## 🤔 Why Partycles?
 
@@ -59,20 +73,27 @@ That's it! No configuration needed - it just works. 🎊
 
 ## 📖 API Reference
 
-### `useReward(elementId, animationType, config?)`
+### `useReward(targetRef, animationType, config?)` (Recommended)
+### `useReward(elementId, animationType, config?)` (Legacy)
 
 The main hook for creating reward animations.
 
 #### Parameters
 
-- `elementId` (string): The ID of the element to animate from
+- `targetRef` (RefObject<HTMLElement>): A React ref to the element to animate from (recommended)
+- `elementId` (string): The ID of the element to animate from (legacy, for backward compatibility)
 - `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`
 - `config` (optional): Animation configuration object
 
 #### Returns
 
-- `reward` (function): Triggers the animation
+- `reward` (function): Triggers the animation, returns a Promise that resolves when complete
 - `isAnimating` (boolean): Whether the animation is currently running
+- `pause` (function): Pauses the current animation
+- `resume` (function): Resumes a paused animation
+- `replay` (function): Stops current animation and starts a new one
+- `isPaused` (boolean): Whether the animation is currently paused
+- `targetRef` (RefObject<HTMLElement>): The ref object (only returned when using ref-based API)
 
 ### Configuration Options
 
@@ -109,7 +130,8 @@ interface AnimationConfig {
 Classic celebration effect with colorful paper pieces.
 
 ```tsx
-const { reward } = useReward('buttonId', 'confetti', {
+const buttonRef = useRef<HTMLButtonElement>(null);
+const { reward } = useReward(buttonRef, 'confetti', {
   particleCount: 30,
   spread: 60,
   colors: ['#ff0000', '#00ff00', '#0000ff'],
@@ -314,6 +336,59 @@ const { reward } = useReward('buttonId', 'leaves', {
 ```
 
 ## 💡 Examples
+
+### Animation Controls
+
+Control your animations with pause, resume, and replay:
+
+```tsx
+import { useRef } from 'react';
+import { useReward } from 'partycles';
+
+function ControlledAnimation() {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { reward, isAnimating, pause, resume, replay, isPaused } = useReward(
+    buttonRef,
+    'confetti',
+    { particleCount: 50 }
+  );
+
+  return (
+    <div>
+      <button ref={buttonRef} onClick={reward}>
+        Start Animation
+      </button>
+      
+      <button onClick={pause} disabled={!isAnimating || isPaused}>
+        Pause
+      </button>
+      
+      <button onClick={resume} disabled={!isAnimating || !isPaused}>
+        Resume
+      </button>
+      
+      <button onClick={replay}>
+        Replay
+      </button>
+      
+      <p>Status: {isAnimating ? (isPaused ? 'Paused' : 'Playing') : 'Idle'}</p>
+    </div>
+  );
+}
+```
+
+### Promise-based Completion
+
+Chain actions after animations complete:
+
+```tsx
+const { reward } = useReward(buttonRef, 'confetti');
+
+const handleSuccess = async () => {
+  await reward(); // Wait for animation to complete
+  console.log('Animation finished!');
+  // Navigate, show message, etc.
+};
 
 ### Form Submission Success
 ```tsx

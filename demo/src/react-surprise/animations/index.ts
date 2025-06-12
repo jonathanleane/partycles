@@ -19,21 +19,10 @@ import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
 
-// React component animations
-// These don't exist in the demo
-// export { default as Confetti } from './confetti';
-// export { default as Sparkles } from './sparkles';
-// export { default as Hearts } from './hearts';
-// export { default as Fireworks } from './fireworks';
-// export { default as Bubbles } from './bubbles';
-// export { default as Stars } from './stars';
-// export { default as Popcorn } from './popcorn';
-// export { default as Champagne } from './champagne';
-// export { default as Candy } from './candy';
-// export { default as Donuts } from './donuts';
-// export { default as Pizza } from './pizza';
-
-export type ParticleCreator = (origin: { x: number; y: number }, config: AnimationConfig) => Particle[];
+export type ParticleCreator = (
+  origin: { x: number; y: number },
+  config: AnimationConfig
+) => Particle[];
 export type ParticleRenderer = (particle: Particle) => React.ReactNode;
 
 interface AnimationHandler {

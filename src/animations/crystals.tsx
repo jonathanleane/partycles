@@ -29,15 +29,13 @@ export const createCrystalParticles = (
     elementSize = 25,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     // Crystals explode outward and fall with gravity
     const angle = randomInRange(0, 360);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
     const color = getRandomColor(colors);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -48,10 +46,8 @@ export const createCrystalParticles = (
       size: randomInRange(elementSize * 0.6, elementSize),
       rotation: randomInRange(0, 360),
       color,
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderCrystalParticle = (particle: Particle): React.ReactNode => {

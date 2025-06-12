@@ -2,7 +2,14 @@ import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
 
-const paintColors = ['#FF006E', '#FB5607', '#FFBE0B', '#8338EC', '#3A86FF', '#06FFB4'];
+const paintColors = [
+  '#FF006E',
+  '#FB5607',
+  '#FFBE0B',
+  '#8338EC',
+  '#3A86FF',
+  '#06FFB4',
+];
 
 export const createPaintParticles = (
   origin: { x: number; y: number },
@@ -13,7 +20,7 @@ export const createPaintParticles = (
     spread = 120,
     startVelocity = 35,
     colors = paintColors,
-    elementSize = 30
+    elementSize = 30,
   } = config;
 
   const particles: Particle[] = [];
@@ -22,7 +29,7 @@ export const createPaintParticles = (
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
     const isMainSplat = i < 5; // First few particles are bigger splats
-    
+
     particles.push({
       id: generateId(),
       x: origin.x,
@@ -31,11 +38,14 @@ export const createPaintParticles = (
       vy: -Math.cos(angle) * velocity * 0.7 + (isMainSplat ? 5 : 0),
       life: config.lifetime || 150,
       opacity: 1,
-      size: isMainSplat 
+      size: isMainSplat
         ? randomInRange(elementSize * 1.5, elementSize * 2.5)
         : randomInRange(elementSize * 0.3, elementSize),
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -46,11 +56,11 @@ export const renderPaintParticle = (particle: Particle): React.ReactNode => {
   // Paint splatter gets more stretched as it flies
   const stretch = 1 + (Math.abs(particle.vx) + Math.abs(particle.vy)) * 0.01;
   const squish = 1 / stretch;
-  
+
   // Drip effect for some particles
   const isDripping = particle.size > 15 && particle.rotation > 180;
   const dripLength = isDripping ? particle.size * 0.5 : 0;
-  
+
   return (
     <div
       key={particle.id}
@@ -61,7 +71,7 @@ export const renderPaintParticle = (particle: Particle): React.ReactNode => {
         transform: `
           scaleX(${stretch}) 
           scaleY(${squish}) 
-          rotate(${Math.atan2(particle.vy, particle.vx) * 180 / Math.PI}deg)
+          rotate(${(Math.atan2(particle.vy, particle.vx) * 180) / Math.PI}deg)
         `,
       }}
     >
@@ -103,7 +113,7 @@ export const renderPaintParticle = (particle: Particle): React.ReactNode => {
           }}
         />
       </div>
-      
+
       {/* Paint drip */}
       {isDripping && (
         <div

@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const petalColors = ['#FFB6C1', '#FFC0CB', '#FF69B4', '#FF1493', '#FFF0F5'];
 
@@ -16,13 +17,11 @@ export const createPetalParticles = (
     elementSize = 20,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-20, 20),
       y: origin.y - randomInRange(0, 30),
@@ -36,10 +35,8 @@ export const createPetalParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderPetalParticle = (particle: Particle): React.ReactNode => {

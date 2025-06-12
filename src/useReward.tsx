@@ -1,45 +1,68 @@
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect, RefObject, useMemo } from 'react';
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { AnimationType, AnimationConfig, Particle } from './types';
+import { AnimationType, AnimationConfig, Particle, AnimationControls } from './types';
 import { animations } from './animations';
 import { createParticleStyle } from './utils';
-import {
-  optimizeConfigForMobile,
-  shouldSkipFrame,
-} from './mobileOptimizations';
+import { optimizeConfigForMobile } from './mobileOptimizations';
+import { animationManager } from './animationManager';
 
-interface UseRewardReturn {
-  reward: () => void;
+interface UseRewardReturn extends AnimationControls {
+  reward: () => Promise<void>;
   isAnimating: boolean;
+  targetRef?: RefObject<HTMLElement>;
 }
 
-export const useReward = (
+// Overload signatures for better TypeScript support
+export function useReward(
   elementId: string,
   animationType: AnimationType,
   config?: AnimationConfig
-): UseRewardReturn => {
+): UseRewardReturn;
+
+export function useReward(
+  targetRef: RefObject<HTMLElement>,
+  animationType: AnimationType,
+  config?: AnimationConfig
+): UseRewardReturn;
+
+export function useReward(
+  elementIdOrRef: string | RefObject<HTMLElement>,
+  animationType: AnimationType,
+  config?: AnimationConfig
+): UseRewardReturn {
   const [isAnimating, setIsAnimating] = useState(false);
-  const animationFrameRef = useRef<number>();
-  const particlesRef = useRef<Particle[]>([]);
+  const animationIdRef = useRef<string | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rootRef = useRef<Root | null>(null);
-  const isTabVisible = useRef(true);
-
-  // Monitor tab visibility
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      isTabVisible.current = !document.hidden;
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () =>
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-  }, []);
+  
+  // Create internal ref if string ID is provided
+  const internalRef = useRef<HTMLElement>(null);
+  const isUsingStringId = typeof elementIdOrRef === 'string';
+  const targetRef = isUsingStringId ? internalRef : elementIdOrRef;
 
   const animate = useCallback(() => {
-    const element = document.getElementById(elementId);
-    if (!element) return;
+    return new Promise<void>((resolve) => {
+    // Get element from ref or ID
+    let element: HTMLElement | null = null;
+    
+    if (isUsingStringId) {
+      // SSR safety check
+      if (typeof document === 'undefined') return;
+      element = document.getElementById(elementIdOrRef as string);
+    } else {
+      element = targetRef.current;
+    }
+    
+    if (!element) {
+      // Development warning - will be stripped by minifiers in production
+      console.warn?.(
+        `[Partycles] Element ${isUsingStringId ? `with ID "${elementIdOrRef}"` : 'from ref'} not found. ` +
+        'Make sure the element exists when reward() is called.'
+      );
+      resolve();
+      return;
+    }
 
     const rect = element.getBoundingClientRect();
     const origin = {
@@ -50,6 +73,7 @@ export const useReward = (
     const animationHandler = animations[animationType];
     if (!animationHandler) {
       console.error(`Animation type "${animationType}" not found`);
+      resolve();
       return;
     }
 
@@ -59,15 +83,20 @@ export const useReward = (
       : undefined;
 
     // Create particles
-    particlesRef.current = animationHandler.createParticles(
-      origin,
-      optimizedConfig || {}
-    ).map(particle => ({
-      ...particle,
-      config: optimizedConfig || config // Store config in particle for render functions
-    }));
+    const particles = animationHandler
+      .createParticles(origin, optimizedConfig || {})
+      .map((particle) => ({
+        ...particle,
+        config: optimizedConfig || config, // Store config in particle for render functions
+      }));
 
     // Create container
+    // SSR safety check
+    if (typeof document === 'undefined') {
+      resolve();
+      return;
+    }
+    
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.top = '0';
@@ -84,6 +113,7 @@ export const useReward = (
     rootRef.current = root;
 
     const containerRect = container.getBoundingClientRect();
+    
     // Default gravity varies by animation type
     const defaultGravity =
       animationType === 'bubbles'
@@ -91,81 +121,20 @@ export const useReward = (
         : animationType === 'snow'
           ? 0.05
           : 0.35;
-    const gravity = config?.physics?.gravity ?? defaultGravity;
-    const friction = config?.physics?.friction ?? 0.98;
-    const wind = config?.physics?.wind ?? 0;
+    const gravity = optimizedConfig?.physics?.gravity ?? config?.physics?.gravity ?? defaultGravity;
+    const friction = optimizedConfig?.physics?.friction ?? config?.physics?.friction ?? 0.98;
+    const wind = optimizedConfig?.physics?.wind ?? config?.physics?.wind ?? 0;
 
-    // Track frame count for mobile optimization
-    let frameCount = 0;
+    // Create animation instance ID
+    const animationId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    animationIdRef.current = animationId;
 
-    const updateParticles = () => {
-      let activeParticles = 0;
-      frameCount++;
-
-      // Skip frame rendering on mobile to improve performance
-      const skipFrame = shouldSkipFrame(frameCount);
-
-      particlesRef.current = particlesRef.current.map((particle) => {
-        if (particle.life <= 0) return particle;
-
-        activeParticles++;
-
-        // Update physics
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.vy += gravity;
-        particle.vx += wind;
-        particle.vx *= friction;
-        particle.vy *= friction;
-        particle.rotation += particle.vx * 2;
-        particle.life -= 1.2;
-
-        // Apply optional effects
-        const effects = config?.effects;
-        
-        // Flutter effect for confetti
-        if (effects?.flutter && animationType === 'confetti') {
-          particle.x += Math.sin(particle.life * 0.1) * 0.5;
-          particle.rotation += Math.sin(particle.life * 0.05) * 2;
-        }
-        
-        // Wind drift for snow/leaves
-        if (effects?.windDrift && (animationType === 'snow' || animationType === 'leaves')) {
-          particle.x += Math.sin(particle.life * 0.05 + particle.id.charCodeAt(0)) * 0.8;
-        }
-        
-        // Wobble effect for bubbles
-        if (effects?.wobble && animationType === 'bubbles') {
-          particle.x += Math.sin(particle.life * 0.08) * 0.3;
-          particle.y += Math.cos(particle.life * 0.08) * 0.2;
-        }
-
-        // Special opacity handling for sparkles
-        if (animationType === 'sparkles') {
-          if (particle.life > 70) {
-            particle.opacity = (100 - particle.life) / 30;
-          } else if (particle.life < 30) {
-            particle.opacity = particle.life / 30;
-          }
-          // Twinkle effect
-          if (effects?.twinkle) {
-            particle.opacity *= 0.5 + Math.sin(particle.life * 0.3) * 0.5;
-          }
-        } else if (animationType === 'stars' && effects?.twinkle) {
-          // Twinkle effect for stars
-          particle.opacity = (particle.life / 100) * (0.5 + Math.sin(particle.life * 0.3) * 0.5);
-        } else {
-          particle.opacity = particle.life / 100;
-        }
-
-        return particle;
-      });
-
-      // Render particles (skip rendering on mobile for some frames)
-      if (rootRef.current && !skipFrame) {
+    // Update callback to render particles
+    const updateCallback = (updatedParticles: Particle[]) => {
+      if (rootRef.current) {
         rootRef.current.render(
           <React.Fragment>
-            {particlesRef.current
+            {updatedParticles
               .filter((p) => p.life > 0)
               .map((particle) => (
                 <div
@@ -178,44 +147,78 @@ export const useReward = (
           </React.Fragment>
         );
       }
+    };
 
-      if (activeParticles > 0 && isTabVisible.current) {
-        animationFrameRef.current = requestAnimationFrame(updateParticles);
-      } else {
+    // Add animation to manager
+    animationManager.addAnimation({
+      id: animationId,
+      particles,
+      containerElement: container,
+      renderFunction: animationHandler.renderParticle,
+      updateCallback,
+      onComplete: () => {
         // Cleanup
-        if (animationFrameRef.current) {
-          cancelAnimationFrame(animationFrameRef.current);
-        }
         if (rootRef.current) {
           rootRef.current.unmount();
           rootRef.current = null;
         }
-        if (
-          containerRef.current &&
-          document.body.contains(containerRef.current)
-        ) {
-          document.body.removeChild(containerRef.current);
-          containerRef.current = null;
-        }
+        containerRef.current = null;
+        animationIdRef.current = null;
         setIsAnimating(false);
-      }
-    };
+        resolve();
+      },
+      physics: { gravity, friction, wind },
+      animationType,
+      config: optimizedConfig || config,
+      frameCount: 0,
+    });
 
     setIsAnimating(true);
-    updateParticles();
-  }, [elementId, animationType, config]);
+    });
+  }, [elementIdOrRef, animationType, config, isUsingStringId, targetRef]);
 
   const reward = useCallback(() => {
     if (!isAnimating) {
-      animate();
+      return animate();
     }
+    return Promise.resolve();
   }, [animate, isAnimating]);
+
+  // Imperative control methods
+  const pause = useCallback(() => {
+    if (animationIdRef.current) {
+      animationManager.pauseAnimation(animationIdRef.current);
+    }
+  }, []);
+
+  const resume = useCallback(() => {
+    if (animationIdRef.current) {
+      animationManager.resumeAnimation(animationIdRef.current);
+    }
+  }, []);
+
+  const replay = useCallback(() => {
+    // First clean up existing animation if any
+    if (animationIdRef.current) {
+      animationManager.removeAnimation(animationIdRef.current);
+      animationIdRef.current = null;
+    }
+    setIsAnimating(false);
+    
+    // Then start a new animation
+    return animate();
+  }, [animate]);
+
+  const isPaused = useMemo(() => {
+    if (!animationIdRef.current) return false;
+    return animationManager.isAnimationPaused(animationIdRef.current);
+  }, [isAnimating]); // Re-compute when animation state changes
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (animationIdRef.current) {
+        animationManager.removeAnimation(animationIdRef.current);
       }
       if (rootRef.current) {
         rootRef.current.unmount();
@@ -231,5 +234,10 @@ export const useReward = (
     };
   }, []);
 
-  return { reward, isAnimating };
+  // Return ref only for ref-based API
+  if (!isUsingStringId) {
+    return { reward, isAnimating, targetRef, pause, resume, replay, isPaused };
+  }
+  
+  return { reward, isAnimating, pause, resume, replay, isPaused };
 };

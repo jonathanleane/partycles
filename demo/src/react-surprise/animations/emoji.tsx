@@ -23,7 +23,7 @@ export const createEmojiParticles = (
     spread = 100,
     startVelocity = 15,
     elementSize = 35,
-    emojis = defaultEmojis
+    emojis = defaultEmojis,
   } = config;
 
   const particles: Particle[] = [];
@@ -31,7 +31,7 @@ export const createEmojiParticles = (
   for (let i = 0; i < particleCount; i++) {
     const angle = randomInRange(-45, -135);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity * 1.2);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + randomInRange(-spread, spread),
@@ -43,7 +43,7 @@ export const createEmojiParticles = (
       size: randomInRange(elementSize * 0.7, elementSize * 1.3),
       rotation: randomInRange(-45, 45),
       color: '', // Not used for emojis
-      element: emojis[Math.floor(Math.random() * emojis.length)]
+      element: emojis[Math.floor(Math.random() * emojis.length)],
     });
   }
 
@@ -73,5 +73,5 @@ export const emojiPresets = {
   happy: happyEmojis,
   nature: natureEmojis,
   food: foodEmojis,
-  default: defaultEmojis
+  default: defaultEmojis,
 };

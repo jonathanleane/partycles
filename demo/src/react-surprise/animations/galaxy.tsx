@@ -2,7 +2,15 @@ import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
 
-const galaxyColors = ['#FFFFFF', '#FFF9C4', '#BBDEFB', '#C5CAE9', '#D1C4E9', '#FFE082', '#FFCCBC'];
+const galaxyColors = [
+  '#FFFFFF',
+  '#FFF9C4',
+  '#BBDEFB',
+  '#C5CAE9',
+  '#D1C4E9',
+  '#FFE082',
+  '#FFCCBC',
+];
 
 export const createGalaxyParticles = (
   origin: { x: number; y: number },
@@ -13,7 +21,7 @@ export const createGalaxyParticles = (
     spread = 200,
     startVelocity = 15,
     colors = galaxyColors,
-    elementSize = 8
+    elementSize = 8,
   } = config;
 
   const particles: Particle[] = [];
@@ -23,22 +31,22 @@ export const createGalaxyParticles = (
     const progress = i / particleCount;
     const spiralAngle = progress * Math.PI * 4; // 2 full rotations
     const radius = progress * spread;
-    
+
     // Add some randomness to make it look natural
     const angleOffset = randomInRange(-0.3, 0.3);
     const radiusOffset = randomInRange(-10, 10);
-    
+
     const finalAngle = spiralAngle + angleOffset;
     const finalRadius = radius + radiusOffset;
-    
+
     // Position based on spiral
     const offsetX = Math.cos(finalAngle) * finalRadius;
     const offsetY = Math.sin(finalAngle) * finalRadius;
-    
+
     // Velocity follows the spiral tangent
     const tangentAngle = finalAngle + Math.PI / 2;
     const speed = startVelocity * (1 - progress * 0.5); // Outer stars move slower
-    
+
     particles.push({
       id: generateId(),
       x: origin.x,
@@ -47,9 +55,13 @@ export const createGalaxyParticles = (
       vy: Math.sin(tangentAngle) * speed * 0.3 + offsetY * 0.02,
       life: config.lifetime || 250,
       opacity: 0,
-      size: randomInRange(elementSize * 0.3, elementSize) * (1 - progress * 0.5), // Smaller at edges
+      size:
+        randomInRange(elementSize * 0.3, elementSize) * (1 - progress * 0.5), // Smaller at edges
       rotation: randomInRange(0, 360),
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0],
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
     });
   }
 
@@ -59,17 +71,16 @@ export const createGalaxyParticles = (
 export const renderGalaxyParticle = (particle: Particle): React.ReactNode => {
   // Particles slowly rotate around center while expanding
   const age = (250 - particle.life) / 250;
-  const rotationSpeed = 0.5;
   const expansionRate = 1 + age * 0.5;
-  
+
   // Fade in quickly, fade out slowly
   const fadeIn = Math.min(1, (250 - particle.life) / 30);
   const fadeOut = particle.life / 250;
   const opacity = Math.min(fadeIn, fadeOut);
-  
+
   // Twinkle effect
   const twinkle = Math.sin(particle.life * 0.2 + particle.rotation) * 0.3 + 0.7;
-  
+
   return (
     <div
       key={particle.id}
@@ -122,7 +133,7 @@ export const renderGalaxyParticle = (particle: Particle): React.ReactNode => {
           }}
         />
       </div>
-      
+
       {/* Nebula dust for larger stars */}
       {particle.size > 5 && (
         <div

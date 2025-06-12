@@ -6,6 +6,7 @@ import {
   generateId,
   getRandomColor,
 } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const defaultColors = [
   '#f44336',
@@ -37,14 +38,12 @@ export const createConfettiParticles = (
     elementSize = 20,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(0, 360);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
     const color = getRandomColor(colors);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -55,13 +54,19 @@ export const createConfettiParticles = (
       size: randomInRange(elementSize * 0.7, elementSize * 1.5),
       rotation: randomInRange(0, 360),
       color,
-    });
-  }
-
-  return particles;
+    };
+  });
 };
 
 export const renderConfettiParticle = (particle: Particle): React.ReactNode => {
+  const particleWithEffects = particle as Particle & { config?: AnimationConfig };
+  const flutterEffect = particleWithEffects.config?.effects?.flutter;
+  
+  // Apply flutter transform if enabled
+  const flutterTransform = flutterEffect && particle.life > 0
+    ? `rotateY(${Math.sin(particle.life * 0.1) * 360}deg)`
+    : '';
+  
   return (
     <div
       key={particle.id}
@@ -71,6 +76,7 @@ export const renderConfettiParticle = (particle: Particle): React.ReactNode => {
         backgroundColor: particle.color,
         borderRadius: '3px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+        transform: flutterTransform,
       }}
     />
   );

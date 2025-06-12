@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const galaxyColors = [
   '#FFFFFF',
@@ -24,9 +25,7 @@ export const createGalaxyParticles = (
     elementSize = 8,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, (i) => {
     // Create spiral distribution
     const progress = i / particleCount;
     const spiralAngle = progress * Math.PI * 4; // 2 full rotations
@@ -47,7 +46,7 @@ export const createGalaxyParticles = (
     const tangentAngle = finalAngle + Math.PI / 2;
     const speed = startVelocity * (1 - progress * 0.5); // Outer stars move slower
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -62,10 +61,8 @@ export const createGalaxyParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderGalaxyParticle = (particle: Particle): React.ReactNode => {

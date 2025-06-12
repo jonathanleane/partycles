@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 // Default emoji sets for different moods
 const defaultEmojis = ['🎉', '🎊', '🎈', '🎁', '✨', '🌟', '💫', '🎯'];
@@ -26,13 +27,11 @@ export const createEmojiParticles = (
     emojis = defaultEmojis,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-45, -135);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity * 1.2);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-spread, spread),
       y: origin.y,
@@ -44,10 +43,8 @@ export const createEmojiParticles = (
       rotation: randomInRange(-45, 45),
       color: '', // Not used for emojis
       element: emojis[Math.floor(Math.random() * emojis.length)],
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderEmojiParticle = (particle: Particle): React.ReactNode => {

@@ -29,9 +29,7 @@ export const createMagicDustParticles = (
     elementSize = 12,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, (i) => {
     // Create particles in a circular pattern with some randomness
     const angle = (i / particleCount) * 360 + randomInRange(-30, 30);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
@@ -41,7 +39,7 @@ export const createMagicDustParticles = (
     const offsetAngle = randomInRange(0, 360);
     const offsetDistance = randomInRange(0, 30);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + Math.cos(degreesToRadians(offsetAngle)) * offsetDistance,
       y: origin.y + Math.sin(degreesToRadians(offsetAngle)) * offsetDistance,
@@ -52,10 +50,8 @@ export const createMagicDustParticles = (
       size: randomInRange(elementSize * 0.3, elementSize),
       rotation: randomInRange(0, 360),
       color,
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderMagicDustParticle = (

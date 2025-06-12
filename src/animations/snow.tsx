@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const snowColors = ['#FFFFFF', '#F0F8FF', '#F5F5F5', '#FAFAFA'];
 
@@ -16,14 +17,12 @@ export const createSnowParticles = (
     elementSize = 15,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     // Spread particles across the width, starting from above viewport
     const x = origin.x + randomInRange(-spread * 2, spread * 2);
     const y = origin.y - randomInRange(100, 300); // Start above the trigger point
 
-    particles.push({
+    return {
       id: generateId(),
       x,
       y,
@@ -37,10 +36,8 @@ export const createSnowParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderSnowParticle = (particle: Particle): React.ReactNode => {

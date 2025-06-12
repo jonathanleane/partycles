@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const auroraColors = [
   '#00ff88',
@@ -24,13 +25,11 @@ export const createAuroraParticles = (
     elementSize = 100,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, (i) => {
     const angle = (i / particleCount) * spread - spread / 2;
     const offset = randomInRange(-30, 30);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + angle + offset,
       y: origin.y,
@@ -44,10 +43,8 @@ export const createAuroraParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderAuroraParticle = (particle: Particle): React.ReactNode => {

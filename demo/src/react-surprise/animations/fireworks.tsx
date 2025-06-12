@@ -1,8 +1,21 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
-import { randomInRange, degreesToRadians, generateId, getRandomColor } from '../utils';
+import {
+  randomInRange,
+  degreesToRadians,
+  generateId,
+  getRandomColor,
+} from '../utils';
 
-const fireworkColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
+const fireworkColors = [
+  '#ff0000',
+  '#00ff00',
+  '#0000ff',
+  '#ffff00',
+  '#ff00ff',
+  '#00ffff',
+  '#ffffff',
+];
 
 export const createFireworkParticles = (
   origin: { x: number; y: number },
@@ -12,7 +25,7 @@ export const createFireworkParticles = (
     particleCount = 60,
     startVelocity = 25,
     colors = fireworkColors,
-    elementSize = 8
+    elementSize = 8,
   } = config;
 
   const particles: Particle[] = [];

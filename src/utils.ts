@@ -24,9 +24,11 @@ export const createParticleStyle = (
 ): React.CSSProperties => {
   return {
     position: 'absolute',
-    left: `${particle.x - containerRect.left}px`,
-    top: `${particle.y - containerRect.top}px`,
-    transform: `rotate(${particle.rotation}deg)`,
+    left: `${particle.x}px`,
+    top: `${particle.y}px`,
+    width: `${particle.size}px`,
+    height: `${particle.size}px`,
+    transform: `rotate(${particle.rotation}deg) translateX(-50%) translateY(-50%)`,
     opacity: particle.opacity,
     pointerEvents: 'none',
     transition: 'none',
