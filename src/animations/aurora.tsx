@@ -33,10 +33,10 @@ export const createAuroraParticles = (
       id: generateId(),
       x: origin.x + angle + offset,
       y: origin.y,
-      vx: randomInRange(-1, 1),
+      vx: randomInRange(-0.5, 0.5),
       vy: -startVelocity,
       life: config.lifetime || 250,
-      opacity: 0,
+      opacity: 1,
       size: randomInRange(elementSize * 0.8, elementSize * 1.2),
       rotation: randomInRange(-15, 15),
       color:
@@ -48,11 +48,14 @@ export const createAuroraParticles = (
 };
 
 export const renderAuroraParticle = (particle: Particle): React.ReactNode => {
-  // Create flowing wave motion
-  const wave = Math.sin(particle.life * 0.05) * 20;
-  const fadeIn = Math.min(1, (250 - particle.life) / 50);
-  const fadeOut = particle.life / 250;
-  const opacity = Math.min(fadeIn, fadeOut) * 0.4;
+  // Create gentle flowing wave motion - reduced amplitude
+  const wave = Math.sin(particle.life * 0.02) * 10;
+  // Use the actual particle opacity set by animationManager
+  const baseOpacity = particle.opacity;
+  // Add fade in/out effect
+  const fadeIn = particle.life > 350 ? (400 - particle.life) / 50 : 1;
+  const fadeOut = particle.life < 50 ? particle.life / 50 : 1;
+  const opacity = baseOpacity * fadeIn * fadeOut * 0.4;
 
   return (
     <div
@@ -61,7 +64,7 @@ export const renderAuroraParticle = (particle: Particle): React.ReactNode => {
         width: `${particle.size}px`,
         height: `${particle.size * 0.3}px`,
         position: 'relative',
-        transform: `translateX(${wave}px) rotate(${particle.rotation}deg)`,
+        transform: `translateX(${wave}px)`,
         filter: 'blur(2px)',
       }}
     >

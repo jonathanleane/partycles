@@ -151,12 +151,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   aurora: {
-    particleCount: 15,
-    spread: 200,
-    startVelocity: 3,
-    elementSize: 100,
-    lifetime: 250,
-    physics: { gravity: -0.2, wind: 0, friction: 0.99 },
+    particleCount: 12,
+    spread: 150,
+    startVelocity: 0.8,
+    elementSize: 80,
+    lifetime: 300,
+    physics: { gravity: -0.02, wind: 0.05, friction: 0.998 },
     effects: {}
   },
   fireflies: {
@@ -233,11 +233,11 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
   },
   artillery: {
     particleCount: 3,
-    spread: 20,
-    startVelocity: 20,
-    elementSize: 10,
-    lifetime: 100,
-    physics: { gravity: 0.4, wind: 0, friction: 0.98 },
+    spread: 60,
+    startVelocity: 12,
+    elementSize: 6,
+    lifetime: 200,
+    physics: { gravity: 0.35, wind: 0, friction: 0.99 },
     effects: {}
   }
 };
@@ -337,7 +337,7 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    artillery: useReward('hero-title', 'artillery', { ...defaultConfigs.artillery, particleCount: Math.floor(3 * mobileFactor), colors: defaultColors.artillery })
+    artillery: useReward('hero-title', 'artillery', { ...defaultConfigs.artillery, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.artillery })
   };
 
   const triggerHeroAnimation = () => {

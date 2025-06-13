@@ -1,6 +1,7 @@
 import { Particle } from './types';
 import { particlePool, PooledParticle } from './particlePool';
 import { shouldSkipFrame } from './mobileOptimizations';
+import { randomInRange } from './utils';
 
 export interface AnimationInstance {
   id: string;
@@ -152,7 +153,14 @@ class AnimationManager {
         particle.vx += animation.physics.wind;
         particle.vx *= animation.physics.friction;
         particle.vy *= animation.physics.friction;
-        particle.rotation += particle.vx * 2;
+        
+        // Update rotation - make sparkles spin more
+        if (animation.animationType === 'sparkles') {
+          particle.rotation += 5; // Constant spin for sparkles
+        } else {
+          particle.rotation += particle.vx * 2;
+        }
+        
         particle.life -= 1.2;
 
         // Apply animation-specific effects
@@ -227,45 +235,112 @@ class AnimationManager {
     try {
       const elementData = JSON.parse(particle.element as string);
 
-      // Check if this is a shell that should explode
-      if (
-        elementData.isShell &&
-        particle.life <= elementData.explodeAt &&
-        !elementData.hasExploded
-      ) {
-        // Mark as exploded to prevent multiple explosions
-        elementData.hasExploded = true;
-        particle.element = JSON.stringify(elementData);
-
-        // Create explosion particles
-        const burstCount = elementData.burstCount || 20;
-        const explosionParticles: PooledParticle[] = [];
-
-        for (let i = 0; i < burstCount; i++) {
-          const angle = (360 / burstCount) * i + (Math.random() - 0.5) * 30;
-          const velocity = Math.random() * 12 + 8;
-          const rad = (angle * Math.PI) / 180;
-
-          const burstParticle = particlePool.acquire();
-          Object.assign(burstParticle, {
-            id: `${particle.id}-burst-${i}`,
-            x: particle.x,
-            y: particle.y,
-            vx: Math.cos(rad) * velocity,
-            vy: Math.sin(rad) * velocity,
-            life: 80,
-            opacity: 1,
-            size: Math.random() * 6 + 3,
-            rotation: Math.random() * 360,
+      // Handle shell particles
+      if (elementData.isShell && !elementData.hasExploded) {
+        // Create trail particles as the shell rises
+        if (animation.frameCount % 3 === 0) {
+          const trailParticle = particlePool.acquire();
+          Object.assign(trailParticle, {
+            id: `${particle.id}-trail-${Date.now()}`,
+            x: particle.x + randomInRange(-2, 2),
+            y: particle.y + randomInRange(-2, 2),
+            vx: randomInRange(-1, 1),
+            vy: randomInRange(0, 2),
+            life: 30,
+            opacity: 0.8,
+            size: particle.size * 0.7,
+            rotation: 0,
             color: particle.color,
+            element: JSON.stringify({ isTrail: true }),
             config: particle.config,
           });
-
-          explosionParticles.push(burstParticle);
+          animation.particles.push(trailParticle);
         }
 
-        // Add explosion particles to the animation
-        animation.particles.push(...explosionParticles);
+        // Check if it's time to explode based on fixed timer
+        const totalLife = particle.config?.lifetime ?? 200;
+        const flightTime = (totalLife - particle.life);
+        const shouldExplode = flightTime >= (elementData.timeToExplode || 25);
+
+        if (shouldExplode) {
+          // Mark as exploded
+          elementData.hasExploded = true;
+          particle.element = JSON.stringify(elementData);
+
+
+          // Create dramatic burst
+          const burstCount = elementData.burstCount || 40;
+          const explosionParticles: PooledParticle[] = [];
+
+          // Create starburst pattern
+          for (let i = 0; i < burstCount; i++) {
+            const angle = (360 / burstCount) * i;
+            const velocityBase = 6;
+            const velocityVariation = randomInRange(0.6, 1.2);
+            const velocity = velocityBase * velocityVariation;
+            const rad = (angle * Math.PI) / 180;
+
+            // Main burst particle
+            const burstParticle = particlePool.acquire();
+            Object.assign(burstParticle, {
+              id: `${particle.id}-burst-${i}`,
+              x: particle.x,
+              y: particle.y,
+              vx: Math.cos(rad) * velocity,
+              vy: Math.sin(rad) * velocity,
+              life: 100,
+              opacity: 1,
+              size: randomInRange(3, 6),
+              rotation: 0,
+              color: elementData.burstColor || particle.color,
+              element: JSON.stringify({ isBurst: true }),
+              config: particle.config, // Important: copy config for rendering
+            });
+            explosionParticles.push(burstParticle);
+
+            // Add some extra particles for fuller effect
+            if (i % 3 === 0) {
+              const extraParticle = particlePool.acquire();
+              const extraAngle = angle + randomInRange(-15, 15);
+              const extraRad = (extraAngle * Math.PI) / 180;
+              Object.assign(extraParticle, {
+                id: `${particle.id}-extra-${i}`,
+                x: particle.x,
+                y: particle.y,
+                vx: Math.cos(extraRad) * velocity * 0.8,
+                vy: Math.sin(extraRad) * velocity * 0.8,
+                life: 80,
+                opacity: 1,
+                size: randomInRange(2, 4),
+                rotation: 0,
+                color: elementData.burstColor || particle.color,
+                element: JSON.stringify({ isBurst: true }),
+                config: particle.config,
+              });
+              explosionParticles.push(extraParticle);
+            }
+          }
+
+          // Add center flash
+          const flashParticle = particlePool.acquire();
+          Object.assign(flashParticle, {
+            id: `${particle.id}-flash`,
+            x: particle.x,
+            y: particle.y,
+            vx: 0,
+            vy: 0,
+            life: 20,
+            opacity: 1,
+            size: 30,
+            rotation: 0,
+            color: '#ffffff',
+            element: JSON.stringify({ isBurst: true }),
+            config: particle.config,
+          });
+          explosionParticles.push(flashParticle);
+
+          animation.particles.push(...explosionParticles);
+        }
       }
     } catch (e) {
       // Ignore parse errors
