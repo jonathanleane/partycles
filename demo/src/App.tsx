@@ -151,12 +151,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   aurora: {
-    particleCount: 12,
-    spread: 150,
+    particleCount: 20,
+    spread: 300,
     startVelocity: 0.8,
-    elementSize: 80,
+    elementSize: 100,
     lifetime: 300,
-    physics: { gravity: -0.02, wind: 0.05, friction: 0.998 },
+    physics: { gravity: -0.02, wind: 0, friction: 0.9 },
     effects: {}
   },
   fireflies: {

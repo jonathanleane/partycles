@@ -18,9 +18,9 @@ export const createAuroraParticles = (
   config: AnimationConfig
 ): Particle[] => {
   const {
-    particleCount = 15,
-    spread = 200,
-    startVelocity = 3,
+    particleCount = 20,
+    spread = 300,
+    startVelocity = 0.8,
     colors = auroraColors,
     elementSize = 100,
   } = config;
