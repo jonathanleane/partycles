@@ -66,7 +66,6 @@ export const renderCoinParticle = (
         border: `1px solid ${particle.color}`,
         position: 'relative',
         overflow: 'hidden',
-        backfaceVisibility: 'hidden',
       }}
     >
       {/* Dollar sign - hide when flipped */}
