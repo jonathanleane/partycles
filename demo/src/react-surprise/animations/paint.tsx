@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const paintColors = [
   '#FF006E',
@@ -23,14 +24,12 @@ export const createPaintParticles = (
     elementSize = 30,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, (i) => {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
     const isMainSplat = i < 5; // First few particles are bigger splats
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -46,10 +45,8 @@ export const createPaintParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderPaintParticle = (particle: Particle): React.ReactNode => {

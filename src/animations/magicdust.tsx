@@ -6,6 +6,7 @@ import {
   generateId,
   getRandomColor,
 } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const defaultColors = [
   '#9C27B0',

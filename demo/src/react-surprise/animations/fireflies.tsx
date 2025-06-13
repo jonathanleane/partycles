@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const fireflyColors = ['#FFFF99', '#FFFFCC', '#FFFF66', '#FFFFAA'];
 
@@ -16,13 +17,11 @@ export const createFireflyParticles = (
     elementSize = 8,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(0, 360) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.3, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-spread / 2, spread / 2),
       y: origin.y + randomInRange(-20, 20),
@@ -36,10 +35,8 @@ export const createFireflyParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderFireflyParticle = (particle: Particle): React.ReactNode => {

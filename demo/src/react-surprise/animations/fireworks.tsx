@@ -6,6 +6,7 @@ import {
   generateId,
   getRandomColor,
 } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const fireworkColors = [
   '#ff0000',
@@ -28,14 +29,12 @@ export const createFireworkParticles = (
     elementSize = 8,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, (i) => {
     const angle = (360 / particleCount) * i + randomInRange(-5, 5);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity * 1.2);
     const color = getRandomColor(colors);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -46,10 +45,8 @@ export const createFireworkParticles = (
       size: randomInRange(elementSize * 0.6, elementSize * 1.4),
       rotation: 0,
       color,
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderFireworkParticle = (particle: Particle): React.ReactNode => {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 export const createSparkleParticles = (
   origin: { x: number; y: number },
@@ -14,11 +15,9 @@ export const createSparkleParticles = (
     colors = ['#FFD700', '#FFFFFF'],
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const velocityScale = startVelocity / 45; // Scale based on default
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-spread, spread),
       y: origin.y + randomInRange(-spread, spread),
@@ -32,10 +31,8 @@ export const createSparkleParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderSparkleParticle = (particle: Particle): React.ReactNode => {

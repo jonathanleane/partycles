@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const coinColors = ['#FFD700', '#FFA500', '#FFB300', '#FFC700'];
 
@@ -16,13 +17,11 @@ export const createCoinParticles = (
     elementSize = 25,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2) * (Math.PI / 180);
     const velocity = randomInRange(startVelocity * 0.5, startVelocity);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x,
       y: origin.y,
@@ -36,10 +35,8 @@ export const createCoinParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderCoinParticle = (

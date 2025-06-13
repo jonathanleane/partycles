@@ -2,30 +2,11 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { render, screen } from '@testing-library/react';
 import { useReward } from './useReward';
-import { animations } from './animations';
 
-// Mock the animations module
-jest.mock('./animations', () => ({
-  animations: {
-    confetti: {
-      createParticles: jest.fn(() => [
-        {
-          id: 'particle-1',
-          x: 50,
-          y: 50,
-          vx: 1,
-          vy: -5,
-          life: 100,
-          opacity: 1,
-          size: 20,
-          rotation: 0,
-          color: '#ff0000',
-        },
-      ]),
-      renderParticle: jest.fn(() => <div>Confetti Particle</div>),
-    },
-  },
-}));
+// Jest will automatically use __mocks__/animations.tsx
+jest.mock('./animations');
+jest.mock('./animationManager');
+jest.mock('./mobileOptimizations');
 
 describe('useReward', () => {
   beforeEach(() => {

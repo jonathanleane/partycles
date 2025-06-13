@@ -44,10 +44,6 @@ export const optimizeConfigForMobile = (
       wind: Math.round((config.physics?.wind || 0) * 100) / 100,
       friction: Math.round((config.physics?.friction || 0.98) * 100) / 100,
     },
-    // Preserve radial config
-    radial: config.radial,
-    // Preserve effects config
-    effects: config.effects,
   };
 };
 

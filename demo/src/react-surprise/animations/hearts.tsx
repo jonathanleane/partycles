@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId, getRandomColor } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const heartColors = ['#ff1744', '#e91e63', '#ff4569', '#ff6b6b', '#ee5a70'];
 
@@ -15,14 +16,12 @@ export const createHeartParticles = (
     elementSize = 30,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
+  return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-45, -135);
     const velocity = randomInRange(startVelocity * 0.7, startVelocity * 1.3);
     const horizontalDrift = randomInRange(-2, 2);
 
-    particles.push({
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-10, 10),
       y: origin.y,
@@ -33,10 +32,8 @@ export const createHeartParticles = (
       size: randomInRange(elementSize * 0.6, elementSize * 1.2),
       rotation: randomInRange(-20, 20),
       color: getRandomColor(colors),
-    });
-  }
-
-  return particles;
+    };
+  });
 };
 
 export const renderHeartParticle = (

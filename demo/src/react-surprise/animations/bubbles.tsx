@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const bubbleColors = [
   'rgba(66, 165, 245, 0.4)',
@@ -21,10 +22,8 @@ export const createBubbleParticles = (
     elementSize = 40,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
+  return createPooledParticles(particleCount, () => {
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-spread, spread),
       y: origin.y,
@@ -38,10 +37,8 @@ export const createBubbleParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderBubbleParticle = (particle: Particle): React.ReactNode => {

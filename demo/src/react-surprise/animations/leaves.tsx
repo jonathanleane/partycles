@@ -1,6 +1,7 @@
 import React from 'react';
 import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId, getRandomColor } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const defaultColors = [
   '#D2691E',
@@ -21,10 +22,8 @@ export const createLeafParticles = (
     elementSize = 25,
   } = config;
 
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
+  return createPooledParticles(particleCount, () => {
+    return {
       id: generateId(),
       x: origin.x + randomInRange(-100, 100),
       y: origin.y + randomInRange(-50, 0),
@@ -40,10 +39,8 @@ export const createLeafParticles = (
         Math.floor(randomInRange(20, 40)) * 1000000 +
         (Math.floor(randomInRange(-3, 3)) + 3) * 100000000,
       color: getRandomColor(colors),
-    });
-  }
-
-  return particles;
+    }
+  });
 };
 
 export const renderLeafParticle = (particle: Particle): React.ReactNode => {

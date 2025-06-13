@@ -6,6 +6,7 @@ import {
   generateId,
   getRandomColor,
 } from '../utils';
+import { createPooledParticles } from '../particlePool';
 
 const fireworkColors = [
   '#ff0000',

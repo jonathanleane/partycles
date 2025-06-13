@@ -47,33 +47,6 @@ jest.mock('react-dom/client', () => ({
   createRoot: jest.fn(() => mockRoot),
 }));
 
-// Mock animations module
-jest.mock('../animations', () => ({
-  animations: {
-    confetti: {
-      createParticles: jest.fn(() => [
-        {
-          id: 'particle-1',
-          x: 50,
-          y: 50,
-          vx: 1,
-          vy: -5,
-          life: 100,
-          opacity: 1,
-          size: 20,
-          rotation: 0,
-          color: '#ff0000',
-        },
-      ]),
-      renderParticle: jest.fn((particle) => `Particle ${particle.id}`),
-    },
-    sparkles: {
-      createParticles: jest.fn(() => []),
-      renderParticle: jest.fn(() => 'Sparkle'),
-    },
-  },
-}));
-
 // Suppress console warnings in tests unless explicitly testing them
 const originalWarn = console.warn;
 beforeAll(() => {

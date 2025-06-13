@@ -27,17 +27,6 @@ export interface AnimationConfig {
     wind?: number;
     friction?: number;
   };
-  // Radial movement configuration
-  radial?: {
-    enabled?: boolean; // Enable radial burst movement
-    pattern?: 'circular' | 'cone' | 'random' | 'spiral' | 'vortex' | 'pinwheel'; // Burst pattern type
-    angleVariation?: number; // Randomness in angle (0-1)
-    velocityVariation?: number; // Randomness in velocity (0-1)
-    spiralTurns?: number; // Number of spiral rotations (for spiral pattern)
-    vortexPull?: number; // Strength of inward pull (for vortex pattern)
-    pinwheelArms?: number; // Number of arms on the pinwheel (for pinwheel pattern)
-    rotationSpeed?: number; // Speed of pinwheel rotation
-  };
   // Optional enhanced effects
   effects?: {
     flutter?: boolean; // For confetti - paper-like floating
@@ -72,4 +61,11 @@ export type AnimationType =
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;
+}
+
+export interface AnimationControls {
+  pause: () => void;
+  resume: () => void;
+  replay: () => Promise<void>;
+  isPaused: boolean;
 }
