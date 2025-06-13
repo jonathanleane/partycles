@@ -21,7 +21,7 @@ export const createArtilleryParticles = (
   const particles: Particle[] = [];
 
   // Create mortar shells (primary particles)
-  const shells = createPooledParticles(particleCount, (i) => {
+  const shells = createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2);
     const velocity = randomInRange(startVelocity * 0.8, startVelocity);
     
@@ -73,10 +73,19 @@ export const createArtilleryParticles = (
   return particles;
 };
 
+interface ArtilleryElementData {
+  isShell?: boolean;
+  isSmoke?: boolean;
+  explodeAt?: number;
+  burstCount?: number;
+  parentId?: string;
+  delay?: number;
+}
+
 export const renderArtilleryParticle = (
   particle: Particle & { config?: AnimationConfig }
 ): React.ReactNode => {
-  let elementData: any = {};
+  let elementData: ArtilleryElementData = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
       elementData = JSON.parse(particle.element);
