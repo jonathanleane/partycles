@@ -228,11 +228,15 @@ class AnimationManager {
       const elementData = JSON.parse(particle.element as string);
 
       // Check if this is a shell that should explode
-      if (elementData.isShell && particle.life <= elementData.explodeAt && !elementData.hasExploded) {
+      if (
+        elementData.isShell &&
+        particle.life <= elementData.explodeAt &&
+        !elementData.hasExploded
+      ) {
         // Mark as exploded to prevent multiple explosions
         elementData.hasExploded = true;
         particle.element = JSON.stringify(elementData);
-        
+
         // Create explosion particles
         const burstCount = elementData.burstCount || 20;
         const explosionParticles: PooledParticle[] = [];

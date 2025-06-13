@@ -127,11 +127,11 @@ export const renderArtilleryParticle = (
   if (elementData.isShell) {
     // Check if we should hide the shell (after explosion)
     const shouldHide = particle.life <= (elementData.explodeAt || 30);
-    
+
     if (shouldHide) {
       return null; // Hide the shell after explosion
     }
-    
+
     return (
       <div
         key={particle.id}
