@@ -33,8 +33,8 @@ export const createArtilleryParticles = (
     // Distribute shells across the spread angle - more horizontal
     const baseAngle = -90; // Start from straight up
     const angleStep = particleCount > 1 ? spread / (particleCount - 1) : 0;
-    const angle = baseAngle - spread/2 + (angleStep * index);
-    
+    const angle = baseAngle - spread / 2 + angleStep * index;
+
     const velocity = randomInRange(startVelocity * 0.9, startVelocity * 1.1);
     const targetColor = colors[Math.floor(Math.random() * colors.length)];
     const rad = degreesToRadians(angle);

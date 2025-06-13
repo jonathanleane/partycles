@@ -153,14 +153,14 @@ class AnimationManager {
         particle.vx += animation.physics.wind;
         particle.vx *= animation.physics.friction;
         particle.vy *= animation.physics.friction;
-        
+
         // Update rotation - make sparkles spin more
         if (animation.animationType === 'sparkles') {
           particle.rotation += 5; // Constant spin for sparkles
         } else {
           particle.rotation += particle.vx * 2;
         }
-        
+
         particle.life -= 1.2;
 
         // Apply animation-specific effects
@@ -259,14 +259,13 @@ class AnimationManager {
 
         // Check if it's time to explode based on fixed timer
         const totalLife = particle.config?.lifetime ?? 200;
-        const flightTime = (totalLife - particle.life);
+        const flightTime = totalLife - particle.life;
         const shouldExplode = flightTime >= (elementData.timeToExplode || 25);
 
         if (shouldExplode) {
           // Mark as exploded
           elementData.hasExploded = true;
           particle.element = JSON.stringify(elementData);
-
 
           // Create dramatic burst
           const burstCount = elementData.burstCount || 40;
