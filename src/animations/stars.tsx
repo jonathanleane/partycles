@@ -34,7 +34,7 @@ export const createStarParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    }
+    };
   });
 };
 

@@ -20,8 +20,8 @@ describe('confetti animation', () => {
 
     it('should create particles at the origin point', () => {
       const particles = createConfettiParticles(origin, defaultConfig);
-      
-      particles.forEach(particle => {
+
+      particles.forEach((particle) => {
         expect(particle.x).toBe(origin.x);
         expect(particle.y).toBe(origin.y);
       });
@@ -29,8 +29,8 @@ describe('confetti animation', () => {
 
     it('should create particles with required properties', () => {
       const particles = createConfettiParticles(origin, defaultConfig);
-      
-      particles.forEach(particle => {
+
+      particles.forEach((particle) => {
         expect(particle).toHaveProperty('id');
         expect(particle).toHaveProperty('x');
         expect(particle).toHaveProperty('y');
@@ -47,9 +47,11 @@ describe('confetti animation', () => {
     it('should create particles with velocities', () => {
       const config = { spread: 45, startVelocity: 10 };
       const particles = createConfettiParticles(origin, config);
-      
-      particles.forEach(particle => {
-        const velocity = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+
+      particles.forEach((particle) => {
+        const velocity = Math.sqrt(
+          particle.vx * particle.vx + particle.vy * particle.vy
+        );
         expect(velocity).toBeGreaterThan(0);
         // Velocity includes both startVelocity and initial upward boost (vy - 30)
         expect(velocity).toBeLessThan(50); // reasonable upper bound considering vy boost
@@ -60,17 +62,17 @@ describe('confetti animation', () => {
       const customColors = ['#ff0000', '#00ff00', '#0000ff'];
       const config = { colors: customColors };
       const particles = createConfettiParticles(origin, config);
-      
-      particles.forEach(particle => {
+
+      particles.forEach((particle) => {
         expect(customColors).toContain(particle.color);
       });
     });
 
     it('should create particles with unique IDs', () => {
       const particles = createConfettiParticles(origin, defaultConfig);
-      const ids = particles.map(p => p.id);
+      const ids = particles.map((p) => p.id);
       const uniqueIds = new Set(ids);
-      
+
       expect(uniqueIds.size).toBe(ids.length);
     });
   });
@@ -106,7 +108,7 @@ describe('confetti animation', () => {
 
     it('should apply correct styles to the particle', () => {
       const result = renderConfettiParticle(mockParticle) as React.ReactElement;
-      
+
       expect(result.props.style).toMatchObject({
         width: `${mockParticle.size}px`,
         height: `${mockParticle.size * 0.6}px`,
@@ -117,13 +119,17 @@ describe('confetti animation', () => {
     });
 
     it('should handle flutter effect when enabled', () => {
-      const particleWithEffect: Particle & { config?: { effects?: { flutter?: boolean } } } = {
+      const particleWithEffect: Particle & {
+        config?: { effects?: { flutter?: boolean } };
+      } = {
         ...mockParticle,
         config: { effects: { flutter: true } },
       };
-      
-      const result = renderConfettiParticle(particleWithEffect) as React.ReactElement;
-      
+
+      const result = renderConfettiParticle(
+        particleWithEffect
+      ) as React.ReactElement;
+
       // Flutter transform is calculated based on particle.life
       expect(result.props.style.transform).toContain('rotateY');
     });

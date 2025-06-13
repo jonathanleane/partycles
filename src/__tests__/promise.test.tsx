@@ -25,16 +25,16 @@ describe('useReward promise functionality', () => {
     });
 
     let resolved = false;
-    
+
     await act(async () => {
       const promise = result.current.reward();
       promise.then(() => {
         resolved = true;
       });
-      
+
       // Should not be resolved immediately
       expect(resolved).toBe(false);
-      
+
       // Wait for animation to complete
       await promise;
       expect(resolved).toBe(true);
@@ -61,7 +61,7 @@ describe('useReward promise functionality', () => {
 
     const promise1 = result.current.reward();
     const promise2 = result.current.reward();
-    
+
     expect(promise1).toBeInstanceOf(Promise);
     expect(promise2).toBeInstanceOf(Promise);
     // Second call should resolve immediately since animation is already running

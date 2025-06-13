@@ -47,21 +47,21 @@ describe('ParticlePool', () => {
 
   it('should reset particle properties when releasing', () => {
     const particle = particlePool.acquire();
-    
+
     // Set some properties
     particle.element = 'test-element';
     particle.config = { particleCount: 50 };
     particle.x = 100;
     particle.y = 200;
-    
+
     // Release it
     particlePool.release(particle);
-    
+
     // Properties that should be reset
     expect(particle.element).toBeUndefined();
     expect(particle.config).toBeUndefined();
     expect(particle._pooled).toBe(true);
-    
+
     // Properties that should NOT be reset (for performance)
     expect(particle.x).toBe(100);
     expect(particle.y).toBe(200);
@@ -71,16 +71,16 @@ describe('ParticlePool', () => {
     // Create a small pool for testing
     const { ParticlePool } = await import('../particlePool');
     const testPool = new ParticlePool(5);
-    
+
     // Create and release 10 particles
     const particles = [];
     for (let i = 0; i < 10; i++) {
       particles.push(testPool.acquire());
     }
-    
+
     // Release all
     testPool.releaseAll(particles);
-    
+
     // Pool should only contain max size
     const stats = testPool.getStats();
     expect(stats.poolSize).toBe(5);
@@ -92,14 +92,14 @@ describe('ParticlePool', () => {
     for (let i = 0; i < 5; i++) {
       particles.push(particlePool.acquire());
     }
-    
+
     particlePool.releaseAll(particles);
-    
+
     const stats = particlePool.getStats();
     expect(stats.poolSize).toBe(5);
-    
+
     // All particles should be marked as pooled
-    particles.forEach(p => {
+    particles.forEach((p) => {
       expect(p._pooled).toBe(true);
     });
   });
@@ -107,13 +107,13 @@ describe('ParticlePool', () => {
   it('should not add already pooled particles', () => {
     const particle = particlePool.acquire();
     particlePool.release(particle);
-    
+
     let stats = particlePool.getStats();
     expect(stats.poolSize).toBe(1);
-    
+
     // Try to release again
     particlePool.release(particle);
-    
+
     // Pool size should not increase
     stats = particlePool.getStats();
     expect(stats.poolSize).toBe(1);

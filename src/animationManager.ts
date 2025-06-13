@@ -48,7 +48,7 @@ class AnimationManager {
 
   addAnimation(animation: AnimationInstance): void {
     this.animations.set(animation.id, animation);
-    
+
     // Start the loop if not already running
     if (!this.isRunning && this.animations.size > 0) {
       this.start();
@@ -60,12 +60,15 @@ class AnimationManager {
     if (animation) {
       // Release particles back to pool
       particlePool.releaseAll(animation.particles as Particle[]);
-      
+
       // Remove container
-      if (animation.containerElement && document.body.contains(animation.containerElement)) {
+      if (
+        animation.containerElement &&
+        document.body.contains(animation.containerElement)
+      ) {
         document.body.removeChild(animation.containerElement);
       }
-      
+
       this.animations.delete(id);
     }
 
@@ -77,7 +80,7 @@ class AnimationManager {
 
   private start(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
     this.lastFrameTime = performance.now();
     this.lastFpsUpdate = this.lastFrameTime;
@@ -87,7 +90,7 @@ class AnimationManager {
 
   private stop(): void {
     if (!this.isRunning) return;
-    
+
     this.isRunning = false;
     if (this.rafId !== null) {
       cancelAnimationFrame(this.rafId);
@@ -98,13 +101,13 @@ class AnimationManager {
   private update(currentTime: number): void {
     // Calculate delta time
     const deltaTime = currentTime - this.lastFrameTime;
-    
+
     // Frame rate limiting
     if (deltaTime < this.frameInterval) {
       this.rafId = requestAnimationFrame(this.update);
       return;
     }
-    
+
     this.lastFrameTime = currentTime - (deltaTime % this.frameInterval);
     this.frameCount++;
 
@@ -124,24 +127,24 @@ class AnimationManager {
 
     // Update all animations
     const completedAnimations: string[] = [];
-    
+
     this.animations.forEach((animation, id) => {
       // Skip update if animation is paused
       if (animation.isPaused) {
         return;
       }
-      
+
       animation.frameCount++;
       const skipFrame = shouldSkipFrame(animation.frameCount);
-      
+
       let activeParticles = 0;
-      
+
       // Update particles
       animation.particles = animation.particles.map((particle) => {
         if (particle.life <= 0) return particle;
-        
+
         activeParticles++;
-        
+
         // Physics update
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -151,21 +154,21 @@ class AnimationManager {
         particle.vy *= animation.physics.friction;
         particle.rotation += particle.vx * 2;
         particle.life -= 1.2;
-        
+
         // Apply animation-specific effects
         this.applyEffects(particle, animation);
-        
+
         // Update opacity
         this.updateOpacity(particle, animation);
-        
+
         return particle;
       });
-      
+
       // Call update callback if provided
       if (animation.updateCallback && !skipFrame) {
         animation.updateCallback(animation.particles);
       }
-      
+
       // Mark for removal if no active particles
       if (activeParticles === 0) {
         completedAnimations.push(id);
@@ -174,10 +177,10 @@ class AnimationManager {
         }
       }
     });
-    
+
     // Remove completed animations
-    completedAnimations.forEach(id => this.removeAnimation(id));
-    
+    completedAnimations.forEach((id) => this.removeAnimation(id));
+
     // Continue loop if animations remain
     if (this.isRunning) {
       this.rafId = requestAnimationFrame(this.update);
@@ -187,20 +190,24 @@ class AnimationManager {
   private applyEffects(particle: Particle, animation: AnimationInstance): void {
     const effects = animation.config?.effects;
     if (!effects) return;
-    
+
     const { animationType } = animation;
-    
+
     // Flutter effect for confetti
     if (effects.flutter && animationType === 'confetti') {
       particle.x += Math.sin(particle.life * 0.1) * 0.5;
       particle.rotation += Math.sin(particle.life * 0.05) * 2;
     }
-    
+
     // Wind drift for snow/leaves
-    if (effects.windDrift && (animationType === 'snow' || animationType === 'leaves')) {
-      particle.x += Math.sin(particle.life * 0.05 + particle.id.charCodeAt(0)) * 0.8;
+    if (
+      effects.windDrift &&
+      (animationType === 'snow' || animationType === 'leaves')
+    ) {
+      particle.x +=
+        Math.sin(particle.life * 0.05 + particle.id.charCodeAt(0)) * 0.8;
     }
-    
+
     // Wobble effect for bubbles
     if (effects.wobble && animationType === 'bubbles') {
       particle.x += Math.sin(particle.life * 0.08) * 0.3;
@@ -208,10 +215,13 @@ class AnimationManager {
     }
   }
 
-  private updateOpacity(particle: Particle, animation: AnimationInstance): void {
+  private updateOpacity(
+    particle: Particle,
+    animation: AnimationInstance
+  ): void {
     const { animationType, config } = animation;
     const effects = config?.effects;
-    
+
     if (animationType === 'sparkles') {
       if (particle.life > 70) {
         particle.opacity = (100 - particle.life) / 30;
@@ -224,7 +234,8 @@ class AnimationManager {
       }
     } else if (animationType === 'stars' && effects?.twinkle) {
       // Twinkle effect for stars
-      particle.opacity = (particle.life / 100) * (0.5 + Math.sin(particle.life * 0.3) * 0.5);
+      particle.opacity =
+        (particle.life / 100) * (0.5 + Math.sin(particle.life * 0.3) * 0.5);
     } else {
       particle.opacity = particle.life / 100;
     }
@@ -236,9 +247,9 @@ class AnimationManager {
       currentFps: this.currentFps,
       isRunning: this.isRunning,
       totalParticles: Array.from(this.animations.values()).reduce(
-        (sum, anim) => sum + anim.particles.filter(p => p.life > 0).length,
+        (sum, anim) => sum + anim.particles.filter((p) => p.life > 0).length,
         0
-      )
+      ),
     };
   }
 
@@ -261,7 +272,7 @@ class AnimationManager {
     const animation = this.animations.get(id);
     if (animation && animation.isPaused) {
       animation.isPaused = false;
-      
+
       // Restart RAF loop if needed
       if (this.animations.size > 0 && !this.isRunning) {
         this.start();

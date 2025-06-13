@@ -16,7 +16,7 @@ export class ParticlePool {
   acquire(): PooledParticle {
     // Try to get a particle from the pool
     const particle = this.pool.pop();
-    
+
     if (particle) {
       particle._pooled = false;
       return particle;
@@ -35,7 +35,7 @@ export class ParticlePool {
       size: 0,
       rotation: 0,
       color: '',
-      _pooled: false
+      _pooled: false,
     };
   }
 
@@ -49,13 +49,13 @@ export class ParticlePool {
     particle._pooled = true;
     particle.element = undefined;
     particle.config = undefined;
-    
+
     // Add back to pool
     this.pool.push(particle);
   }
 
   releaseAll(particles: PooledParticle[]): void {
-    particles.forEach(p => this.release(p));
+    particles.forEach((p) => this.release(p));
   }
 
   clear(): void {
@@ -66,7 +66,7 @@ export class ParticlePool {
     return {
       poolSize: this.pool.length,
       totalCreated: this.created,
-      maxSize: this.maxSize
+      maxSize: this.maxSize,
     };
   }
 }
@@ -77,25 +77,28 @@ export const particlePool = new ParticlePool();
 // Helper function to create particles using the pool
 export function createPooledParticle(props: Partial<Particle>): PooledParticle {
   const particle = particlePool.acquire();
-  
+
   // Apply properties
   Object.assign(particle, props);
-  
+
   // Ensure id is unique if not provided
   if (!props.id) {
     particle.id = `p${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
-  
+
   return particle;
 }
 
 // Helper function to create multiple particles
-export function createPooledParticles(count: number, factory: (index: number) => Partial<Particle>): PooledParticle[] {
+export function createPooledParticles(
+  count: number,
+  factory: (index: number) => Partial<Particle>
+): PooledParticle[] {
   const particles: PooledParticle[] = [];
-  
+
   for (let i = 0; i < count; i++) {
     particles.push(createPooledParticle(factory(i)));
   }
-  
+
   return particles;
 }

@@ -117,7 +117,7 @@ describe('useReward', () => {
     it('should handle invalid animation types gracefully', () => {
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
       const ref = React.createRef<HTMLButtonElement>();
-      
+
       // @ts-expect-error - Testing invalid animation type
       const { result } = renderHook(() => useReward(ref, 'invalid-animation'));
 
@@ -170,7 +170,9 @@ describe('useReward', () => {
       unmount();
 
       // Should not have any lingering elements
-      const containers = document.querySelectorAll('div[style*="position: fixed"]');
+      const containers = document.querySelectorAll(
+        'div[style*="position: fixed"]'
+      );
       expect(containers.length).toBe(0);
     });
   });

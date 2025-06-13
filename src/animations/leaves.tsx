@@ -39,7 +39,7 @@ export const createLeafParticles = (
         Math.floor(randomInRange(20, 40)) * 1000000 +
         (Math.floor(randomInRange(-3, 3)) + 3) * 100000000,
       color: getRandomColor(colors),
-    }
+    };
   });
 };
 

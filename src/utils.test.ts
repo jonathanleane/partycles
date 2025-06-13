@@ -6,7 +6,7 @@ describe('utils', () => {
     it('should return a number within the specified range', () => {
       const min = 10;
       const max = 20;
-      
+
       for (let i = 0; i < 100; i++) {
         const result = randomInRange(min, max);
         expect(result).toBeGreaterThanOrEqual(min);
@@ -17,7 +17,7 @@ describe('utils', () => {
     it('should handle negative ranges', () => {
       const min = -20;
       const max = -10;
-      
+
       for (let i = 0; i < 100; i++) {
         const result = randomInRange(min, max);
         expect(result).toBeGreaterThanOrEqual(min);
@@ -35,11 +35,11 @@ describe('utils', () => {
     it('should generate unique IDs', () => {
       const ids = new Set<string>();
       const count = 1000;
-      
+
       for (let i = 0; i < count; i++) {
         ids.add(generateId());
       }
-      
+
       expect(ids.size).toBe(count);
     });
 
@@ -78,7 +78,7 @@ describe('utils', () => {
 
     it('should create correct particle style object', () => {
       const style = createParticleStyle(mockParticle, mockContainerRect);
-      
+
       expect(style.position).toBe('absolute');
       expect(style.left).toBe('100px');
       expect(style.top).toBe('200px');
@@ -93,22 +93,28 @@ describe('utils', () => {
 
     it('should handle zero opacity', () => {
       const particleWithZeroOpacity = { ...mockParticle, opacity: 0 };
-      const style = createParticleStyle(particleWithZeroOpacity, mockContainerRect);
-      
+      const style = createParticleStyle(
+        particleWithZeroOpacity,
+        mockContainerRect
+      );
+
       expect(style.opacity).toBe(0);
     });
 
     it('should handle negative rotation', () => {
       const particleWithNegativeRotation = { ...mockParticle, rotation: -90 };
-      const style = createParticleStyle(particleWithNegativeRotation, mockContainerRect);
-      
+      const style = createParticleStyle(
+        particleWithNegativeRotation,
+        mockContainerRect
+      );
+
       expect(style.transform).toContain('rotate(-90deg)');
     });
 
     it('should handle particles at container edges', () => {
       const edgeParticle = { ...mockParticle, x: 0, y: 0 };
       const style = createParticleStyle(edgeParticle, mockContainerRect);
-      
+
       expect(style.left).toBe('0px');
       expect(style.top).toBe('0px');
     });

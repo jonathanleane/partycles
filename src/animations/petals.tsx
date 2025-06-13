@@ -35,7 +35,7 @@ export const createPetalParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    }
+    };
   });
 };
 
