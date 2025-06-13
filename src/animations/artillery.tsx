@@ -68,7 +68,7 @@ export const createArtilleryParticles = (
 
   // Create launch sparks at the base
   for (let i = 0; i < 8; i++) {
-    const spark = createPooledParticles(1, () => ({
+    const sparkArray = createPooledParticles(1, () => ({
       id: generateId(),
       x: origin.x + randomInRange(-5, 5),
       y: origin.y,
@@ -82,8 +82,8 @@ export const createArtilleryParticles = (
       element: JSON.stringify({
         isLaunchSpark: true,
       }),
-    }))[0];
-    particles.push(spark);
+    }));
+    particles.push(...sparkArray);
   }
 
   return particles;
