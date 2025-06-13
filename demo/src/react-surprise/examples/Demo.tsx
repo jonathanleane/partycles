@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useReward, emojiPresets } from './react-surprise/index';
-import { ControlsDemo } from './components/ControlsDemo';
-import './App.css';
+import { useReward, emojiPresets } from '../index';
+import { ControlsDemo } from '../../components/ControlsDemo';
+import '../../App.css';
 
 interface AnimationEffects {
   flutter?: boolean;

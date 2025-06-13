@@ -31,7 +31,7 @@ export const createSparkleParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    }
+    };
   });
 };
 
@@ -39,7 +39,7 @@ export const renderSparkleParticle = (
   particle: Particle & { config?: AnimationConfig }
 ): React.ReactNode => {
   const scale = particle.opacity;
-  
+
   // Calculate twinkle effect if enabled
   const twinkle = particle.config?.effects?.twinkle
     ? 0.3 + Math.abs(Math.sin(particle.life * 0.2)) * 0.7

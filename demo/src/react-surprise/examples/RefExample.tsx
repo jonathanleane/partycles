@@ -7,11 +7,7 @@ export function RefExample() {
   const { reward, isAnimating } = useReward(buttonRef, 'confetti');
 
   return (
-    <button 
-      ref={buttonRef} 
-      onClick={reward}
-      disabled={isAnimating}
-    >
+    <button ref={buttonRef} onClick={reward} disabled={isAnimating}>
       Click me for confetti! 🎉
     </button>
   );
@@ -22,11 +18,7 @@ export function StringIdExample() {
   const { reward, isAnimating } = useReward('my-button', 'confetti');
 
   return (
-    <button 
-      id="my-button" 
-      onClick={reward}
-      disabled={isAnimating}
-    >
+    <button id="my-button" onClick={reward} disabled={isAnimating}>
       Click me for confetti! 🎉
     </button>
   );
@@ -43,16 +35,16 @@ export function AdvancedExample() {
     physics: {
       gravity: 0.3,
       wind: 0.1,
-      friction: 0.97
+      friction: 0.97,
     },
     effects: {
-      twinkle: true
-    }
+      twinkle: true,
+    },
   });
 
   return (
-    <button 
-      ref={buttonRef} 
+    <button
+      ref={buttonRef}
       onClick={reward}
       disabled={isAnimating}
       style={{
@@ -62,7 +54,7 @@ export function AdvancedExample() {
         border: 'none',
         backgroundColor: isAnimating ? '#ccc' : '#4CAF50',
         color: 'white',
-        cursor: isAnimating ? 'not-allowed' : 'pointer'
+        cursor: isAnimating ? 'not-allowed' : 'pointer',
       }}
     >
       {isAnimating ? 'Animating...' : 'Trigger Stars ⭐'}

@@ -47,7 +47,7 @@ export const createCrystalParticles = (
       size: randomInRange(elementSize * 0.6, elementSize),
       rotation: randomInRange(0, 360),
       color,
-    }
+    };
   });
 };
 
