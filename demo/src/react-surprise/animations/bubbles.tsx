@@ -46,8 +46,8 @@ export const renderBubbleParticle = (particle: Particle): React.ReactNode => {
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size}px`,
+        width: '100%',
+        height: '100%',
         backgroundColor: particle.color,
         borderRadius: '50%',
         border: '2px solid rgba(255, 255, 255, 0.6)',

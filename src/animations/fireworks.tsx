@@ -45,7 +45,7 @@ export const createFireworkParticles = (
       size: randomInRange(elementSize * 0.6, elementSize * 1.4),
       rotation: 0,
       color,
-    };
+    }
   });
 };
 
@@ -54,8 +54,8 @@ export const renderFireworkParticle = (particle: Particle): React.ReactNode => {
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size}px`,
+        width: '100%',
+        height: '100%',
         backgroundColor: '#ffffff',
         borderRadius: '50%',
         boxShadow: `

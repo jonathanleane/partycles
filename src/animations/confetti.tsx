@@ -59,27 +59,26 @@ export const createConfettiParticles = (
 };
 
 export const renderConfettiParticle = (particle: Particle): React.ReactNode => {
-  const particleWithEffects = particle as Particle & {
-    config?: AnimationConfig;
-  };
+  const particleWithEffects = particle as Particle & { config?: AnimationConfig };
   const flutterEffect = particleWithEffects.config?.effects?.flutter;
-
+  
   // Apply flutter transform if enabled
-  const flutterTransform =
-    flutterEffect && particle.life > 0
-      ? `rotateY(${Math.sin(particle.life * 0.1) * 360}deg)`
-      : '';
-
+  const flutterTransform = flutterEffect && particle.life > 0
+    ? `rotateY(${Math.sin(particle.life * 0.1) * 360}deg)`
+    : '';
+  
   return (
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size * 0.6}px`,
+        width: '100%',
+        height: '60%',
         backgroundColor: particle.color,
         borderRadius: '3px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         transform: flutterTransform,
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
       }}
     />
   );

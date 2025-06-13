@@ -71,12 +71,14 @@ export const renderConfettiParticle = (particle: Particle): React.ReactNode => {
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size * 0.6}px`,
+        width: '100%',
+        height: '60%',
         backgroundColor: particle.color,
         borderRadius: '3px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         transform: flutterTransform,
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
       }}
     />
   );

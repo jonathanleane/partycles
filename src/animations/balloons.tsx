@@ -43,7 +43,7 @@ export const createBalloonParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    };
+    }
   });
 };
 
@@ -59,13 +59,13 @@ export const renderBalloonParticle = (particle: Particle): React.ReactNode => {
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size * 1.2}px`,
+        width: '100%',
+        height: '120%',
         position: 'relative',
         transform: `
           translateX(${sway}px) 
           translateY(${bob}px)
-          rotate(${particle.rotation + sway * 0.2}deg)
+          rotate(${sway * 0.2}deg)
         `,
         opacity: particle.opacity * fadeOut,
       }}

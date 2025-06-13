@@ -35,7 +35,7 @@ export const createCoinParticles = (
         colors[Math.floor(Math.random() * colors.length)] ||
         colors[0] ||
         '#ffffff',
-    };
+    }
   });
 };
 
@@ -43,7 +43,7 @@ export const renderCoinParticle = (
   particle: Particle & { config?: AnimationConfig }
 ): React.ReactNode => {
   const spinSpeed = particle.config?.effects?.spin3D ? 8 : 2; // Faster spin with 3D effect
-  const currentRotation = particle.rotation + (120 - particle.life) * spinSpeed;
+  const currentRotation = (120 - particle.life) * spinSpeed;
 
   // 3D effect: scale X based on rotation to simulate perspective
   const scaleX = particle.config?.effects?.spin3D
@@ -54,14 +54,15 @@ export const renderCoinParticle = (
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size}px`,
+        width: '100%',
+        height: '100%',
         background: `radial-gradient(ellipse at 30% 30%, ${particle.color}, #B8860B)`,
         borderRadius: '50%',
         transform: particle.config?.effects?.spin3D
           ? `rotateY(${currentRotation}deg) scaleX(${scaleX})`
           : `rotate(${currentRotation}deg)`,
         transformStyle: 'preserve-3d',
+        perspective: '1000px',
         boxShadow: `
           inset -2px -2px 4px rgba(0, 0, 0, 0.3),
           inset 2px 2px 4px rgba(255, 255, 255, 0.5),

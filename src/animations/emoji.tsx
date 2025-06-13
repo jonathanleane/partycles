@@ -43,7 +43,7 @@ export const createEmojiParticles = (
       rotation: randomInRange(-45, 45),
       color: '', // Not used for emojis
       element: emojis[Math.floor(Math.random() * emojis.length)],
-    };
+    }
   });
 };
 

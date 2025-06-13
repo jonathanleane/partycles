@@ -51,7 +51,7 @@ export const createMagicDustParticles = (
       size: randomInRange(elementSize * 0.3, elementSize),
       rotation: randomInRange(0, 360),
       color,
-    };
+    }
   });
 };
 

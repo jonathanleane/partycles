@@ -35,18 +35,27 @@ export const createSparkleParticles = (
   });
 };
 
-export const renderSparkleParticle = (particle: Particle): React.ReactNode => {
+export const renderSparkleParticle = (
+  particle: Particle & { config?: AnimationConfig }
+): React.ReactNode => {
   const scale = particle.opacity;
+  
+  // Calculate twinkle effect if enabled
+  const twinkle = particle.config?.effects?.twinkle
+    ? 0.3 + Math.abs(Math.sin(particle.life * 0.2)) * 0.7
+    : 1;
 
   return (
     <svg
       key={particle.id}
-      width={particle.size}
-      height={particle.size}
+      width="100%"
+      height="100%"
       viewBox="0 0 24 24"
       style={{
-        transform: `scale(${scale}) rotate(${particle.rotation}deg)`,
+        transform: `scale(${scale})`,
         filter: 'drop-shadow(0 0 6px rgba(255, 215, 0, 0.8))',
+        opacity: twinkle,
+        transition: 'opacity 0.1s ease-out',
       }}
     >
       <path

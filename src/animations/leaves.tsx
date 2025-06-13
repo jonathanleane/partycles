@@ -39,7 +39,7 @@ export const createLeafParticles = (
         Math.floor(randomInRange(20, 40)) * 1000000 +
         (Math.floor(randomInRange(-3, 3)) + 3) * 100000000,
       color: getRandomColor(colors),
-    };
+    }
   });
 };
 
@@ -61,15 +61,15 @@ export const renderLeafParticle = (particle: Particle): React.ReactNode => {
     <div
       key={particle.id}
       style={{
-        width: `${particle.size}px`,
-        height: `${particle.size}px`,
+        width: '100%',
+        height: '100%',
         position: 'relative',
         transform: `translateX(${swayX}px) rotate(${rotation}deg)`,
       }}
     >
       <svg
-        width={particle.size}
-        height={particle.size}
+        width="100%"
+        height="100%"
         viewBox={`-${particle.size / 2} -${particle.size / 2} ${particle.size} ${particle.size}`}
         style={{
           position: 'absolute',
