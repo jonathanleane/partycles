@@ -20,7 +20,7 @@ export const createArtilleryParticles = (
   const {
     particleCount = 5, // Number of mortar shells
     spread = 30,
-    startVelocity = 40,
+    startVelocity = 30, // Reduced default velocity
     colors = artilleryColors,
     elementSize = 12,
   } = config;
@@ -36,9 +36,9 @@ export const createArtilleryParticles = (
       id: generateId(),
       x: origin.x,
       y: origin.y,
-      vx: Math.sin(degreesToRadians(angle)) * velocity * 0.3, // Slight horizontal movement
-      vy: -velocity, // Strong upward launch
-      life: config.lifetime || 60, // Short life for launch phase
+      vx: Math.sin(degreesToRadians(angle)) * velocity * 0.2, // Slight horizontal movement
+      vy: -velocity, // Upward launch
+      life: config.lifetime || 100,
       opacity: 1,
       size: randomInRange(elementSize * 0.8, elementSize),
       rotation: 0,
@@ -49,8 +49,8 @@ export const createArtilleryParticles = (
       // Store explosion data in particle
       element: JSON.stringify({
         isShell: true,
-        explodeAt: randomInRange(40, 50), // When to explode
-        burstCount: randomInRange(15, 25), // How many particles in burst
+        explodeAt: randomInRange(20, 40), // When to explode
+        burstCount: randomInRange(20, 30), // How many particles in burst
       }),
     };
   });
@@ -59,22 +59,22 @@ export const createArtilleryParticles = (
 
   // Create smoke trail particles for each shell
   shells.forEach((shell) => {
-    const smokeCount = 8;
+    const smokeCount = 5; // Reduced smoke particles
     const smoke = createPooledParticles(smokeCount, (j) => ({
       id: generateId(),
       x: shell.x + randomInRange(-5, 5),
       y: shell.y,
-      vx: randomInRange(-2, 2),
-      vy: randomInRange(-5, -2),
-      life: config.lifetime || 40,
-      opacity: 0.6,
-      size: randomInRange(elementSize * 1.5, elementSize * 2.5),
+      vx: randomInRange(-1, 1),
+      vy: randomInRange(0, 2), // Smoke drifts down/sideways
+      life: config.lifetime || 30,
+      opacity: 0.4,
+      size: randomInRange(elementSize * 1.5, elementSize * 2),
       rotation: randomInRange(0, 360),
       color: smokeColors[Math.floor(Math.random() * smokeColors.length)],
       element: JSON.stringify({
         isSmoke: true,
         parentId: shell.id,
-        delay: j * 3, // Stagger smoke particles
+        delay: j * 2, // Stagger smoke particles
       }),
     }));
     particles.push(...smoke);
@@ -106,7 +106,7 @@ export const renderArtilleryParticle = (
 
   // Render smoke particles
   if (elementData.isSmoke) {
-    const smokeOpacity = particle.opacity * (particle.life / 40);
+    const smokeOpacity = particle.opacity * (particle.life / 30);
     return (
       <div
         key={particle.id}
@@ -116,8 +116,8 @@ export const renderArtilleryParticle = (
           background: `radial-gradient(circle, ${particle.color}88 0%, transparent 70%)`,
           borderRadius: '50%',
           opacity: smokeOpacity,
-          filter: `blur(${2 + (1 - particle.life / 40) * 3}px)`,
-          transform: `scale(${1 + (1 - particle.life / 40) * 0.5})`,
+          filter: `blur(${2 + (1 - particle.life / 30) * 3}px)`,
+          transform: `scale(${1 + (1 - particle.life / 30) * 0.5})`,
         }}
       />
     );
@@ -125,6 +125,13 @@ export const renderArtilleryParticle = (
 
   // Render shell particles
   if (elementData.isShell) {
+    // Check if we should hide the shell (after explosion)
+    const shouldHide = particle.life <= (elementData.explodeAt || 30);
+    
+    if (shouldHide) {
+      return null; // Hide the shell after explosion
+    }
+    
     return (
       <div
         key={particle.id}

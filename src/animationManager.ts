@@ -228,14 +228,18 @@ class AnimationManager {
       const elementData = JSON.parse(particle.element as string);
 
       // Check if this is a shell that should explode
-      if (elementData.isShell && particle.life <= elementData.explodeAt) {
+      if (elementData.isShell && particle.life <= elementData.explodeAt && !elementData.hasExploded) {
+        // Mark as exploded to prevent multiple explosions
+        elementData.hasExploded = true;
+        particle.element = JSON.stringify(elementData);
+        
         // Create explosion particles
         const burstCount = elementData.burstCount || 20;
         const explosionParticles: PooledParticle[] = [];
 
         for (let i = 0; i < burstCount; i++) {
           const angle = (360 / burstCount) * i + (Math.random() - 0.5) * 30;
-          const velocity = Math.random() * 15 + 10;
+          const velocity = Math.random() * 12 + 8;
           const rad = (angle * Math.PI) / 180;
 
           const burstParticle = particlePool.acquire();
@@ -258,9 +262,6 @@ class AnimationManager {
 
         // Add explosion particles to the animation
         animation.particles.push(...explosionParticles);
-
-        // Mark shell as exploded
-        particle.life = 0;
       }
     } catch (e) {
       // Ignore parse errors

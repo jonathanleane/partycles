@@ -232,12 +232,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   artillery: {
-    particleCount: 5,
-    spread: 30,
-    startVelocity: 40,
-    elementSize: 12,
-    lifetime: 60,
-    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    particleCount: 3,
+    spread: 20,
+    startVelocity: 20,
+    elementSize: 10,
+    lifetime: 100,
+    physics: { gravity: 0.4, wind: 0, friction: 0.98 },
     effects: {}
   }
 };
