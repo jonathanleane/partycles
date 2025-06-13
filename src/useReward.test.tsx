@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react';
 import { render, screen } from '@testing-library/react';
 import { useReward } from './useReward';
+import { animations } from './animations';
 
 // Jest will automatically use __mocks__/animations.tsx
 jest.mock('./animations');
