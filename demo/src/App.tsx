@@ -56,6 +56,7 @@ const defaultColors: Record<string, string[]> = {
   glitch: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
   magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
+  artillery: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -229,6 +230,15 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     lifetime: 180,
     physics: { gravity: 0.4, wind: 0, friction: 0.98 },
     effects: {}
+  },
+  artillery: {
+    particleCount: 5,
+    spread: 30,
+    startVelocity: 40,
+    elementSize: 12,
+    lifetime: 60,
+    physics: { gravity: 0.35, wind: 0, friction: 0.98 },
+    effects: {}
   }
 };
 
@@ -326,7 +336,8 @@ function App() {
     leaves: useReward('hero-title', 'leaves', { ...defaultConfigs.leaves, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.leaves, effects: { windDrift: true } }),
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
-    crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals })
+    crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
+    artillery: useReward('hero-title', 'artillery', { ...defaultConfigs.artillery, particleCount: Math.floor(3 * mobileFactor), colors: defaultColors.artillery })
   };
 
   const triggerHeroAnimation = () => {
@@ -1715,6 +1726,7 @@ function AnimationSelector({ selected, onChange }: {
     ],
     tech: [
       { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },
+      { id: 'artillery', name: 'Artillery', icon: '🎆', desc: 'Mortar explosions' },
     ],
     magic: [
       { id: 'magicdust', name: 'Magic Dust', icon: '✨', desc: 'Mystical sparkles' },

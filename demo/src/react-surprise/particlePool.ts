@@ -1,6 +1,6 @@
 import { Particle } from './types';
 
-interface PooledParticle extends Particle {
+export interface PooledParticle extends Particle {
   _pooled?: boolean;
 }
 

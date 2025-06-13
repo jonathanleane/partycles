@@ -1,5 +1,5 @@
 import { Particle } from './types';
-import { particlePool } from './particlePool';
+import { particlePool, PooledParticle } from './particlePool';
 import { shouldSkipFrame } from './mobileOptimizations';
 
 export interface AnimationInstance {
@@ -158,6 +158,9 @@ class AnimationManager {
         // Apply animation-specific effects
         this.applyEffects(particle, animation);
 
+        // Handle artillery explosions
+        this.handleArtilleryExplosion(particle, animation);
+
         // Update opacity
         this.updateOpacity(particle, animation);
 
@@ -212,6 +215,55 @@ class AnimationManager {
     if (effects.wobble && animationType === 'bubbles') {
       particle.x += Math.sin(particle.life * 0.08) * 0.3;
       particle.y += Math.cos(particle.life * 0.08) * 0.2;
+    }
+  }
+
+  private handleArtilleryExplosion(
+    particle: Particle,
+    animation: AnimationInstance
+  ): void {
+    if (animation.animationType !== 'artillery' || !particle.element) return;
+
+    try {
+      const elementData = JSON.parse(particle.element as string);
+      
+      // Check if this is a shell that should explode
+      if (elementData.isShell && particle.life <= elementData.explodeAt) {
+        // Create explosion particles
+        const burstCount = elementData.burstCount || 20;
+        const explosionParticles: PooledParticle[] = [];
+        
+        for (let i = 0; i < burstCount; i++) {
+          const angle = (360 / burstCount) * i + (Math.random() - 0.5) * 30;
+          const velocity = Math.random() * 15 + 10;
+          const rad = angle * Math.PI / 180;
+          
+          const burstParticle = particlePool.acquire();
+          Object.assign(burstParticle, {
+            id: `${particle.id}-burst-${i}`,
+            x: particle.x,
+            y: particle.y,
+            vx: Math.cos(rad) * velocity,
+            vy: Math.sin(rad) * velocity,
+            life: 80,
+            opacity: 1,
+            size: Math.random() * 6 + 3,
+            rotation: Math.random() * 360,
+            color: particle.color,
+            config: particle.config,
+          });
+          
+          explosionParticles.push(burstParticle);
+        }
+        
+        // Add explosion particles to the animation
+        animation.particles.push(...explosionParticles);
+        
+        // Mark shell as exploded
+        particle.life = 0;
+      }
+    } catch (e) {
+      // Ignore parse errors
     }
   }
 

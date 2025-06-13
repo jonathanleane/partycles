@@ -9,7 +9,7 @@ export interface Particle {
   size: number;
   rotation: number;
   color: string;
-  element?: React.ReactNode;
+  element?: React.ReactNode | string;
   config?: AnimationConfig; // Store config for render functions
 }
 
@@ -57,7 +57,8 @@ export type AnimationType =
   | 'leaves'
   | 'glitch'
   | 'magicdust'
-  | 'crystals';
+  | 'crystals'
+  | 'artillery';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;
