@@ -226,18 +226,18 @@ class AnimationManager {
 
     try {
       const elementData = JSON.parse(particle.element as string);
-      
+
       // Check if this is a shell that should explode
       if (elementData.isShell && particle.life <= elementData.explodeAt) {
         // Create explosion particles
         const burstCount = elementData.burstCount || 20;
         const explosionParticles: PooledParticle[] = [];
-        
+
         for (let i = 0; i < burstCount; i++) {
           const angle = (360 / burstCount) * i + (Math.random() - 0.5) * 30;
           const velocity = Math.random() * 15 + 10;
-          const rad = angle * Math.PI / 180;
-          
+          const rad = (angle * Math.PI) / 180;
+
           const burstParticle = particlePool.acquire();
           Object.assign(burstParticle, {
             id: `${particle.id}-burst-${i}`,
@@ -252,13 +252,13 @@ class AnimationManager {
             color: particle.color,
             config: particle.config,
           });
-          
+
           explosionParticles.push(burstParticle);
         }
-        
+
         // Add explosion particles to the animation
         animation.particles.push(...explosionParticles);
-        
+
         // Mark shell as exploded
         particle.life = 0;
       }

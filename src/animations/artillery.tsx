@@ -3,7 +3,14 @@ import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId, degreesToRadians } from '../utils';
 import { createPooledParticles } from '../particlePool';
 
-const artilleryColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'];
+const artilleryColors = [
+  '#ff6b6b',
+  '#4ecdc4',
+  '#45b7d1',
+  '#f7dc6f',
+  '#bb8fce',
+  '#85c1f5',
+];
 const smokeColors = ['#cccccc', '#bbbbbb', '#aaaaaa', '#999999'];
 
 export const createArtilleryParticles = (
@@ -24,7 +31,7 @@ export const createArtilleryParticles = (
   const shells = createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2);
     const velocity = randomInRange(startVelocity * 0.8, startVelocity);
-    
+
     return {
       id: generateId(),
       x: origin.x,
@@ -35,7 +42,10 @@ export const createArtilleryParticles = (
       opacity: 1,
       size: randomInRange(elementSize * 0.8, elementSize),
       rotation: 0,
-      color: colors[Math.floor(Math.random() * colors.length)] || colors[0] || '#ffffff',
+      color:
+        colors[Math.floor(Math.random() * colors.length)] ||
+        colors[0] ||
+        '#ffffff',
       // Store explosion data in particle
       element: JSON.stringify({
         isShell: true,
@@ -133,7 +143,7 @@ export const renderArtilleryParticle = (
             borderRadius: '40% 40% 50% 50%',
             boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}`,
             position: 'relative',
-            transform: `rotate(${Math.atan2(particle.vy, particle.vx) * 180 / Math.PI + 90}deg)`,
+            transform: `rotate(${(Math.atan2(particle.vy, particle.vx) * 180) / Math.PI + 90}deg)`,
           }}
         >
           {/* Glowing tip */}
