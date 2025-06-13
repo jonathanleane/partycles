@@ -75,7 +75,7 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     elementSize: 25,
     lifetime: 120,
     physics: { gravity: 0.35, wind: 0, friction: 0.98 },
-    effects: { twinkle: true }
+    effects: { twinkle: false }
   },
   hearts: {
     particleCount: 25,
@@ -111,7 +111,7 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     elementSize: 30,
     lifetime: 150,
     physics: { gravity: 0.35, wind: 0, friction: 0.98 },
-    effects: { twinkle: true }
+    effects: { twinkle: false }
   },
   snow: {
     particleCount: 50,
@@ -309,11 +309,11 @@ function App() {
   // Create reward hooks for each animation type with mobile optimization
   const heroRewards = {
     confetti: useReward('hero-title', 'confetti', { ...defaultConfigs.confetti, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.confetti, effects: { flutter: true } }),
-    sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.sparkles, effects: { twinkle: true } }),
+    sparkles: useReward('hero-title', 'sparkles', { ...defaultConfigs.sparkles, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.sparkles }),
     hearts: useReward('hero-title', 'hearts', { ...defaultConfigs.hearts, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.hearts, effects: { pulse: true } }),
     fireworks: useReward('hero-title', 'fireworks', { ...defaultConfigs.fireworks, particleCount: Math.floor(50 * mobileFactor), colors: defaultColors.fireworks }),
     bubbles: useReward('hero-title', 'bubbles', { ...defaultConfigs.bubbles, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bubbles, effects: { wobble: true } }),
-    stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.stars, effects: { twinkle: true } }),
+    stars: useReward('hero-title', 'stars', { ...defaultConfigs.stars, particleCount: Math.floor(35 * mobileFactor), colors: defaultColors.stars }),
     snow: useReward('hero-title', 'snow', { ...defaultConfigs.snow, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.snow, effects: { windDrift: true } }),
     emoji: useReward('hero-title', 'emoji', { ...defaultConfigs.emoji, particleCount: Math.floor(25 * mobileFactor), colors: emojiPresets.celebration }),
     coins: useReward('hero-title', 'coins', { ...defaultConfigs.coins, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.coins, effects: { spin3D: true } }),
@@ -1341,7 +1341,7 @@ function App() {
   spread: 120,
   startVelocity: 20,
   lifetime: 200,
-  effects: { twinkle: true }
+  effects: {}
 });
 
 <div id="achievement" onClick={reward}>
@@ -1358,7 +1358,7 @@ function App() {
   particleCount: 40,
   spread: 90,
   elementSize: 8,
-  effects: { twinkle: true }
+  effects: {}
 });
 
 // Trigger when loading completes
