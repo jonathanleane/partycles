@@ -45,7 +45,7 @@ export const createFireworkParticles = (
       size: randomInRange(elementSize * 0.6, elementSize * 1.4),
       rotation: 0,
       color,
-    }
+    };
   });
 };
 
