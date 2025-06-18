@@ -627,7 +627,13 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📈 Changelog
 
-### v1.2.2 (Latest)
+### v1.2.3 (Latest)
+- 🔮 Updated bokeh animation defaults for better visual impact
+- 📊 Increased default particle count from 25 to 50
+- ⏱️ Reduced lifetime from 400 to 200 for snappier animations
+- 🎯 Adjusted physics for more natural movement
+
+### v1.2.2
 - 🔮 Added new `bokeh` animation with soft, dreamy light orbs
 - 🙏 Added credits section to acknowledge contributors
 - 📱 Optimized bokeh effect for smooth performance
