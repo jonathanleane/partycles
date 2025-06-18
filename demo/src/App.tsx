@@ -252,12 +252,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   fire: {
-    particleCount: 60,
-    spread: 30,
-    startVelocity: 3,
-    elementSize: 15,
-    lifetime: 100,
-    physics: { gravity: -0.15, wind: 0.05, friction: 0.98 },
+    particleCount: 100,
+    spread: 40,
+    startVelocity: 2,
+    elementSize: 20,
+    lifetime: 300,
+    physics: { gravity: -0.08, wind: 0.02, friction: 0.99 },
     effects: {}
   }
 };

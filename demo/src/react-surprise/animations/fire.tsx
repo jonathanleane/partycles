@@ -33,7 +33,7 @@ export const createFireParticles = (
     startVelocity = 3,
     colors = fireColors,
     elementSize = 15,
-    lifetime = 100,
+    lifetime = 300,
   } = config;
 
   // Mix of flame particles and smoke particles
@@ -45,18 +45,20 @@ export const createFireParticles = (
 
   // Create flame particles
   for (let i = 0; i < flameCount; i++) {
-    const life = randomInRange(lifetime * 0.5, lifetime);
-    const xOffset = randomInRange(-spread * 0.3, spread * 0.3);
+    const life = randomInRange(lifetime * 0.7, lifetime);
+    // Tighter spread at the base for flame shape
+    const spreadFactor = randomInRange(0, 1);
+    const xOffset = randomInRange(-spread * 0.2, spread * 0.2) * spreadFactor;
 
     particles.push({
       id: generateId(),
       x: origin.x + xOffset,
       y: origin.y,
       vx: randomInRange(-0.5, 0.5) + xOffset * 0.02, // Slight outward velocity
-      vy: -randomInRange(startVelocity * 0.8, startVelocity * 1.5), // Upward velocity
+      vy: -randomInRange(startVelocity * 0.5, startVelocity * 1.0), // Upward velocity
       life: life,
       opacity: 1,
-      size: randomInRange(elementSize * 0.5, elementSize * 1.2),
+      size: randomInRange(elementSize * 0.8, elementSize * 1.5),
       rotation: randomInRange(0, 360),
       color: colors[Math.floor(randomInRange(0, colors.length * 0.6))], // Favor hotter colors
       element: JSON.stringify({
@@ -145,8 +147,8 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
     colorIndex = Math.min(colorIndex, fireColors.length - 1);
     const color = fireColors[colorIndex];
 
-    // Size decreases as it rises
-    const sizeMultiplier = 0.5 + lifeRatio * 0.5;
+    // Size starts large and decreases as it rises
+    const sizeMultiplier = 0.7 + lifeRatio * 0.8;
 
     return (
       <div
@@ -154,9 +156,10 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
         style={{
           width: `${particle.size * sizeMultiplier}px`,
           height: `${particle.size * sizeMultiplier * 1.5}px`, // Tall flames
-          background: `radial-gradient(ellipse at center bottom, ${color} 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse at center bottom, ${color} 0%, ${color}88 40%, transparent 90%)`,
+          boxShadow: `0 0 ${particle.size}px ${color}66`,
           borderRadius: '50% 50% 50% 50% / 60% 60% 40% 40%',
-          opacity: particle.opacity * flicker * lifeRatio,
+          opacity: Math.min(1, particle.opacity * flicker * (0.3 + lifeRatio * 0.7)),
           filter: `blur(${1 - lifeRatio}px)`,
           transform: `scale(${flicker})`,
         }}
