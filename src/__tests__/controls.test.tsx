@@ -1,7 +1,37 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useReward } from '../useReward';
-// Import the mock directly
-const { resetAnimationManager } = require('../__mocks__/animationManager');
+
+// We'll define resetAnimationManager inline since it's mocked
+const pausedAnimations = new Set<string>();
+const resetAnimationManager = () => {
+  pausedAnimations.clear();
+  jest.clearAllMocks();
+};
+
+// Mock animationManager with pausedAnimations tracking
+jest.mock('../animationManager', () => ({
+  animationManager: {
+    addAnimation: jest.fn(),
+    removeAnimation: jest.fn((id: string) => {
+      pausedAnimations.delete(id);
+    }),
+    pauseAnimation: jest.fn((id: string) => {
+      pausedAnimations.add(id);
+    }),
+    resumeAnimation: jest.fn((id: string) => {
+      pausedAnimations.delete(id);
+    }),
+    isAnimationPaused: jest.fn((id: string) => pausedAnimations.has(id)),
+    getAnimation: jest.fn(),
+    getStats: jest.fn(() => ({
+      activeAnimations: 0,
+      currentFps: 60,
+      isRunning: false,
+      totalParticles: 0,
+    })),
+    setTargetFPS: jest.fn(),
+  },
+}));
 
 // Mock the animations module
 jest.mock('../animations', () => ({
