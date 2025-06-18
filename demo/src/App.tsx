@@ -58,6 +58,7 @@ const defaultColors: Record<string, string[]> = {
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
   mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
   bokeh: ['#FFFFFF', '#FFF8DC', '#FFFACD', '#FFE4B5', '#FFDEAD', '#F0E68C', '#FFD700'],
+  fire: ['#FFFFFF', '#FFFAF0', '#FFF8DC', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#D84315'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -249,6 +250,15 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     lifetime: 200,
     physics: { gravity: 0.05, wind: 0, friction: 0.99 },
     effects: {}
+  },
+  fire: {
+    particleCount: 60,
+    spread: 30,
+    startVelocity: 3,
+    elementSize: 15,
+    lifetime: 100,
+    physics: { gravity: -0.15, wind: 0.05, friction: 0.98 },
+    effects: {}
   }
 };
 
@@ -348,7 +358,8 @@ function App() {
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
     mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar }),
-    bokeh: useReward('hero-title', 'bokeh', { ...defaultConfigs.bokeh, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bokeh })
+    bokeh: useReward('hero-title', 'bokeh', { ...defaultConfigs.bokeh, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bokeh }),
+    fire: useReward('hero-title', 'fire', { ...defaultConfigs.fire, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.fire })
   };
 
   const triggerHeroAnimation = () => {
@@ -1750,6 +1761,7 @@ function AnimationSelector({ selected, onChange }: {
     ],
     visual: [
       { id: 'bokeh', name: 'Bokeh', icon: '🔮', desc: 'Soft light orbs' },
+      { id: 'fire', name: 'Fire', icon: '🔥', desc: 'Realistic flames' },
     ],
   };
 

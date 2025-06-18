@@ -59,7 +59,8 @@ export type AnimationType =
   | 'magicdust'
   | 'crystals'
   | 'mortar'
-  | 'bokeh';
+  | 'bokeh'
+  | 'fire';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;

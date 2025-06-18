@@ -20,6 +20,7 @@ import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
 import { createMortarParticles, renderMortarParticle } from './mortar';
 import { createBokehParticles, renderBokehParticle } from './bokeh';
+import { createFireParticles, renderFireParticle } from './fire';
 
 export type ParticleCreator = (
   origin: { x: number; y: number },
@@ -116,5 +117,9 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   bokeh: {
     createParticles: createBokehParticles,
     renderParticle: renderBokehParticle,
+  },
+  fire: {
+    createParticles: createFireParticles,
+    renderParticle: renderFireParticle,
   },
 };

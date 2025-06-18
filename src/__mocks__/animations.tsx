@@ -41,4 +41,5 @@ export const animations = {
   leaves: createMockAnimation('leaves'),
   mortar: createMockAnimation('mortar'),
   bokeh: createMockAnimation('bokeh'),
+  fire: createMockAnimation('fire'),
 };
