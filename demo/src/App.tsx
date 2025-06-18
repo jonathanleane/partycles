@@ -58,7 +58,8 @@ const defaultColors: Record<string, string[]> = {
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
   mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
   bokeh: ['#FFFFFF', '#FFF8DC', '#FFFACD', '#FFE4B5', '#FFDEAD', '#F0E68C', '#FFD700'],
-  fire: ['#FFFFFF', '#FFFAF0', '#FFF8DC', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722', '#D84315'],
+  ribbons: ['#FF1744', '#F50057', '#D500F9', '#651FFF', '#2979FF', '#00E5FF', '#1DE9B6', '#00E676', '#76FF03', '#FFEA00', '#FFC400', '#FF9100'],
+  geometric: ['#00D9FF', '#FF006E', '#FFB700', '#8338EC', '#3A86FF', '#06FFA5', '#FF4365', '#FFEE32', '#9B5DE5', '#00F5FF', '#F15BB5', '#00BBF9'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -251,13 +252,22 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     physics: { gravity: 0.05, wind: 0, friction: 0.99 },
     effects: {}
   },
-  fire: {
-    particleCount: 100,
-    spread: 40,
-    startVelocity: 2,
-    elementSize: 20,
-    lifetime: 300,
-    physics: { gravity: -0.08, wind: 0.02, friction: 0.99 },
+  ribbons: {
+    particleCount: 25,
+    spread: 120,
+    startVelocity: 15,
+    elementSize: 60,
+    lifetime: 200,
+    physics: { gravity: 0.2, wind: 0.05, friction: 0.99 },
+    effects: {}
+  },
+  geometric: {
+    particleCount: 30,
+    spread: 360,
+    startVelocity: 25,
+    elementSize: 25,
+    lifetime: 120,
+    physics: { gravity: 0.3, wind: 0, friction: 0.98 },
     effects: {}
   }
 };
@@ -359,7 +369,8 @@ function App() {
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
     mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar }),
     bokeh: useReward('hero-title', 'bokeh', { ...defaultConfigs.bokeh, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bokeh }),
-    fire: useReward('hero-title', 'fire', { ...defaultConfigs.fire, particleCount: Math.floor(40 * mobileFactor), colors: defaultColors.fire })
+    ribbons: useReward('hero-title', 'ribbons', { ...defaultConfigs.ribbons, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.ribbons }),
+    geometric: useReward('hero-title', 'geometric', { ...defaultConfigs.geometric, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.geometric })
   };
 
   const triggerHeroAnimation = () => {
@@ -1733,6 +1744,7 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'sparkles', name: 'Sparkles', icon: '✨', desc: 'Magical glitter' },
       { id: 'stars', name: 'Stars', icon: '⭐', desc: 'Shining stars' },
       { id: 'balloons', name: 'Balloons', icon: '🎈', desc: 'Floating balloons' },
+      { id: 'ribbons', name: 'Ribbons', icon: '🎀', desc: 'Party streamers' },
     ],
     emotions: [
       { id: 'hearts', name: 'Hearts', icon: '💕', desc: 'Love and likes' },
@@ -1761,7 +1773,7 @@ function AnimationSelector({ selected, onChange }: {
     ],
     visual: [
       { id: 'bokeh', name: 'Bokeh', icon: '🔮', desc: 'Soft light orbs' },
-      { id: 'fire', name: 'Fire', icon: '🔥', desc: 'Realistic flames' },
+      { id: 'geometric', name: 'Geometric', icon: '🔷', desc: 'Modern shapes' },
     ],
   };
 
