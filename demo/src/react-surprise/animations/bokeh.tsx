@@ -33,11 +33,11 @@ export const createBokehParticles = (
     // Create particles at various distances from origin for depth effect
     const angle = Math.random() * Math.PI * 2;
     const distance = randomInRange(0, spread);
-    
+
     // Vary sizes for depth perception
     const depth = Math.random(); // 0 = close, 1 = far
     const size = elementSize * (0.3 + depth * 0.7); // Bigger = closer
-    
+
     return {
       id: generateId(),
       x: origin.x + Math.cos(angle) * distance,
@@ -58,10 +58,9 @@ export const createBokehParticles = (
   });
 };
 
-export const renderBokehParticle = (
-  particle: Particle
-): React.ReactNode => {
-  let elementData: { depth?: number; pulsePhase?: number; baseSize?: number } = {};
+export const renderBokehParticle = (particle: Particle): React.ReactNode => {
+  let elementData: { depth?: number; pulsePhase?: number; baseSize?: number } =
+    {};
   try {
     if (particle.element && typeof particle.element === 'string') {
       elementData = JSON.parse(particle.element);
@@ -71,11 +70,15 @@ export const renderBokehParticle = (
   }
 
   // Create gentle pulsing effect
-  const pulseAmount = Math.sin(particle.life * 0.05 + (elementData.pulsePhase || 0)) * 0.1 + 1;
+  const pulseAmount =
+    Math.sin(particle.life * 0.05 + (elementData.pulsePhase || 0)) * 0.1 + 1;
   const currentSize = (elementData.baseSize || particle.size) * pulseAmount;
-  
+
   // Fade in at start, fade out at end
-  const fadeIn = Math.min(1, (particle.config?.lifetime || 200 - particle.life) / 20);
+  const fadeIn = Math.min(
+    1,
+    (particle.config?.lifetime || 200 - particle.life) / 20
+  );
   const fadeOut = Math.min(1, particle.life / 40);
   const opacity = particle.opacity * fadeIn * fadeOut;
 
@@ -102,7 +105,7 @@ export const renderBokehParticle = (
           opacity: opacity * 0.6,
         }}
       />
-      
+
       {/* Middle glow */}
       <div
         style={{
@@ -117,7 +120,7 @@ export const renderBokehParticle = (
           opacity: opacity * 0.8,
         }}
       />
-      
+
       {/* Inner core */}
       <div
         style={{

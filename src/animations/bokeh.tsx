@@ -59,7 +59,8 @@ export const createBokehParticles = (
 };
 
 export const renderBokehParticle = (particle: Particle): React.ReactNode => {
-  let elementData: { depth?: number; pulsePhase?: number; baseSize?: number } = {};
+  let elementData: { depth?: number; pulsePhase?: number; baseSize?: number } =
+    {};
   try {
     if (particle.element && typeof particle.element === 'string') {
       elementData = JSON.parse(particle.element);
