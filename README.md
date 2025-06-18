@@ -615,7 +615,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📈 Changelog
 
-### v1.2.0 (Latest)
+### v1.2.1 (Latest)
 - 🎆 Added new `mortar` animation with galaxy-style explosions
 - 🐛 Fixed particle rendering issues with dynamic particle creation
 - 🎨 Updated emoji assignments for better consistency (fireflies: 🌟, coins: 💰)
