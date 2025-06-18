@@ -44,7 +44,7 @@ Object.defineProperty(document, 'hidden', {
 //   render: jest.fn(),
 //   unmount: jest.fn(),
 // };
-// 
+//
 // jest.mock('react-dom/client', () => ({
 //   createRoot: jest.fn(() => mockRoot),
 // }));
