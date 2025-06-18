@@ -29,7 +29,7 @@ export const createBokehParticles = (
     lifetime = 200,
   } = config;
 
-  return createPooledParticles(particleCount, (i) => {
+  return createPooledParticles(particleCount, () => {
     // Create particles at various distances from origin for depth effect
     const angle = Math.random() * Math.PI * 2;
     const distance = randomInRange(0, spread);
@@ -59,7 +59,7 @@ export const createBokehParticles = (
 };
 
 export const renderBokehParticle = (particle: Particle): React.ReactNode => {
-  let elementData: any = {};
+  let elementData: { depth?: number; pulsePhase?: number; baseSize?: number } = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
       elementData = JSON.parse(particle.element);
