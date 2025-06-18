@@ -57,6 +57,7 @@ const defaultColors: Record<string, string[]> = {
   magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
   mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
+  bokeh: ['#FFFFFF', '#FFF8DC', '#FFFACD', '#FFE4B5', '#FFDEAD', '#F0E68C', '#FFD700'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -239,6 +240,15 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     lifetime: 200,
     physics: { gravity: 0.35, wind: 0, friction: 0.99 },
     effects: {}
+  },
+  bokeh: {
+    particleCount: 25,
+    spread: 300,
+    startVelocity: 1,
+    elementSize: 40,
+    lifetime: 400,
+    physics: { gravity: -0.02, wind: 0.01, friction: 0.99 },
+    effects: {}
   }
 };
 
@@ -337,7 +347,8 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar })
+    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar }),
+    bokeh: useReward('hero-title', 'bokeh', { ...defaultConfigs.bokeh, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bokeh })
   };
 
   const triggerHeroAnimation = () => {
@@ -1736,6 +1747,9 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'coins', name: 'Coins', icon: '💰', desc: 'Treasure coins' },
       { id: 'paint', name: 'Paint', icon: '🎨', desc: 'Paint splatter' },
       { id: 'galaxy', name: 'Galaxy', icon: '🌌', desc: 'Cosmic particles' },
+    ],
+    visual: [
+      { id: 'bokeh', name: 'Bokeh', icon: '🔮', desc: 'Soft light orbs' },
     ],
   };
 

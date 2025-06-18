@@ -19,6 +19,7 @@ import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
 import { createMortarParticles, renderMortarParticle } from './mortar';
+import { createBokehParticles, renderBokehParticle } from './bokeh';
 
 export type ParticleCreator = (
   origin: { x: number; y: number },
@@ -111,5 +112,9 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   mortar: {
     createParticles: createMortarParticles,
     renderParticle: renderMortarParticle,
+  },
+  bokeh: {
+    createParticles: createBokehParticles,
+    renderParticle: renderBokehParticle,
   },
 };

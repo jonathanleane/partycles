@@ -12,7 +12,7 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **20 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, leaves, and mortar
+- 🎨 **21 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, leaves, mortar, and bokeh
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
@@ -66,7 +66,7 @@ const { reward, isAnimating } = useReward('my-button', 'confetti');
 
 - **Zero Dependencies** - No bloat, just pure React code
 - **One Hook** - Simple `useReward` hook handles everything  
-- **20 Animations** - From confetti to explosive effects, we've got you covered
+- **21 Animations** - From confetti to dreamy bokeh effects, we've got you covered
 - **Fully Typed** - Great TypeScript support out of the box
 - **Customizable** - Tweak colors, physics, particle count, and more
 - **Performant** - Optimized animations that won't slow down your app
@@ -82,7 +82,7 @@ The main hook for creating reward animations.
 
 - `targetRef` (RefObject<HTMLElement>): A React ref to the element to animate from (recommended)
 - `elementId` (string): The ID of the element to animate from (legacy, for backward compatibility)
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`, `'mortar'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`, `'mortar'`, `'bokeh'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -343,6 +343,18 @@ const { reward } = useReward('buttonId', 'mortar', {
   particleCount: 2,
   spread: 45,
   physics: { gravity: 0.35 }
+});
+```
+
+### Bokeh 🔮
+Soft, dreamy light orbs with depth-of-field effect. Inspired by photography bokeh.
+
+```tsx
+const { reward } = useReward('buttonId', 'bokeh', {
+  particleCount: 25,
+  elementSize: 40,
+  lifetime: 400,
+  physics: { gravity: -0.02 }
 });
 ```
 
@@ -615,7 +627,12 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📈 Changelog
 
-### v1.2.1 (Latest)
+### v1.2.2 (Latest)
+- 🔮 Added new `bokeh` animation with soft, dreamy light orbs
+- 🙏 Added credits section to acknowledge contributors
+- 📱 Optimized bokeh effect for smooth performance
+
+### v1.2.1
 - 🎆 Added new `mortar` animation with galaxy-style explosions
 - 🐛 Fixed particle rendering issues with dynamic particle creation
 - 🎨 Updated emoji assignments for better consistency (fireflies: 🌟, coins: 💰)
@@ -634,6 +651,10 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ### v1.0.0
 - 🎉 Initial release with 26 animations
+
+## 🙏 Credits
+
+- **Bokeh effect** inspired by [Sergio A. Carrasco Chavez](https://codepen.io/sergio-carrasco)'s beautiful bokeh implementation
 
 ## 📄 License
 
