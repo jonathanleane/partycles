@@ -242,12 +242,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   bokeh: {
-    particleCount: 25,
+    particleCount: 50,
     spread: 300,
     startVelocity: 1,
     elementSize: 40,
-    lifetime: 400,
-    physics: { gravity: -0.02, wind: 0.01, friction: 0.99 },
+    lifetime: 200,
+    physics: { gravity: 0.05, wind: 0, friction: 0.99 },
     effects: {}
   }
 };

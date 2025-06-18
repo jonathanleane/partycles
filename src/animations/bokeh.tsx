@@ -21,12 +21,12 @@ export const createBokehParticles = (
   config: AnimationConfig
 ): Particle[] => {
   const {
-    particleCount = 25,
+    particleCount = 50,
     spread = 300,
     startVelocity = 1,
     colors = bokehColors,
     elementSize = 40,
-    lifetime = 400,
+    lifetime = 200,
   } = config;
 
   return createPooledParticles(particleCount, (i) => {
@@ -76,7 +76,7 @@ export const renderBokehParticle = (particle: Particle): React.ReactNode => {
   // Fade in at start, fade out at end
   const fadeIn = Math.min(
     1,
-    (particle.config?.lifetime || 400 - particle.life) / 20
+    (particle.config?.lifetime || 200 - particle.life) / 20
   );
   const fadeOut = Math.min(1, particle.life / 40);
   const opacity = particle.opacity * fadeIn * fadeOut;
