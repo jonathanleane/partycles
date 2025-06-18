@@ -28,17 +28,17 @@ export const createRibbonsParticles = (
   config: AnimationConfig
 ): Particle[] => {
   const {
-    particleCount = 15,
-    spread = 80,
-    startVelocity = 20,
+    particleCount = 20,
+    spread = 100,
+    startVelocity = 18,
     colors = ribbonColors,
-    elementSize = 100,
-    lifetime = 200,
+    elementSize = 80,
+    lifetime = 250,
   } = config;
 
   return createPooledParticles(particleCount, () => {
     const angle = randomInRange(-spread / 2, spread / 2) - 90; // Upward bias
-    const velocity = randomInRange(startVelocity * 0.5, startVelocity);
+    const velocity = randomInRange(startVelocity * 0.6, startVelocity);
     const color = getRandomColor(colors);
 
     return {
@@ -46,17 +46,17 @@ export const createRibbonsParticles = (
       x: origin.x,
       y: origin.y,
       vx: Math.cos(degreesToRadians(angle)) * velocity,
-      vy: Math.sin(degreesToRadians(angle)) * velocity - 10,
+      vy: Math.sin(degreesToRadians(angle)) * velocity - 8, // Slight upward boost
       life: lifetime,
       opacity: 1,
       size: elementSize,
-      rotation: randomInRange(-180, 180),
+      rotation: randomInRange(-45, 45),
       color,
       element: JSON.stringify({
-        curliness: randomInRange(2, 4), // How many curls
-        curlTightness: randomInRange(0.3, 0.6), // How tight the curls are
-        thickness: randomInRange(8, 12), // Ribbon thickness in pixels
-        windEffect: randomInRange(0.02, 0.05), // Additional sway
+        segments: 8,
+        waveSpeed: randomInRange(0.08, 0.15),
+        phaseOffset: randomInRange(0, Math.PI * 2),
+        thickness: randomInRange(0.08, 0.12),
       }),
     };
   });
@@ -73,40 +73,42 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
   }
 
   const {
-    curliness = 3,
-    curlTightness = 0.4,
-    thickness = 10,
-    windEffect = 0.03,
+    segments = 8,
+    waveSpeed = 0.1,
+    phaseOffset = 0,
+    thickness = 0.1,
   } = ribbonData;
 
-  const lifeRatio = particle.life / (particle.config?.lifetime || 200);
-  
-  // Create curly ribbon path
-  const segments = 50; // More segments for smoother curves
+  const lifeRatio = particle.life / (particle.config?.lifetime || 250);
+  const segmentHeight = particle.size / segments;
+
+  // Create flowing path for ribbon
   const path: string[] = [];
+  const points: { x: number; y: number }[] = [];
   
   for (let i = 0; i <= segments; i++) {
-    const t = i / segments;
+    const segmentProgress = i / segments;
+    // Wave gets stronger towards the bottom of the ribbon
+    const waveAmplitude = segmentProgress * 30 * lifeRatio;
+    const wavePhase = particle.life * waveSpeed + phaseOffset + segmentProgress * 2;
+    const xOffset = Math.sin(wavePhase) * waveAmplitude;
     
-    // Base spiral/curl motion
-    const spiralAngle = t * Math.PI * 2 * curliness;
-    const spiralRadius = t * particle.size * curlTightness;
-    
-    // Add some wobble that increases over time
-    const wobble = Math.sin(particle.life * windEffect + t * 4) * (1 - lifeRatio) * 20;
-    
-    // Calculate position
-    const x = Math.cos(spiralAngle) * spiralRadius + wobble;
-    const y = t * particle.size;
+    const x = xOffset;
+    const y = i * segmentHeight;
+    points.push({ x, y });
     
     if (i === 0) {
       path.push(`M ${x} ${y}`);
     } else {
-      // Use line segments for smoother rendering
-      path.push(`L ${x} ${y}`);
+      // Use quadratic bezier curves for smooth flow
+      const prevPoint = points[i - 1];
+      const cpX = (prevPoint.x + x) / 2;
+      const cpY = y - segmentHeight / 2;
+      path.push(`Q ${cpX} ${cpY} ${x} ${y}`);
     }
   }
-  
+
+  // Create the ribbon shape with thickness
   const pathString = path.join(' ');
   
   return (
@@ -114,51 +116,38 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
       key={particle.id}
       style={{
         position: 'absolute',
-        width: particle.size,
+        width: particle.size * thickness * 2,
         height: particle.size,
         opacity: particle.opacity * lifeRatio,
         transform: `rotate(${particle.rotation}deg)`,
         transformOrigin: 'center top',
+        filter: `drop-shadow(0 2px 4px ${particle.color}44)`,
       }}
     >
       <svg
-        width={particle.size}
+        width={particle.size * thickness * 2}
         height={particle.size}
         style={{
           position: 'absolute',
           left: '50%',
-          top: '0',
           transform: 'translateX(-50%)',
           overflow: 'visible',
         }}
-        viewBox={`-${particle.size / 2} 0 ${particle.size} ${particle.size}`}
       >
         <defs>
           <linearGradient id={`ribbon-gradient-${particle.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor={particle.color} stopOpacity="1" />
-            <stop offset="30%" stopColor={particle.color} stopOpacity="0.9" />
-            <stop offset="70%" stopColor={particle.color} stopOpacity="0.6" />
-            <stop offset="100%" stopColor={particle.color} stopOpacity="0.2" />
+            <stop offset="50%" stopColor={particle.color} stopOpacity="0.8" />
+            <stop offset="100%" stopColor={particle.color} stopOpacity="0.3" />
           </linearGradient>
-          <filter id={`ribbon-shadow-${particle.id}`}>
-            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
-            <feOffset dx="0" dy="2" result="offsetblur"/>
-            <feFlood floodColor="#000000" floodOpacity="0.2"/>
-            <feComposite in2="offsetblur" operator="in"/>
-            <feMerge>
-              <feMergeNode/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
         </defs>
         <path
           d={pathString}
           stroke={`url(#ribbon-gradient-${particle.id})`}
-          strokeWidth={thickness}
+          strokeWidth={particle.size * thickness}
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
-          filter={`url(#ribbon-shadow-${particle.id})`}
         />
       </svg>
     </div>

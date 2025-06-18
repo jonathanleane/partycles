@@ -253,12 +253,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     effects: {}
   },
   ribbons: {
-    particleCount: 15,
-    spread: 80,
-    startVelocity: 20,
-    elementSize: 100,
-    lifetime: 200,
-    physics: { gravity: 0.25, wind: 0.08, friction: 0.99 },
+    particleCount: 20,
+    spread: 100,
+    startVelocity: 18,
+    elementSize: 80,
+    lifetime: 250,
+    physics: { gravity: 0.2, wind: 0.05, friction: 0.99 },
     effects: {}
   },
   geometric: {
