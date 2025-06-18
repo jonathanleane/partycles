@@ -12,7 +12,7 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **19 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, and leaves
+- 🎨 **20 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, leaves, and mortar
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
@@ -66,7 +66,7 @@ const { reward, isAnimating } = useReward('my-button', 'confetti');
 
 - **Zero Dependencies** - No bloat, just pure React code
 - **One Hook** - Simple `useReward` hook handles everything  
-- **19 Animations** - From confetti to magical effects, we've got you covered
+- **20 Animations** - From confetti to explosive effects, we've got you covered
 - **Fully Typed** - Great TypeScript support out of the box
 - **Customizable** - Tweak colors, physics, particle count, and more
 - **Performant** - Optimized animations that won't slow down your app
@@ -82,7 +82,7 @@ The main hook for creating reward animations.
 
 - `targetRef` (RefObject<HTMLElement>): A React ref to the element to animate from (recommended)
 - `elementId` (string): The ID of the element to animate from (legacy, for backward compatibility)
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`, `'mortar'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -332,6 +332,17 @@ Falling autumn leaves with natural movement.
 const { reward } = useReward('buttonId', 'leaves', {
   particleCount: 30,
   physics: { gravity: 0.05, wind: 0.2 }
+});
+```
+
+### Mortar 💥
+Explosive mortar-style bursts with galaxy-like explosions.
+
+```tsx
+const { reward } = useReward('buttonId', 'mortar', {
+  particleCount: 2,
+  spread: 45,
+  physics: { gravity: 0.35 }
 });
 ```
 
@@ -604,7 +615,18 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📈 Changelog
 
-### v1.1.3 (Latest)
+### v1.2.0 (Latest)
+- 🎆 Added new `mortar` animation with galaxy-style explosions
+- 🐛 Fixed particle rendering issues with dynamic particle creation
+- 🎨 Updated emoji assignments for better consistency (fireflies: 🌟, coins: 💰)
+- ⚡ Optimized mortar explosion performance for mobile devices
+- 🔧 Improved animation manager to handle particles created during updates
+
+### v1.1.5
+- ✨ Added optional enhanced effects (flutter, twinkle, pulse, spin3D, wobble, windDrift)
+- 📱 Improved mobile performance with automatic optimizations
+
+### v1.1.3
 - 🚀 Added automatic mobile performance optimizations
 - 🐛 Fixed Safari compatibility issues
 - 📦 Streamlined bundle size by removing 7 animations

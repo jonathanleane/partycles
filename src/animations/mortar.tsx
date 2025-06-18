@@ -3,7 +3,7 @@ import { AnimationConfig, Particle } from '../types';
 import { randomInRange, generateId, degreesToRadians } from '../utils';
 import { createPooledParticles } from '../particlePool';
 
-const artilleryColors = [
+const mortarColors = [
   '#ff6b6b',
   '#4ecdc4',
   '#45b7d1',
@@ -14,7 +14,7 @@ const artilleryColors = [
   '#6bcf7f',
 ];
 
-export const createArtilleryParticles = (
+export const createMortarParticles = (
   origin: { x: number; y: number },
   config: AnimationConfig
 ): Particle[] => {
@@ -22,7 +22,7 @@ export const createArtilleryParticles = (
     particleCount = 3, // Number of firework shells
     spread = 60, // Total spread angle
     startVelocity = 12, // Much lower velocity
-    colors = artilleryColors,
+    colors = mortarColors,
     elementSize = 8,
   } = config;
 
@@ -33,8 +33,8 @@ export const createArtilleryParticles = (
     // Distribute shells across the spread angle - more horizontal
     const baseAngle = -90; // Start from straight up
     const angleStep = particleCount > 1 ? spread / (particleCount - 1) : 0;
-    const angle = baseAngle - spread/2 + (angleStep * index);
-    
+    const angle = baseAngle - spread / 2 + angleStep * index;
+
     const velocity = randomInRange(startVelocity * 0.9, startVelocity * 1.1);
     const targetColor = colors[Math.floor(Math.random() * colors.length)];
     const rad = degreesToRadians(angle);
@@ -53,6 +53,7 @@ export const createArtilleryParticles = (
       size: elementSize,
       rotation: 0,
       color: targetColor,
+      config: config, // Add config to particle
       // Store explosion data
       element: JSON.stringify({
         isShell: true,
@@ -89,7 +90,7 @@ export const createArtilleryParticles = (
   return particles;
 };
 
-interface ArtilleryElementData {
+interface MortarElementData {
   isShell?: boolean;
   hasExploded?: boolean;
   timeToExplode?: number;
@@ -98,12 +99,15 @@ interface ArtilleryElementData {
   isTrail?: boolean;
   isBurst?: boolean;
   isLaunchSpark?: boolean;
+  isGalaxy?: boolean;
+  isCore?: boolean;
+  twinkle?: boolean;
 }
 
-export const renderArtilleryParticle = (
+export const renderMortarParticle = (
   particle: Particle & { config?: AnimationConfig }
 ): React.ReactNode => {
-  let elementData: ArtilleryElementData = {};
+  let elementData: MortarElementData = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
       elementData = JSON.parse(particle.element);
@@ -149,7 +153,48 @@ export const renderArtilleryParticle = (
 
   // Render burst particles
   if (elementData.isBurst) {
-    const burstOpacity = particle.opacity * Math.pow(particle.life / 100, 0.5);
+    const burstOpacity = particle.opacity * Math.pow(particle.life / 120, 0.5);
+    
+    // Galaxy-style burst particles
+    if (elementData.isGalaxy) {
+      const twinkleOpacity = elementData.twinkle 
+        ? 0.3 + Math.sin(particle.life * 0.3) * 0.7
+        : 1;
+      
+      return (
+        <div
+          key={particle.id}
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: particle.color,
+            borderRadius: '50%',
+            opacity: burstOpacity * twinkleOpacity,
+            boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+            transform: `rotate(${particle.rotation}deg)`,
+          }}
+        />
+      );
+    }
+    
+    // Core particles
+    if (elementData.isCore) {
+      return (
+        <div
+          key={particle.id}
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '50%',
+            opacity: burstOpacity,
+            boxShadow: `0 0 ${particle.size * 3}px #FFFFFF`,
+          }}
+        />
+      );
+    }
+    
+    // Default burst (shouldn't reach here with new code)
     return (
       <div
         key={particle.id}

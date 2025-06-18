@@ -56,7 +56,7 @@ const defaultColors: Record<string, string[]> = {
   glitch: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
   magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
-  artillery: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
+  mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -231,9 +231,9 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     physics: { gravity: 0.4, wind: 0, friction: 0.98 },
     effects: {}
   },
-  artillery: {
-    particleCount: 3,
-    spread: 60,
+  mortar: {
+    particleCount: 2, // Reduced from 3 to 2 shells
+    spread: 45, // Narrower spread
     startVelocity: 12,
     elementSize: 6,
     lifetime: 200,
@@ -337,7 +337,7 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    artillery: useReward('hero-title', 'artillery', { ...defaultConfigs.artillery, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.artillery })
+    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar })
   };
 
   const triggerHeroAnimation = () => {
@@ -1720,20 +1720,20 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'bubbles', name: 'Bubbles', icon: '🫧', desc: 'Floating bubbles' },
       { id: 'snow', name: 'Snow', icon: '❄️', desc: 'Gentle snowfall' },
       { id: 'petals', name: 'Petals', icon: '🌸', desc: 'Flower petals' },
-      { id: 'fireflies', name: 'Fireflies', icon: '✨', desc: 'Glowing lights' },
+      { id: 'fireflies', name: 'Fireflies', icon: '🌟', desc: 'Glowing lights' },
       { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
       { id: 'leaves', name: 'Autumn Leaves', icon: '🍂', desc: 'Falling leaves' },
     ],
     tech: [
       { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },
-      { id: 'artillery', name: 'Artillery', icon: '🎆', desc: 'Mortar explosions' },
+      { id: 'mortar', name: 'Mortar', icon: '💥', desc: 'Explosive bursts' },
     ],
     magic: [
       { id: 'magicdust', name: 'Magic Dust', icon: '✨', desc: 'Mystical sparkles' },
       { id: 'crystals', name: 'Crystals', icon: '💎', desc: 'Shimmering gems' },
     ],
     rewards: [
-      { id: 'coins', name: 'Coins', icon: '🪙', desc: 'Treasure coins' },
+      { id: 'coins', name: 'Coins', icon: '💰', desc: 'Treasure coins' },
       { id: 'paint', name: 'Paint', icon: '🎨', desc: 'Paint splatter' },
       { id: 'galaxy', name: 'Galaxy', icon: '🌌', desc: 'Cosmic particles' },
     ],

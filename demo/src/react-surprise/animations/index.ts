@@ -18,7 +18,7 @@ import { createGlitchParticles, renderGlitchParticle } from './glitch';
 import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
-import { createArtilleryParticles, renderArtilleryParticle } from './artillery';
+import { createMortarParticles, renderMortarParticle } from './mortar';
 
 export type ParticleCreator = (
   origin: { x: number; y: number },
@@ -108,8 +108,8 @@ export const animations: Record<AnimationType, AnimationHandler> = {
     createParticles: createLeafParticles,
     renderParticle: renderLeafParticle,
   },
-  artillery: {
-    createParticles: createArtilleryParticles,
-    renderParticle: renderArtilleryParticle,
+  mortar: {
+    createParticles: createMortarParticles,
+    renderParticle: renderMortarParticle,
   },
 };

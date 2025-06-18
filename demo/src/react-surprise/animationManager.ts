@@ -139,6 +139,7 @@ class AnimationManager {
       const skipFrame = shouldSkipFrame(animation.frameCount);
 
       let activeParticles = 0;
+      const newParticles: PooledParticle[] = []; // Collect new particles to add
 
       // Update particles
       animation.particles = animation.particles.map((particle) => {
@@ -166,14 +167,19 @@ class AnimationManager {
         // Apply animation-specific effects
         this.applyEffects(particle, animation);
 
-        // Handle artillery explosions
-        this.handleArtilleryExplosion(particle, animation);
+        // Handle mortar explosions
+        this.handleMortarExplosion(particle, animation, newParticles);
 
         // Update opacity
         this.updateOpacity(particle, animation);
 
         return particle;
       });
+
+      // Add any new particles created during the update (e.g., explosion particles)
+      if (newParticles.length > 0) {
+        animation.particles.push(...newParticles);
+      }
 
       // Call update callback if provided
       if (animation.updateCallback && !skipFrame) {
@@ -226,11 +232,12 @@ class AnimationManager {
     }
   }
 
-  private handleArtilleryExplosion(
+  private handleMortarExplosion(
     particle: Particle,
-    animation: AnimationInstance
+    animation: AnimationInstance,
+    newParticles: PooledParticle[]
   ): void {
-    if (animation.animationType !== 'artillery' || !particle.element) return;
+    if (animation.animationType !== 'mortar' || !particle.element) return;
 
     try {
       const elementData = JSON.parse(particle.element as string);
@@ -254,7 +261,7 @@ class AnimationManager {
             element: JSON.stringify({ isTrail: true }),
             config: particle.config,
           });
-          animation.particles.push(trailParticle);
+          newParticles.push(trailParticle);
         }
 
         // Check if it's time to explode based on fixed timer
@@ -268,57 +275,79 @@ class AnimationManager {
           particle.element = JSON.stringify(elementData);
 
 
-          // Create dramatic burst
-          const burstCount = elementData.burstCount || 40;
+          // Create galaxy-style explosion with fewer particles for performance
+          const isMobile = window.innerWidth < 768;
+          const burstCount = isMobile ? 20 : 30; // Reduced particle count
           const explosionParticles: PooledParticle[] = [];
+          
+          // Galaxy colors for the explosion
+          const galaxyColors = [
+            '#FFFFFF', '#FFF9C4', '#BBDEFB', '#C5CAE9', 
+            '#D1C4E9', '#FFE082', '#FFCCBC'
+          ];
 
-          // Create starburst pattern
+          // Create spiral galaxy explosion
           for (let i = 0; i < burstCount; i++) {
-            const angle = (360 / burstCount) * i;
-            const velocityBase = 6;
-            const velocityVariation = randomInRange(0.6, 1.2);
-            const velocity = velocityBase * velocityVariation;
-            const rad = (angle * Math.PI) / 180;
-
-            // Main burst particle
+            const progress = i / burstCount;
+            const spiralAngle = progress * Math.PI * 6; // 3 full rotations
+            const radius = progress * 80; // Explosion radius
+            
+            // Add randomness for natural look
+            const angleOffset = randomInRange(-0.4, 0.4);
+            const radiusOffset = randomInRange(-15, 15);
+            
+            const finalAngle = spiralAngle + angleOffset;
+            const finalRadius = (radius + radiusOffset) * 0.5; // Smaller explosion
+            
+            // Velocity follows spiral tangent
+            const tangentAngle = finalAngle + Math.PI / 2;
+            const speed = 3 * (1 - progress * 0.3); // Outer particles slower
+            
             const burstParticle = particlePool.acquire();
             Object.assign(burstParticle, {
               id: `${particle.id}-burst-${i}`,
-              x: particle.x,
-              y: particle.y,
-              vx: Math.cos(rad) * velocity,
-              vy: Math.sin(rad) * velocity,
-              life: 100,
+              x: particle.x + Math.cos(finalAngle) * finalRadius * 0.1,
+              y: particle.y + Math.sin(finalAngle) * finalRadius * 0.1,
+              vx: Math.cos(tangentAngle) * speed + Math.cos(finalAngle) * 2,
+              vy: Math.sin(tangentAngle) * speed + Math.sin(finalAngle) * 2,
+              life: 120 - progress * 40, // Inner particles live longer
               opacity: 1,
-              size: randomInRange(3, 6),
-              rotation: 0,
-              color: elementData.burstColor || particle.color,
-              element: JSON.stringify({ isBurst: true }),
-              config: particle.config, // Important: copy config for rendering
+              size: randomInRange(2, 5) * (1 - progress * 0.5),
+              rotation: randomInRange(0, 360),
+              color: galaxyColors[Math.floor(Math.random() * galaxyColors.length)],
+              element: JSON.stringify({ 
+                isBurst: true, 
+                isGalaxy: true,
+                twinkle: Math.random() > 0.7 
+              }),
+              config: particle.config,
             });
             explosionParticles.push(burstParticle);
-
-            // Add some extra particles for fuller effect
-            if (i % 3 === 0) {
-              const extraParticle = particlePool.acquire();
-              const extraAngle = angle + randomInRange(-15, 15);
-              const extraRad = (extraAngle * Math.PI) / 180;
-              Object.assign(extraParticle, {
-                id: `${particle.id}-extra-${i}`,
-                x: particle.x,
-                y: particle.y,
-                vx: Math.cos(extraRad) * velocity * 0.8,
-                vy: Math.sin(extraRad) * velocity * 0.8,
-                life: 80,
-                opacity: 1,
-                size: randomInRange(2, 4),
-                rotation: 0,
-                color: elementData.burstColor || particle.color,
-                element: JSON.stringify({ isBurst: true }),
-                config: particle.config,
-              });
-              explosionParticles.push(extraParticle);
-            }
+          }
+          
+          // Add fewer bright core particles
+          const coreCount = isMobile ? 5 : 8;
+          for (let i = 0; i < coreCount; i++) {
+            const angle = (Math.PI * 2 * i) / coreCount;
+            const coreParticle = particlePool.acquire();
+            Object.assign(coreParticle, {
+              id: `${particle.id}-core-${i}`,
+              x: particle.x,
+              y: particle.y,
+              vx: Math.cos(angle) * randomInRange(1, 2),
+              vy: Math.sin(angle) * randomInRange(1, 2),
+              life: 60, // Shorter life
+              opacity: 1,
+              size: randomInRange(3, 5),
+              rotation: 0,
+              color: '#FFFFFF',
+              element: JSON.stringify({ 
+                isBurst: true, 
+                isCore: true 
+              }),
+              config: particle.config,
+            });
+            explosionParticles.push(coreParticle);
           }
 
           // Add center flash
@@ -339,7 +368,7 @@ class AnimationManager {
           });
           explosionParticles.push(flashParticle);
 
-          animation.particles.push(...explosionParticles);
+          newParticles.push(...explosionParticles);
         }
       }
     } catch (e) {
