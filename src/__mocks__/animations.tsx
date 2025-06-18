@@ -39,4 +39,6 @@ export const animations = {
   magicdust: createMockAnimation('magicdust'),
   crystals: createMockAnimation('crystals'),
   leaves: createMockAnimation('leaves'),
+  mortar: createMockAnimation('mortar'),
+  bokeh: createMockAnimation('bokeh'),
 };

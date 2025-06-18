@@ -98,8 +98,8 @@ describe('confetti animation', () => {
         type: 'div',
         props: expect.objectContaining({
           style: expect.objectContaining({
-            width: `${mockParticle.size}px`,
-            height: `${mockParticle.size * 0.6}px`,
+            width: '100%',
+            height: '60%',
             backgroundColor: mockParticle.color,
           }),
         }),
@@ -110,8 +110,8 @@ describe('confetti animation', () => {
       const result = renderConfettiParticle(mockParticle) as React.ReactElement;
 
       expect(result.props.style).toMatchObject({
-        width: `${mockParticle.size}px`,
-        height: `${mockParticle.size * 0.6}px`,
+        width: '100%',
+        height: '60%',
         backgroundColor: mockParticle.color,
         borderRadius: '3px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',

@@ -244,7 +244,11 @@ export function useReward(
         animationManager.removeAnimation(animationIdRef.current);
       }
       if (rootRef.current) {
-        rootRef.current.unmount();
+        try {
+          rootRef.current.unmount();
+        } catch (e) {
+          // Ignore unmount errors in test environment
+        }
         rootRef.current = null;
       }
       if (

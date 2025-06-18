@@ -38,14 +38,16 @@ Object.defineProperty(document, 'hidden', {
 });
 
 // Mock createRoot for React 18
-const mockRoot = {
-  render: jest.fn(),
-  unmount: jest.fn(),
-};
-
-jest.mock('react-dom/client', () => ({
-  createRoot: jest.fn(() => mockRoot),
-}));
+// NOTE: We need to keep the actual implementation for React Testing Library to work
+// Only mock this when testing the useReward hook specifically
+// const mockRoot = {
+//   render: jest.fn(),
+//   unmount: jest.fn(),
+// };
+// 
+// jest.mock('react-dom/client', () => ({
+//   createRoot: jest.fn(() => mockRoot),
+// }));
 
 // Suppress console warnings in tests unless explicitly testing them
 const originalWarn = console.warn;
