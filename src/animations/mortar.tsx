@@ -154,13 +154,13 @@ export const renderMortarParticle = (
   // Render burst particles
   if (elementData.isBurst) {
     const burstOpacity = particle.opacity * Math.pow(particle.life / 120, 0.5);
-    
+
     // Galaxy-style burst particles
     if (elementData.isGalaxy) {
-      const twinkleOpacity = elementData.twinkle 
+      const twinkleOpacity = elementData.twinkle
         ? 0.3 + Math.sin(particle.life * 0.3) * 0.7
         : 1;
-      
+
       return (
         <div
           key={particle.id}
@@ -176,7 +176,7 @@ export const renderMortarParticle = (
         />
       );
     }
-    
+
     // Core particles
     if (elementData.isCore) {
       return (
@@ -193,7 +193,7 @@ export const renderMortarParticle = (
         />
       );
     }
-    
+
     // Default burst (shouldn't reach here with new code)
     return (
       <div

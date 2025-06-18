@@ -278,11 +278,16 @@ class AnimationManager {
           const isMobile = window.innerWidth < 768;
           const burstCount = isMobile ? 20 : 30; // Reduced particle count
           const explosionParticles: PooledParticle[] = [];
-          
+
           // Galaxy colors for the explosion
           const galaxyColors = [
-            '#FFFFFF', '#FFF9C4', '#BBDEFB', '#C5CAE9', 
-            '#D1C4E9', '#FFE082', '#FFCCBC'
+            '#FFFFFF',
+            '#FFF9C4',
+            '#BBDEFB',
+            '#C5CAE9',
+            '#D1C4E9',
+            '#FFE082',
+            '#FFCCBC',
           ];
 
           // Create spiral galaxy explosion
@@ -290,18 +295,18 @@ class AnimationManager {
             const progress = i / burstCount;
             const spiralAngle = progress * Math.PI * 6; // 3 full rotations
             const radius = progress * 80; // Explosion radius
-            
+
             // Add randomness for natural look
             const angleOffset = randomInRange(-0.4, 0.4);
             const radiusOffset = randomInRange(-15, 15);
-            
+
             const finalAngle = spiralAngle + angleOffset;
             const finalRadius = (radius + radiusOffset) * 0.5; // Smaller explosion
-            
+
             // Velocity follows spiral tangent
             const tangentAngle = finalAngle + Math.PI / 2;
             const speed = 3 * (1 - progress * 0.3); // Outer particles slower
-            
+
             const burstParticle = particlePool.acquire();
             Object.assign(burstParticle, {
               id: `${particle.id}-burst-${i}`,
@@ -313,17 +318,18 @@ class AnimationManager {
               opacity: 1,
               size: randomInRange(2, 5) * (1 - progress * 0.5),
               rotation: randomInRange(0, 360),
-              color: galaxyColors[Math.floor(Math.random() * galaxyColors.length)],
-              element: JSON.stringify({ 
-                isBurst: true, 
+              color:
+                galaxyColors[Math.floor(Math.random() * galaxyColors.length)],
+              element: JSON.stringify({
+                isBurst: true,
                 isGalaxy: true,
-                twinkle: Math.random() > 0.7 
+                twinkle: Math.random() > 0.7,
               }),
               config: particle.config,
             });
             explosionParticles.push(burstParticle);
           }
-          
+
           // Add fewer bright core particles
           const coreCount = isMobile ? 5 : 8;
           for (let i = 0; i < coreCount; i++) {
@@ -340,9 +346,9 @@ class AnimationManager {
               size: randomInRange(3, 5),
               rotation: 0,
               color: '#FFFFFF',
-              element: JSON.stringify({ 
-                isBurst: true, 
-                isCore: true 
+              element: JSON.stringify({
+                isBurst: true,
+                isCore: true,
               }),
               config: particle.config,
             });
