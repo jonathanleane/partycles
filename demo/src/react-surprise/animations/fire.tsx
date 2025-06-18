@@ -47,12 +47,12 @@ export const createFireParticles = (
   for (let i = 0; i < flameCount; i++) {
     const life = randomInRange(lifetime * 0.5, lifetime);
     const xOffset = randomInRange(-spread * 0.3, spread * 0.3);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + xOffset,
       y: origin.y,
-      vx: randomInRange(-0.5, 0.5) + (xOffset * 0.02), // Slight outward velocity
+      vx: randomInRange(-0.5, 0.5) + xOffset * 0.02, // Slight outward velocity
       vy: -randomInRange(startVelocity * 0.8, startVelocity * 1.5), // Upward velocity
       life: life,
       opacity: 1,
@@ -71,7 +71,7 @@ export const createFireParticles = (
   // Create smoke particles (rise from the top of flames)
   for (let i = 0; i < smokeCount; i++) {
     const xOffset = randomInRange(-spread * 0.5, spread * 0.5);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + xOffset,
@@ -94,7 +94,7 @@ export const createFireParticles = (
   for (let i = 0; i < sparkCount; i++) {
     const angle = randomInRange(-Math.PI / 4, Math.PI / 4) - Math.PI / 2; // Upward cone
     const velocity = randomInRange(startVelocity * 1.5, startVelocity * 2.5);
-    
+
     particles.push({
       id: generateId(),
       x: origin.x + randomInRange(-spread * 0.2, spread * 0.2),
@@ -126,21 +126,28 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
     // Fallback
   }
 
-  const { type = 'flame', turbulence = 1, flickerSpeed = 0.2, expansionRate = 0.02, gravity = 0.05, initialLife = 100 } = elementData;
+  const {
+    type = 'flame',
+    turbulence = 1,
+    flickerSpeed = 0.2,
+    expansionRate = 0.02,
+    gravity = 0.05,
+    initialLife = 100,
+  } = elementData;
 
   if (type === 'flame') {
     // Calculate flicker effect
     const flicker = Math.sin(particle.life * flickerSpeed) * 0.2 + 0.8;
-    
+
     // Color transition based on life (hot to cool)
     const lifeRatio = particle.life / initialLife;
     let colorIndex = Math.floor((1 - lifeRatio) * fireColors.length);
     colorIndex = Math.min(colorIndex, fireColors.length - 1);
     const color = fireColors[colorIndex];
-    
+
     // Size decreases as it rises
     const sizeMultiplier = 0.5 + lifeRatio * 0.5;
-    
+
     return (
       <div
         key={particle.id}
@@ -157,8 +164,12 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
     );
   } else if (type === 'smoke') {
     // Smoke expands as it rises
-    const expansion = 1 + (1 - particle.life / (particle.config?.lifetime || 150)) * expansionRate * 100;
-    
+    const expansion =
+      1 +
+      (1 - particle.life / (particle.config?.lifetime || 150)) *
+        expansionRate *
+        100;
+
     return (
       <div
         key={particle.id}
@@ -167,7 +178,10 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
           height: `${particle.size * expansion}px`,
           background: `radial-gradient(circle, ${particle.color} 0%, transparent 60%)`,
           borderRadius: '50%',
-          opacity: particle.opacity * (particle.life / (particle.config?.lifetime || 150)) * 0.5,
+          opacity:
+            particle.opacity *
+            (particle.life / (particle.config?.lifetime || 150)) *
+            0.5,
           filter: 'blur(3px)',
         }}
       />
@@ -175,7 +189,7 @@ export const renderFireParticle = (particle: Particle): React.ReactNode => {
   } else if (type === 'spark') {
     // Sparks are small bright points
     const sparkOpacity = particle.life / (particle.config?.lifetime || 60);
-    
+
     return (
       <div
         key={particle.id}

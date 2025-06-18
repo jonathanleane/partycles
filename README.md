@@ -12,7 +12,7 @@ A lightweight, performant React library for adding delightful animation effects 
 ## ✨ Features
 
 - 🎯 **Simple API** - Just one hook to rule them all
-- 🎨 **21 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, leaves, mortar, and bokeh
+- 🎨 **22 Beautiful Animations** - Confetti, sparkles, hearts, stars, fireworks, bubbles, snow, emoji, coins, petals, aurora, fireflies, paint, balloons, galaxy, glitch, magicdust, crystals, leaves, mortar, bokeh, and fire
 - 📦 **Tiny Bundle** - Zero dependencies, optimized for performance
 - 🚀 **Performant** - Optimized animations using requestAnimationFrame
 - 🎮 **Full Control** - Customize colors, particle count, physics, and more
@@ -66,7 +66,7 @@ const { reward, isAnimating } = useReward('my-button', 'confetti');
 
 - **Zero Dependencies** - No bloat, just pure React code
 - **One Hook** - Simple `useReward` hook handles everything  
-- **21 Animations** - From confetti to dreamy bokeh effects, we've got you covered
+- **22 Animations** - From confetti to realistic fire effects, we've got you covered
 - **Fully Typed** - Great TypeScript support out of the box
 - **Customizable** - Tweak colors, physics, particle count, and more
 - **Performant** - Optimized animations that won't slow down your app
@@ -82,7 +82,7 @@ The main hook for creating reward animations.
 
 - `targetRef` (RefObject<HTMLElement>): A React ref to the element to animate from (recommended)
 - `elementId` (string): The ID of the element to animate from (legacy, for backward compatibility)
-- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`, `'mortar'`, `'bokeh'`
+- `animationType` (string): One of: `'confetti'`, `'sparkles'`, `'hearts'`, `'stars'`, `'fireworks'`, `'bubbles'`, `'snow'`, `'emoji'`, `'coins'`, `'petals'`, `'aurora'`, `'fireflies'`, `'paint'`, `'balloons'`, `'galaxy'`, `'glitch'`, `'magicdust'`, `'crystals'`, `'leaves'`, `'mortar'`, `'bokeh'`, `'fire'`
 - `config` (optional): Animation configuration object
 
 #### Returns
@@ -627,7 +627,13 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ## 📈 Changelog
 
-### v1.2.3 (Latest)
+### v1.2.5 (Latest)
+- 🔥 Added new `fire` animation with realistic flame, smoke, and spark particles
+- 🎨 Implemented color gradients and flicker effects for authentic fire movement
+- ⚡ Optimized particle physics for upward-flowing flames and smoke
+- 🙏 Fire effect inspired by lexaterra's WebGL shader implementation
+
+### v1.2.3
 - 🔮 Updated bokeh animation defaults for better visual impact
 - 📊 Increased default particle count from 25 to 50
 - ⏱️ Reduced lifetime from 400 to 200 for snappier animations
@@ -661,6 +667,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 ## 🙏 Credits
 
 - **Bokeh effect** inspired by [Sergio A. Carrasco Chavez](https://codepen.io/sergio-carrasco)'s beautiful bokeh implementation
+- **Fire effect** inspired by [lexaterra](https://codepen.io/lexaterra)'s WebGL fire shader
 
 ## 📄 License
 
