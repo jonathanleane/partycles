@@ -1736,7 +1736,8 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
       { id: 'leaves', name: 'Autumn Leaves', icon: '🍂', desc: 'Falling leaves' },
       { id: 'rain', name: 'Rain', icon: '🌧️', desc: 'Falling streaks' },
-      { id: 'embers', name: 'Embers', icon: '🔥', desc: 'Glowing sparks' }
+      { id: 'embers', name: 'Embers', icon: '🔥', desc: 'Glowing sparks' },
+      { id: 'mortar', name: 'Mortar', icon: '🎇', desc: 'Aerial shell + burst' }
     ],
     tech: [
       { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },

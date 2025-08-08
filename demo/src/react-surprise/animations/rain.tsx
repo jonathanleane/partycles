@@ -22,6 +22,7 @@ export const createRainParticles = (
     const speed = randomInRange(startVelocity * 0.8, startVelocity * 1.4);
     const vx = Math.cos((angle * Math.PI) / 180) * speed + randomInRange(-0.5, 0.5);
     const vy = Math.sin((angle * Math.PI) / 180) * speed;
+    const length = Math.min(16 + speed * 1.2, 36);
 
     return {
       id: `r-${Math.random().toString(36).slice(2, 9)}`,
@@ -31,7 +32,7 @@ export const createRainParticles = (
       vy,
       life: config.lifetime || 90,
       opacity: 1,
-      size: elementSize,
+      size: length,
       rotation: (Math.atan2(vy, vx) * 180) / Math.PI,
       color: colors[Math.floor(Math.random() * colors.length)],
       config,
@@ -41,14 +42,16 @@ export const createRainParticles = (
 
 export const renderRainParticle = (particle: Particle): React.ReactNode => {
   const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
-  const length = Math.min(20 + speed * 1.5, 40);
+  const length = Math.min(16 + speed * 1.2, 36);
+  const thickness = Math.max(1, Math.round(Math.max(1, particle.size / 4)));
 
   return (
     <div
       key={particle.id}
       style={{
-        width: `${Math.max(1, particle.size)}px`,
+        width: `${thickness}px`,
         height: `${length}px`,
+        opacity: Math.min(0.85, 0.45 + speed * 0.02),
         background: `linear-gradient(to bottom, ${particle.color}, transparent)`
       }}
     />
