@@ -61,7 +61,9 @@ export type AnimationType =
   | 'mortar'
   | 'bokeh'
   | 'ribbons'
-  | 'geometric';
+  | 'geometric'
+  | 'rain'
+  | 'embers';
 
 export interface UseRewardConfig extends AnimationConfig {
   animationType: AnimationType;

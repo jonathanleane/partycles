@@ -101,7 +101,7 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
       path.push(`M ${x} ${y}`);
     } else {
       // Use quadratic bezier curves for smooth flow
-      const prevPoint = points[i - 1];
+      const prevPoint = points[i - 1] as { x: number; y: number };
       const cpX = (prevPoint.x + x) / 2;
       const cpY = y - segmentHeight / 2;
       path.push(`Q ${cpX} ${cpY} ${x} ${y}`);

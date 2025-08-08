@@ -132,7 +132,9 @@ export function useReward(
           ? -0.1
           : animationType === 'snow'
             ? 0.05
-            : 0.35;
+            : animationType === 'embers'
+              ? -0.06
+              : 0.35;
       const gravity =
         optimizedConfig?.physics?.gravity ??
         config?.physics?.gravity ??

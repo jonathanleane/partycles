@@ -31,7 +31,6 @@ export const createGeometricParticles = (
 ): Particle[] => {
   const {
     particleCount = 30,
-    spread = 360,
     startVelocity = 25,
     colors = geometricColors,
     elementSize = 25,

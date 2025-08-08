@@ -56,10 +56,7 @@ const defaultColors: Record<string, string[]> = {
   glitch: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
   magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
-  mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
-  bokeh: ['#FFFFFF', '#FFF8DC', '#FFFACD', '#FFE4B5', '#FFDEAD', '#F0E68C', '#FFD700'],
-  ribbons: ['#FF1744', '#F50057', '#D500F9', '#651FFF', '#2979FF', '#00E5FF', '#1DE9B6', '#00E676', '#76FF03', '#FFEA00', '#FFC400', '#FF9100'],
-  geometric: ['#00D9FF', '#FF006E', '#FFB700', '#8338EC', '#3A86FF', '#06FFA5', '#FF4365', '#FFEE32', '#9B5DE5', '#00F5FF', '#F15BB5', '#00BBF9'],
+  waves: ['#0066cc', '#0088ff', '#00aaff', '#66ccff', '#99ddff', '#ccf0ff'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -234,39 +231,12 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     physics: { gravity: 0.4, wind: 0, friction: 0.98 },
     effects: {}
   },
-  mortar: {
-    particleCount: 2, // Reduced from 3 to 2 shells
-    spread: 45, // Narrower spread
-    startVelocity: 12,
-    elementSize: 6,
-    lifetime: 200,
-    physics: { gravity: 0.35, wind: 0, friction: 0.99 },
-    effects: {}
-  },
-  bokeh: {
-    particleCount: 50,
+  waves: {
+    particleCount: 25,
     spread: 300,
-    startVelocity: 1,
-    elementSize: 40,
-    lifetime: 200,
-    physics: { gravity: 0.05, wind: 0, friction: 0.99 },
-    effects: {}
-  },
-  ribbons: {
-    particleCount: 20,
-    spread: 100,
-    startVelocity: 18,
-    elementSize: 80,
-    lifetime: 250,
-    physics: { gravity: 0.2, wind: 0.05, friction: 0.99 },
-    effects: {}
-  },
-  geometric: {
-    particleCount: 30,
-    spread: 360,
-    startVelocity: 25,
-    elementSize: 25,
-    lifetime: 120,
+    startVelocity: 5,
+    elementSize: 30,
+    lifetime: 2000,
     physics: { gravity: 0.3, wind: 0, friction: 0.98 },
     effects: {}
   }
@@ -367,10 +337,7 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, particleCount: Math.floor(2 * mobileFactor), startVelocity: 10, colors: defaultColors.mortar }),
-    bokeh: useReward('hero-title', 'bokeh', { ...defaultConfigs.bokeh, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.bokeh }),
-    ribbons: useReward('hero-title', 'ribbons', { ...defaultConfigs.ribbons, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.ribbons }),
-    geometric: useReward('hero-title', 'geometric', { ...defaultConfigs.geometric, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.geometric })
+    waves: useReward('hero-title', 'waves', { ...defaultConfigs.waves, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.waves })
   };
 
   const triggerHeroAnimation = () => {
@@ -1744,7 +1711,6 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'sparkles', name: 'Sparkles', icon: '✨', desc: 'Magical glitter' },
       { id: 'stars', name: 'Stars', icon: '⭐', desc: 'Shining stars' },
       { id: 'balloons', name: 'Balloons', icon: '🎈', desc: 'Floating balloons' },
-      { id: 'ribbons', name: 'Ribbons', icon: '🎀', desc: 'Party streamers' },
     ],
     emotions: [
       { id: 'hearts', name: 'Hearts', icon: '💕', desc: 'Love and likes' },
@@ -1754,26 +1720,22 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'bubbles', name: 'Bubbles', icon: '🫧', desc: 'Floating bubbles' },
       { id: 'snow', name: 'Snow', icon: '❄️', desc: 'Gentle snowfall' },
       { id: 'petals', name: 'Petals', icon: '🌸', desc: 'Flower petals' },
-      { id: 'fireflies', name: 'Fireflies', icon: '🌟', desc: 'Glowing lights' },
+      { id: 'fireflies', name: 'Fireflies', icon: '✨', desc: 'Glowing lights' },
       { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
       { id: 'leaves', name: 'Autumn Leaves', icon: '🍂', desc: 'Falling leaves' },
+      { id: 'waves', name: 'Waves', icon: '🌊', desc: 'Ocean ripples' },
     ],
     tech: [
       { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },
-      { id: 'mortar', name: 'Mortar', icon: '💥', desc: 'Explosive bursts' },
     ],
     magic: [
       { id: 'magicdust', name: 'Magic Dust', icon: '✨', desc: 'Mystical sparkles' },
       { id: 'crystals', name: 'Crystals', icon: '💎', desc: 'Shimmering gems' },
     ],
     rewards: [
-      { id: 'coins', name: 'Coins', icon: '💰', desc: 'Treasure coins' },
+      { id: 'coins', name: 'Coins', icon: '🪙', desc: 'Treasure coins' },
       { id: 'paint', name: 'Paint', icon: '🎨', desc: 'Paint splatter' },
       { id: 'galaxy', name: 'Galaxy', icon: '🌌', desc: 'Cosmic particles' },
-    ],
-    visual: [
-      { id: 'bokeh', name: 'Bokeh', icon: '🔮', desc: 'Soft light orbs' },
-      { id: 'geometric', name: 'Geometric', icon: '🔷', desc: 'Modern shapes' },
     ],
   };
 

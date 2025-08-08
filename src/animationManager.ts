@@ -264,10 +264,15 @@ class AnimationManager {
           newParticles.push(trailParticle);
         }
 
-        // Check if it's time to explode based on fixed timer
+        // Check if it's time to explode based on timer scaled to lifetime and apex
         const totalLife = particle.config?.lifetime ?? 200;
         const flightTime = totalLife - particle.life;
-        const shouldExplode = flightTime >= (elementData.timeToExplode || 25);
+        const targetTime = Math.min(
+          elementData.timeToExplode || 25,
+          Math.max(12, totalLife * 0.4)
+        );
+        const reachedApex = particle.vy >= 0; // start falling
+        const shouldExplode = flightTime >= targetTime || (reachedApex && flightTime > 8);
 
         if (shouldExplode) {
           // Mark as exploded

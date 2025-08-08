@@ -22,6 +22,8 @@ import { createMortarParticles, renderMortarParticle } from './mortar';
 import { createBokehParticles, renderBokehParticle } from './bokeh';
 import { createRibbonsParticles, renderRibbonsParticle } from './ribbons';
 import { createGeometricParticles, renderGeometricParticle } from './geometric';
+import { createRainParticles, renderRainParticle } from './rain';
+import { createEmberParticles, renderEmberParticle } from './embers';
 
 export type ParticleCreator = (
   origin: { x: number; y: number },
@@ -126,5 +128,13 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   geometric: {
     createParticles: createGeometricParticles,
     renderParticle: renderGeometricParticle,
+  },
+  rain: {
+    createParticles: createRainParticles,
+    renderParticle: renderRainParticle,
+  },
+  embers: {
+    createParticles: createEmberParticles,
+    renderParticle: renderEmberParticle,
   },
 };

@@ -18,10 +18,11 @@ import { createGlitchParticles, renderGlitchParticle } from './glitch';
 import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
-import { createMortarParticles, renderMortarParticle } from './mortar';
 import { createBokehParticles, renderBokehParticle } from './bokeh';
 import { createRibbonsParticles, renderRibbonsParticle } from './ribbons';
 import { createGeometricParticles, renderGeometricParticle } from './geometric';
+import { createRainParticles, renderRainParticle } from './rain';
+import { createEmberParticles, renderEmberParticle } from './embers';
 
 export type ParticleCreator = (
   origin: { x: number; y: number },
@@ -111,10 +112,6 @@ export const animations: Record<AnimationType, AnimationHandler> = {
     createParticles: createLeafParticles,
     renderParticle: renderLeafParticle,
   },
-  mortar: {
-    createParticles: createMortarParticles,
-    renderParticle: renderMortarParticle,
-  },
   bokeh: {
     createParticles: createBokehParticles,
     renderParticle: renderBokehParticle,
@@ -126,5 +123,13 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   geometric: {
     createParticles: createGeometricParticles,
     renderParticle: renderGeometricParticle,
+  },
+  rain: {
+    createParticles: createRainParticles,
+    renderParticle: renderRainParticle,
+  },
+  embers: {
+    createParticles: createEmberParticles,
+    renderParticle: renderEmberParticle,
   },
 };
