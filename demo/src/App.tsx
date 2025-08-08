@@ -58,6 +58,7 @@ const defaultColors: Record<string, string[]> = {
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
   rain: ['#9ecaf9', '#b5d6ff', '#a8cfff', '#c7e1ff'],
   embers: ['#ffcf6b', '#ffa24a', '#ff7b3d', '#ff5e3a', '#ffd8a8'],
+  mortar: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7dc6f', '#bb8fce', '#85c1f5'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -249,6 +250,15 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     lifetime: 120,
     physics: { gravity: -0.06, wind: 0, friction: 0.99 },
     effects: { twinkle: true }
+  },
+  mortar: {
+    particleCount: 2,
+    spread: 45,
+    startVelocity: 12,
+    elementSize: 6,
+    lifetime: 200,
+    physics: { gravity: 0.35, wind: 0, friction: 0.99 },
+    effects: {}
   }
 };
 
@@ -347,7 +357,7 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.fireworks, particleCount: 2, elementSize: 6, lifetime: 200, physics: { gravity: 0.35, wind: 0, friction: 0.99 } }),
+    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.mortar, colors: defaultColors.mortar }),
     rain: useReward('hero-title', 'rain', { ...defaultConfigs.rain, particleCount: Math.floor(70 * mobileFactor), colors: defaultColors.rain }),
     embers: useReward('hero-title', 'embers', { ...defaultConfigs.embers, particleCount: Math.floor(50 * mobileFactor), colors: defaultColors.embers })
   };
