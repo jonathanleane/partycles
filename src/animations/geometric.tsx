@@ -37,7 +37,13 @@ export const createGeometricParticles = (
     lifetime = 120,
   } = config;
 
-  const shapes: ShapeType[] = ['triangle', 'square', 'diamond', 'hexagon', 'star'];
+  const shapes: ShapeType[] = [
+    'triangle',
+    'square',
+    'diamond',
+    'hexagon',
+    'star',
+  ];
 
   return createPooledParticles(particleCount, () => {
     const angle = randomInRange(0, 360);
@@ -71,7 +77,9 @@ interface GeometricElementData {
   pulseSpeed?: number;
 }
 
-export const renderGeometricParticle = (particle: Particle): React.ReactNode => {
+export const renderGeometricParticle = (
+  particle: Particle
+): React.ReactNode => {
   let shapeData: GeometricElementData = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
@@ -84,15 +92,11 @@ export const renderGeometricParticle = (particle: Particle): React.ReactNode => 
     // Fallback
   }
 
-  const {
-    shape = 'square',
-    spinSpeed = 3,
-    pulseSpeed = 0.08,
-  } = shapeData;
+  const { shape = 'square', spinSpeed = 3, pulseSpeed = 0.08 } = shapeData;
 
   const lifeRatio = particle.life / (particle.config?.lifetime || 120);
   const rotation = particle.rotation + particle.life * spinSpeed;
-  
+
   // Pulse effect
   const pulse = 1 + Math.sin(particle.life * pulseSpeed) * 0.1;
 

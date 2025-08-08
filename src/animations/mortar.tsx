@@ -41,7 +41,10 @@ export const createMortarParticles = (
 
     // Calculate when to explode based on trajectory
     const totalLife = config.lifetime || 200;
-    const timeToExplode = Math.min(randomInRange(20, 35), Math.max(15, totalLife * 0.45)); // Scale to lifetime
+    const timeToExplode = Math.min(
+      randomInRange(20, 35),
+      Math.max(15, totalLife * 0.45)
+    ); // Scale to lifetime
 
     return {
       id: generateId(),

@@ -95,18 +95,19 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
   // Create flowing path for ribbon
   const path: string[] = [];
   const points: { x: number; y: number }[] = [];
-  
+
   for (let i = 0; i <= segments; i++) {
     const segmentProgress = i / segments;
     // Wave gets stronger towards the bottom of the ribbon
     const waveAmplitude = segmentProgress * 30 * lifeRatio;
-    const wavePhase = particle.life * waveSpeed + phaseOffset + segmentProgress * 2;
+    const wavePhase =
+      particle.life * waveSpeed + phaseOffset + segmentProgress * 2;
     const xOffset = Math.sin(wavePhase) * waveAmplitude;
-    
+
     const x = xOffset;
     const y = i * segmentHeight;
     points.push({ x, y });
-    
+
     if (i === 0) {
       path.push(`M ${x} ${y}`);
     } else {
@@ -120,7 +121,7 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
 
   // Create the ribbon shape with thickness
   const pathString = path.join(' ');
-  
+
   return (
     <div
       key={particle.id}
@@ -145,7 +146,13 @@ export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
         }}
       >
         <defs>
-          <linearGradient id={`ribbon-gradient-${particle.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient
+            id={`ribbon-gradient-${particle.id}`}
+            x1="0%"
+            y1="0%"
+            x2="0%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor={particle.color} stopOpacity="1" />
             <stop offset="50%" stopColor={particle.color} stopOpacity="0.8" />
             <stop offset="100%" stopColor={particle.color} stopOpacity="0.3" />

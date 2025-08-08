@@ -272,7 +272,8 @@ class AnimationManager {
           Math.max(12, totalLife * 0.4)
         );
         const reachedApex = particle.vy >= 0; // start falling
-        const shouldExplode = flightTime >= targetTime || (reachedApex && flightTime > 8);
+        const shouldExplode =
+          flightTime >= targetTime || (reachedApex && flightTime > 8);
 
         if (shouldExplode) {
           // Mark as exploded

@@ -21,7 +21,8 @@ export const createRainParticles = (
     // Slight angular spread downward
     const angle = randomInRange(90 - spread / 2, 90 + spread / 2);
     const speed = randomInRange(startVelocity * 0.8, startVelocity * 1.4);
-    const vx = Math.cos((angle * Math.PI) / 180) * speed + randomInRange(-0.5, 0.5);
+    const vx =
+      Math.cos((angle * Math.PI) / 180) * speed + randomInRange(-0.5, 0.5);
     const vy = Math.sin((angle * Math.PI) / 180) * speed;
 
     return {
@@ -42,7 +43,9 @@ export const createRainParticles = (
 
 export const renderRainParticle = (particle: Particle): React.ReactNode => {
   // Compute streak length based on speed
-  const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+  const speed = Math.sqrt(
+    particle.vx * particle.vx + particle.vy * particle.vy
+  );
   const length = Math.min(20 + speed * 1.5, 40);
 
   return (
@@ -51,8 +54,8 @@ export const renderRainParticle = (particle: Particle): React.ReactNode => {
       style={{
         width: `${Math.max(1, particle.size)}px`,
         height: `${length}px`,
-        background: `linear-gradient(to bottom, ${particle.color}, transparent)`
+        background: `linear-gradient(to bottom, ${particle.color}, transparent)`,
       }}
     />
   );
-}; 
+};

@@ -51,8 +51,8 @@ export const renderEmberParticle = (particle: Particle): React.ReactNode => {
         borderRadius: '50%',
         opacity: particle.opacity * flickerOpacity,
         boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
-        filter: 'blur(0.3px)'
+        filter: 'blur(0.3px)',
       }}
     />
   );
-}; 
+};
