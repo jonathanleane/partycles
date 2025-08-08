@@ -56,7 +56,8 @@ const defaultColors: Record<string, string[]> = {
   glitch: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'],
   magicdust: ['#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#FFD700'],
   crystals: ['#E91E63', '#9C27B0', '#3F51B5', '#00BCD4', '#4CAF50', '#FFEB3B'],
-  waves: ['#0066cc', '#0088ff', '#00aaff', '#66ccff', '#99ddff', '#ccf0ff'],
+  rain: ['#9ecaf9', '#b5d6ff', '#a8cfff', '#c7e1ff'],
+  embers: ['#ffcf6b', '#ffa24a', '#ff7b3d', '#ff5e3a', '#ffd8a8'],
 };
 
 const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
@@ -231,14 +232,23 @@ const defaultConfigs: Record<string, AnimationConfigWithEffects> = {
     physics: { gravity: 0.4, wind: 0, friction: 0.98 },
     effects: {}
   },
-  waves: {
-    particleCount: 25,
-    spread: 300,
-    startVelocity: 5,
-    elementSize: 30,
-    lifetime: 2000,
-    physics: { gravity: 0.3, wind: 0, friction: 0.98 },
+  rain: {
+    particleCount: 80,
+    spread: 40,
+    startVelocity: 10,
+    elementSize: 2,
+    lifetime: 90,
+    physics: { gravity: 0.6, wind: 0.05, friction: 0.99 },
     effects: {}
+  },
+  embers: {
+    particleCount: 60,
+    spread: 60,
+    startVelocity: 2.5,
+    elementSize: 3,
+    lifetime: 120,
+    physics: { gravity: -0.06, wind: 0, friction: 0.99 },
+    effects: { twinkle: true }
   }
 };
 
@@ -337,7 +347,8 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
-    waves: useReward('hero-title', 'waves', { ...defaultConfigs.waves, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.waves })
+    rain: useReward('hero-title', 'rain', { ...defaultConfigs.rain, particleCount: Math.floor(70 * mobileFactor), colors: defaultColors.rain }),
+    embers: useReward('hero-title', 'embers', { ...defaultConfigs.embers, particleCount: Math.floor(50 * mobileFactor), colors: defaultColors.embers })
   };
 
   const triggerHeroAnimation = () => {
@@ -1723,7 +1734,8 @@ function AnimationSelector({ selected, onChange }: {
       { id: 'fireflies', name: 'Fireflies', icon: '✨', desc: 'Glowing lights' },
       { id: 'aurora', name: 'Aurora', icon: '🌌', desc: 'Northern lights' },
       { id: 'leaves', name: 'Autumn Leaves', icon: '🍂', desc: 'Falling leaves' },
-      { id: 'waves', name: 'Waves', icon: '🌊', desc: 'Ocean ripples' },
+      { id: 'rain', name: 'Rain', icon: '🌧️', desc: 'Falling streaks' },
+      { id: 'embers', name: 'Embers', icon: '🔥', desc: 'Glowing sparks' }
     ],
     tech: [
       { id: 'glitch', name: 'Glitch', icon: '📺', desc: 'Digital distortion' },
