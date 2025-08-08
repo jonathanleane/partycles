@@ -18,6 +18,7 @@ import { createGlitchParticles, renderGlitchParticle } from './glitch';
 import { createMagicDustParticles, renderMagicDustParticle } from './magicdust';
 import { createCrystalParticles, renderCrystalParticle } from './crystals';
 import { createLeafParticles, renderLeafParticle } from './leaves';
+import { createMortarParticles, renderMortarParticle } from './mortar';
 import { createBokehParticles, renderBokehParticle } from './bokeh';
 import { createRibbonsParticles, renderRibbonsParticle } from './ribbons';
 import { createGeometricParticles, renderGeometricParticle } from './geometric';
@@ -123,6 +124,10 @@ export const animations: Record<AnimationType, AnimationHandler> = {
   geometric: {
     createParticles: createGeometricParticles,
     renderParticle: renderGeometricParticle,
+  },
+  mortar: {
+    createParticles: createMortarParticles,
+    renderParticle: renderMortarParticle,
   },
   rain: {
     createParticles: createRainParticles,

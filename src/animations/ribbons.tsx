@@ -62,11 +62,21 @@ export const createRibbonsParticles = (
   });
 };
 
+interface RibbonElementData {
+  segments?: number;
+  waveSpeed?: number;
+  phaseOffset?: number;
+  thickness?: number;
+}
+
 export const renderRibbonsParticle = (particle: Particle): React.ReactNode => {
-  let ribbonData: any = {};
+  let ribbonData: RibbonElementData = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
-      ribbonData = JSON.parse(particle.element);
+      const parsed = JSON.parse(particle.element) as unknown;
+      if (parsed && typeof parsed === 'object') {
+        ribbonData = parsed as RibbonElementData;
+      }
     }
   } catch (e) {
     // Fallback

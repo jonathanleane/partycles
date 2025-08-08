@@ -65,28 +65,20 @@ export const createGeometricParticles = (
   });
 };
 
-const createShapePath = (shape: ShapeType): string => {
-  switch (shape) {
-    case 'triangle':
-      return 'polygon(50% 0%, 0% 100%, 100% 100%)';
-    case 'square':
-      return 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
-    case 'diamond':
-      return 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)';
-    case 'hexagon':
-      return 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)';
-    case 'star':
-      return 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
-    default:
-      return 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
-  }
-};
+interface GeometricElementData {
+  shape?: ShapeType;
+  spinSpeed?: number;
+  pulseSpeed?: number;
+}
 
 export const renderGeometricParticle = (particle: Particle): React.ReactNode => {
-  let shapeData: any = {};
+  let shapeData: GeometricElementData = {};
   try {
     if (particle.element && typeof particle.element === 'string') {
-      shapeData = JSON.parse(particle.element);
+      const parsed = JSON.parse(particle.element) as unknown;
+      if (parsed && typeof parsed === 'object') {
+        shapeData = parsed as GeometricElementData;
+      }
     }
   } catch (e) {
     // Fallback
@@ -99,7 +91,7 @@ export const renderGeometricParticle = (particle: Particle): React.ReactNode => 
   } = shapeData;
 
   const lifeRatio = particle.life / (particle.config?.lifetime || 120);
-  const rotation = particle.rotation + (particle.life * spinSpeed);
+  const rotation = particle.rotation + particle.life * spinSpeed;
   
   // Pulse effect
   const pulse = 1 + Math.sin(particle.life * pulseSpeed) * 0.1;
@@ -119,4 +111,21 @@ export const renderGeometricParticle = (particle: Particle): React.ReactNode => 
       }}
     />
   );
+};
+
+const createShapePath = (shape: ShapeType): string => {
+  switch (shape) {
+    case 'triangle':
+      return 'polygon(50% 0%, 0% 100%, 100% 100%)';
+    case 'square':
+      return 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+    case 'diamond':
+      return 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)';
+    case 'hexagon':
+      return 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)';
+    case 'star':
+      return 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+    default:
+      return 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+  }
 };
