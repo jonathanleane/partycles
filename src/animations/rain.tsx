@@ -46,15 +46,19 @@ export const renderRainParticle = (particle: Particle): React.ReactNode => {
   const speed = Math.sqrt(
     particle.vx * particle.vx + particle.vy * particle.vy
   );
-  const length = Math.min(20 + speed * 1.5, 40);
+  const length = Math.min(16 + speed * 1.2, 36);
+  const thickness = Math.max(1, Math.round(particle.size));
 
   return (
     <div
       key={particle.id}
       style={{
-        width: `${Math.max(1, particle.size)}px`,
+        width: `${thickness}px`,
         height: `${length}px`,
+        opacity: Math.min(0.85, 0.45 + speed * 0.02),
         background: `linear-gradient(to bottom, ${particle.color}, transparent)`,
+        borderRadius: `${Math.max(0, thickness - 1)}px`,
+        filter: 'blur(0.2px)',
       }}
     />
   );

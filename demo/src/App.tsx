@@ -347,6 +347,7 @@ function App() {
     glitch: useReward('hero-title', 'glitch', { ...defaultConfigs.glitch, particleCount: Math.floor(20 * mobileFactor), colors: defaultColors.glitch }),
     magicdust: useReward('hero-title', 'magicdust', { ...defaultConfigs.magicdust, particleCount: Math.floor(25 * mobileFactor), colors: defaultColors.magicdust }),
     crystals: useReward('hero-title', 'crystals', { ...defaultConfigs.crystals, particleCount: Math.floor(15 * mobileFactor), colors: defaultColors.crystals }),
+    mortar: useReward('hero-title', 'mortar', { ...defaultConfigs.fireworks, particleCount: 2, elementSize: 6, lifetime: 200, physics: { gravity: 0.35, wind: 0, friction: 0.99 } }),
     rain: useReward('hero-title', 'rain', { ...defaultConfigs.rain, particleCount: Math.floor(70 * mobileFactor), colors: defaultColors.rain }),
     embers: useReward('hero-title', 'embers', { ...defaultConfigs.embers, particleCount: Math.floor(50 * mobileFactor), colors: defaultColors.embers })
   };

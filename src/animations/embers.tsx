@@ -41,16 +41,19 @@ export const renderEmberParticle = (particle: Particle): React.ReactNode => {
   const twinkle = p.config?.effects?.twinkle;
   const flickerOpacity = twinkle ? 0.6 + Math.sin(p.life * 0.3) * 0.4 : 1;
 
+  // Gentle drift glow tail
+  const glowSize = Math.max(4, particle.size * 2.5);
+
   return (
     <div
       key={particle.id}
       style={{
         width: '100%',
         height: '100%',
-        background: `radial-gradient(circle, ${particle.color}, rgba(0,0,0,0))`,
+        background: `radial-gradient(circle at 50% 55%, ${particle.color}, rgba(0,0,0,0))`,
         borderRadius: '50%',
         opacity: particle.opacity * flickerOpacity,
-        boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+        boxShadow: `0 0 ${glowSize}px ${particle.color}`,
         filter: 'blur(0.3px)',
       }}
     />
